@@ -40,8 +40,8 @@ class Game:
         return self.cars['X'].get_col() == self.dimension - 1
 
     def is_valid_move(self, car_name: str, direction: str) -> bool:
-    # check if direction correct
-        if self.cars[car_name].direction == 'H':
+        # check if direction correct
+        if self.cars[car_name].orientation == 'H':
             if direction not in ['L', 'R']:
                 return False
         else:
@@ -49,20 +49,57 @@ class Game:
                 return False
         # check if empty space (dus ook dimensie bord)
         try:
-            if self.board[(self.cars[car_name].row - (direction == 'U') + (direction == 'D'), self.cars[car_name].col - (direction == 'L') + (direction == 'R'))] != '_':
+            if direction == 'U':
+                location_x = self.cars[car_name].row - 1
+                location_y = self.cars[car_name].col
+            elif direction == 'D':
+                location_x = self.cars[car_name].row + self.cars[car_name].length
+                location_y = self.cars[car_name].col
+            elif direction == 'L':
+                location_x = self.cars[car_name].row
+                location_y = self.cars[car_name].col - 1
+            elif direction == 'R':
+                location_x = self.cars[car_name].row
+                location_y = self.cars[car_name].col + self.cars[car_name].length
+            else:
+                return False
+            if self.board[(location_x, location_y)] != '_':
                 return False
         except:
             return False
         return True
 
-
     def move(self, car_name: str, direction: str) -> bool:
         direction = direction.upper()
         if self.is_valid_move(car_name, direction):
+            # adjust empty space (eentje erbij, eentje eraf)
+            if direction == 'U':
+                location_x = self.cars[car_name].row - 1
+                location_y = self.cars[car_name].col
+                self.board[(location_x, location_y)] = car_name
+                self.board[(location_x + self.cars[car_name].length, location_y)] = '_'
+            elif direction == 'D':
+                location_x = self.cars[car_name].row + self.cars[car_name].length
+                location_y = self.cars[car_name].col
+                self.board[(location_x, location_y)] = car_name
+                self.board[(self.cars[car_name].row, location_y)] = '_'
+            elif direction == 'L':
+                location_x = self.cars[car_name].row
+                location_y = self.cars[car_name].col - 1
+                self.board[(location_x, location_y)] = car_name
+                self.board[(location_x, location_y  + self.cars[car_name].length)] = '_'
+            else:
+                location_x = self.cars[car_name].row
+                location_y = self.cars[car_name].col + self.cars[car_name].length
+                self.board[(location_x, location_y)] = car_name
+                self.board[(location_x, self.cars[car_name].col)] = '_'
+    	    
     	    # adjust car.col of car.row
-    	    # adjust empty space (eentje erbij, eentje eraf)
+            self.cars[car_name].row += (direction == 'D') - (direction == 'U')
+            self.cars[car_name].col += (direction == 'R') - (direction == 'L')
             return True
         return False
+
     
 
     def __str__(self) -> str:
@@ -78,9 +115,12 @@ class Game:
 
 if __name__ == '__main__': 
     g = Game('/home/sabrinastrijker/AH/AH-RushHour-DJS/Input/Rushhour6x6_1.csv', 6)
-    print(g.cars['X'])
 
-    print(g.is_won())
-
-    print(g.__str__())
-
+    print(g)
+    while not g.is_won():
+        car_name, direction = input("What car to move? Carname and direction split by space!\n").split()
+        car_name = car_name.upper()
+        if g.move(car_name, direction):
+            print(g)
+        else:
+            print("Invalid move!")
