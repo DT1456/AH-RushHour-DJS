@@ -6,7 +6,22 @@ class Game:
         self.cars: dict[str, Car]= {}
         self.load_cars(file_name)
         self.dimension = dimension
+        self.board: dict[tuple[int, int], str] = {}
+        self.load_board()
+        
 
+    def load_board(self) -> None:
+        for i in range(self.dimension):
+            for j in range(self.dimension):
+                self.board[(i + 1, j + 1)] = '_'
+                
+        for car_name, Car in zip(self.cars, self.cars.values()):
+            if Car.orientation == 'H':
+                for k in range(Car.length):
+                    self.board[(Car.row, Car.col + k)] = car_name
+            else:
+                for k in range(Car.length):
+                    self.board[(Car.row + k, Car.col)] = car_name
 
     def load_cars(self, file_name: str) -> None:
         """Loads the cars from file_name"""
@@ -26,11 +41,22 @@ class Game:
 
 
     def __str__(self) -> str:
+
+
+        
+        board_string = ''
+        for i in range(self.dimension):
+            for j in range(self.dimension):
+                board_string += ' ' + self.board[(i + 1, j + 1)] + ' '
+            board_string += '\n\n'
+        
+        return board_string
+    
         board_string = ''
         for _ in range(self.dimension):
             board_string += ' _ ' * self.dimension + '\n\n'
 
-        for car_name, Car in zip(self.cars, self.cars.values()):
+        for car_name, Car in zip(self.cars, self.cars.values()): 
             
             if Car.orientation == 'H':
                 board_string = board_string[:(Car.col - 1) * 3 + (Car.row - 1) * (2 + self.dimension * 3)] + (' ' + car_name + ' ') * Car.length + board_string[3 * (Car.col - 1 + Car.length) + (Car.row - 1) * (2 + self.dimension * 3):]
