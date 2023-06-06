@@ -1,7 +1,6 @@
 class Car:
 
-    def __init__(self, name: str, orientation: str, col: int, row: int, length: int):
-        self.name = name
+    def __init__(self, orientation: str, col: int, row: int, length: int):
         self.orientation = orientation
         self.col = col
         self.row = row
