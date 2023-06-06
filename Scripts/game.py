@@ -2,9 +2,10 @@ from car import Car
 
 class Game:
     
-    def __init__(self, file_name: str) -> None:
+    def __init__(self, file_name: str, dimension: int) -> None:
         self.cars: dict[str, Car]= {}
         self.load_cars(file_name)
+        self.dimension = dimension
 
 
     def load_cars(self, file_name: str) -> None:
@@ -20,9 +21,15 @@ class Game:
                 self.cars[car] = Car(orientation, int(col), int(row), int(length))
 
 
+    def is_won(self) -> bool:
+        return self.cars['X'].get_col() == self.dimension - 1
+
+
 
 if __name__ == '__main__': 
-    g = Game('/home/sabrinastrijker/AH/AH-RushHour-DJS/Input/Rushhour6x6_1.csv')
+    g = Game('/home/sabrinastrijker/AH/AH-RushHour-DJS/Input/Rushhour6x6_1.csv', 6)
     print(g.cars['X'])
+
+    print(g.is_won())
 
 
