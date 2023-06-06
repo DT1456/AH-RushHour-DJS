@@ -1,15 +1,17 @@
 from game import Game
 import random as random
 
-if __name__ == '__main__': 
-    g = Game('/home/duco/AH-RushHour-DJS/Input/Rushhour6x6_1.csv', 6)
+class Solver:
 
-    print(g)
-    while not g.is_won():
-        car_name = random.choice(list(g.cars))
+    def __init__(self):
+        pass
+        
+    	
+    def play_move(self, game: Game):
+        car_name = random.choice(list(game.cars))
         direction = random.choice(['l', 'r', 'u', 'd'])
-        if g.move(car_name, direction):
-            print(g)
-        else:
-            print("Invalid move!")
-    print("Congrats!")
+        while not game.move(car_name, direction):
+            car_name = random.choice(list(game.cars))
+            direction = random.choice(['l', 'r', 'u', 'd'])
+
+        return game
