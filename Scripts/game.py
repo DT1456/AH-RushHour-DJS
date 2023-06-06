@@ -28,7 +28,15 @@ class Game:
     def __str__(self) -> str:
         board_string = ''
         for _ in range(self.dimension):
-            board_string += ' _ ' * self.dimension + '\n'
+            board_string += ' _ ' * self.dimension + '\n\n'
+
+        for car_name, Car in zip(self.cars, self.cars.values()):
+            
+            if Car.orientation == 'H':
+                board_string = board_string[:(Car.col - 1) * 3 + (Car.row - 1) * (2 + self.dimension * 3)] + (' ' + car_name + ' ') * Car.length + board_string[3 * (Car.col - 1 + Car.length) + (Car.row - 1) * (2 + self.dimension * 3):]
+            else:
+                for i in range(Car.length):
+                    board_string = board_string[:(Car.col - 1) * 3 + (Car.row - 1 + i) * (2 + self.dimension * 3)] + (' ' + car_name + ' ') + board_string[3 * Car.col + (Car.row - 1 + i) * (2 + self.dimension * 3):]
 
         return board_string 
 
@@ -39,5 +47,4 @@ if __name__ == '__main__':
     print(g.is_won())
 
     print(g.__str__())
-
 
