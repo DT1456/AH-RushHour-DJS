@@ -114,13 +114,16 @@ class Game:
      
 
 if __name__ == '__main__': 
-    g = Game('/home/sabrinastrijker/AH/AH-RushHour-DJS/Input/Rushhour6x6_1.csv', 6)
+    g = Game('/home/duco/AH-RushHour-DJS/Input/Rushhour6x6_1.csv', 6)
 
     print(g)
     while not g.is_won():
-        car_name, direction = input("What car to move? Carname and direction split by space!\n").split()
-        car_name = car_name.upper()
-        if g.move(car_name, direction):
-            print(g)
-        else:
-            print("Invalid move!")
+        try:
+            car_name, direction = input("What car to move? Carname and direction split by space!\n").split()
+            car_name = car_name.upper()
+            if g.move(car_name, direction):
+                print(g)
+            else:
+                print("Invalid command!\n")
+        except:
+            print("Invalid command!\n")
