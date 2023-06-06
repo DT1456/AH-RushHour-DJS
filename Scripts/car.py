@@ -5,3 +5,6 @@ class Car:
         self.col = col
         self.row = row
         self.length = length
+
+    def get_col(self) -> int:
+        return self.col
