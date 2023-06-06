@@ -39,11 +39,33 @@ class Game:
     def is_won(self) -> bool: 
         return self.cars['X'].get_col() == self.dimension - 1
 
+    def is_valid_move(self, car_name: str, direction: str) -> bool:
+    # check if direction correct
+        if self.cars[car_name].direction == 'H':
+            if direction not in ['L', 'R']:
+                return False
+        else:
+            if direction not in ['U', 'D']:
+                return False
+        # check if empty space (dus ook dimensie bord)
+        try:
+            if self.board[(self.cars[car_name].row - (direction == 'U') + (direction == 'D'), self.cars[car_name].col - (direction == 'L') + (direction == 'R'))] != '_':
+                return False
+        except:
+            return False
+        return True
+
+
+    def move(self, car_name: str, direction: str) -> bool:
+        direction = direction.upper()
+        if self.is_valid_move(car_name, direction):
+    	    # adjust car.col of car.row
+    	    # adjust empty space (eentje erbij, eentje eraf)
+            return True
+        return False
+    
 
     def __str__(self) -> str:
-
-
-        
         board_string = ''
         for i in range(self.dimension):
             for j in range(self.dimension):
@@ -52,19 +74,7 @@ class Game:
         
         return board_string
     
-        board_string = ''
-        for _ in range(self.dimension):
-            board_string += ' _ ' * self.dimension + '\n\n'
-
-        for car_name, Car in zip(self.cars, self.cars.values()): 
-            
-            if Car.orientation == 'H':
-                board_string = board_string[:(Car.col - 1) * 3 + (Car.row - 1) * (2 + self.dimension * 3)] + (' ' + car_name + ' ') * Car.length + board_string[3 * (Car.col - 1 + Car.length) + (Car.row - 1) * (2 + self.dimension * 3):]
-            else:
-                for i in range(Car.length):
-                    board_string = board_string[:(Car.col - 1) * 3 + (Car.row - 1 + i) * (2 + self.dimension * 3)] + (' ' + car_name + ' ') + board_string[3 * Car.col + (Car.row - 1 + i) * (2 + self.dimension * 3):]
-
-        return board_string 
+     
 
 if __name__ == '__main__': 
     g = Game('/home/sabrinastrijker/AH/AH-RushHour-DJS/Input/Rushhour6x6_1.csv', 6)
