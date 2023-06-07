@@ -15,8 +15,10 @@ def generate_random_color():
 def colorize_string_list(string_list):
     """
     Colour each character in the string list with a random color.
+    '_' characters are colored white.
     """
     color_map = defaultdict(generate_random_color)
+    color_map['_'] = '#FFFFFF'  # Set the color for '_' to white
     colorized_string_list = [color_map[char] for char in string_list]
     return colorized_string_list
 
