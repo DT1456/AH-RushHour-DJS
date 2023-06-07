@@ -13,14 +13,30 @@ data = {(1, 1): '_', (1, 2): 'A', (1, 3): 'A', (1, 4): 'B', (1, 5): 'B', (1, 6):
 
 x_coords = []
 y_coords = []
+colors = []
 
 for coord, color in data.items():
-    x_coords.append(coord[0])
-    y_coords.append(coord[1])
-    
+    y_coords.append(coord[0])
+    x_coords.append(coord[1])
+    colors.append(color)
+
+for i in range(len(colors)):
+    if colors[i] == 'X':
+        colors[i] = 'red'
+    else:
+        colors[i] = 'blue'
 
 
 # Creating the scatter plot
-plt.scatter(x_coords, y_coords)
+plt.scatter(x_coords, y_coords, c=colors)
+
+
+# Invert the y axsis to run from 6 to 1 instead of from 1 to 6
+plt.gca().invert_yaxis()
+
+# Remove axsis and tickers and boarder
+plt.axis('off')
+
+
 
 plt.show()
