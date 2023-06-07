@@ -36,7 +36,19 @@ this directory contains all the different Rush Hour games that the player can ch
 
 #### **Playing the game**:
 
-If you want to play the game make sure that you run the file **game.py** from the directory that game.py is in. It is also important that every python file is in the same directory. When you want to start the game you type "python3 game.py". Then you will be asked which board dimension you want and after that which game with that dimension you want to play. When the game is ready to be played you can move a car by selecting the letter of the car, typing a space and then the direction (L: left, R: right, U: up or D: down). You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
+If you want to play the game make sure that you run the file **game.py** from the directory that game.py is in. It is also important that every python file is in the same directory. When you want to start the game you have multiple options:
+
+1. **Command line arguments:** if you want to start the game immediately you can choose a game you want from the Input directory and then use the game name in the command line arguments, after python3 game.py you need to type "-f", this means you choose a file for the game:
+
+```python3
+    python3 game.py -f Rushhour6x6_1.csv`
+```
+
+2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension and which game you want to play and then the game will start.
+
+When the game is ready to be played you can move a car by selecting the letter of the car, typing a space and then the direction (L: left, R: right, U: up or D: down). You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
+
+<br>
 
 #### **Using the solver**:
 
@@ -44,8 +56,18 @@ If you want to use the solver, you first need to type "python3 solver.py" in the
 
 *When you **don't** want to print:*
 
-"python3 solver.py game_number solver_name amount_of_times"
+    python3 solver.py game_number solver_name amount_of_times
 
 *When you **do** want to print:*
 
-"python3 solver.py game_number solver_name amount_of_times True"
+    python3 solver.py game_number solver_name amount_of_times True
+
+#### Help:
+
+There is an option to ask for help before you run the game, this is a short summary of what is described above. If you type:
+
+    python3 game.py -h
+
+You get the following output:
+
+![schets](images/help-function.jpeg)
