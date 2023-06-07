@@ -16,9 +16,15 @@ y_coords = []
 colors = []
 
 for coord, color in data.items():
-    x_coords.append(coord[0])
-    y_coords.append(coord[1])
+    y_coords.append(coord[0])
+    x_coords.append(coord[1])
     colors.append(color)
+
+for i in range(len(colors)):
+    if colors[i] == 'X':
+        colors[i] = 'red'
+    else:
+        colors[i] = 'blue'
 
 
 # Creating the scatter plot
