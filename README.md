@@ -70,4 +70,4 @@ There is an option to ask for help before you run the game, this is a short summ
 
 You get the following output:
 
-![schets](images/help-function.jpeg)
+![help](/Images/help-function.jpeg)
