@@ -1,21 +1,28 @@
 from car import Car
 from pathlib import Path
 
+
 class Game:
-    
+
     def __init__(self, file_name: str, dimension: int) -> None:
-        self.cars: dict[str, Car]= {}
-        self.load_cars(file_name)
-        self.dimension = dimension
+        """Initialises game using file_name and dimension"""
+        # Initialise cars and board as dictionaries, set dimension
+        self.cars: dict[str, Car] = {}
         self.board: dict[tuple[int, int], str] = {}
+        self.dimension = dimension
+
+        # Load cars and board
+        self.load_cars(file_name)
         self.load_board()
-        
 
     def load_board(self) -> None:
+        """Loads the board using dimension and the dictionary cars"""
+        # Fill the empty board
         for i in range(self.dimension):
             for j in range(self.dimension):
                 self.board[(i + 1, j + 1)] = '_'
-                
+
+        # Go over cars and fill in values on the board
         for car_name, car in zip(self.cars, self.cars.values()):
             if car.get_orientation() == 'H':
                 for k in range(car.get_length()):
@@ -36,8 +43,11 @@ class Game:
                 car, orientation, col, row, length = line.split(',')
                 self.cars[car] = Car(orientation, int(col), int(row), int(length))
 
+    def is_won(self) -> bool:
+        """Returns whether the game is won
 
-    def is_won(self) -> bool: 
+        If car 'X' can be moved off the board, game is won
+        """
         return self.cars['X'].get_col() == self.dimension - 1
 
     def is_valid_move(self, car_name: str, direction: str) -> bool:
@@ -90,20 +100,18 @@ class Game:
                 location_x = car.get_row()
                 location_y = car.get_col() - 1
                 self.board[(location_x, location_y)] = car_name
-                self.board[(location_x, location_y  + car.get_length())] = '_'
+                self.board[(location_x, location_y + car.get_length())] = '_'
             else:
                 location_x = car.get_row()
                 location_y = car.get_col() + car.get_length()
                 self.board[(location_x, location_y)] = car_name
                 self.board[(location_x, car.get_col())] = '_'
-    	    
-    	    # adjust car.col of car.row
-            self.cars[car_name].row += (direction == 'D') - (direction == 'U')
-            self.cars[car_name].col += (direction == 'R') - (direction == 'L')
+
+            # adjust car.col of car.row
+            car.add_to_row((direction == 'D') - (direction == 'U'))
+            car.add_to_col((direction == 'R') - (direction == 'L'))
             return True
         return False
-
-    
 
     def __str__(self) -> str:
         board_string = ''
@@ -111,31 +119,33 @@ class Game:
             for j in range(self.dimension):
                 board_string += ' ' + self.board[(i + 1, j + 1)] + ' '
             board_string += '\n\n'
-        
         return board_string
-    
+
 
 if __name__ == '__main__':
 
-    dimension = int(input("With which board dimension would you like to play (6, 9, or 12)?\n"))
+    dimension = int(input('With which board dimension would you like to play'
+        ' (6, 9, or 12)?\n'))
 
     if dimension == 6:
-        game_number = input("Which game do you want to play (1, 2 or 3)?\n")
+        game_number = input('Which game do you want to play (1, 2 or 3)?\n')
     if dimension == 9:
-        game_number = input("Which game do you want to play (4, 5 or 6)?\n")
+        game_number = input('Which game do you want to play (4, 5 or 6)?\n')
     if dimension == 12:
         game_number = 7
-    
-    g = Game(Path(__file__).parent/f'../Input/Rushhour{dimension}x{dimension}_{game_number}.csv', dimension)
+
+    path = str(Path(__file__).parent.parent) + f'/Input/Rushhour{dimension}x{dimension}_{game_number}.csv'
+    print(path)
+    g = Game(path, dimension)
 
     print(g)
     while not g.is_won():
         try:
-            car_name, direction = input("What car to move? Carname and direction split by space!\n").split()
+            car_name, direction = input('What car to move? Carname and direction split by space!\n').split()
             car_name = car_name.upper()
             if g.move(car_name, direction):
                 print(g)
             else:
-                print("Invalid command!\n")
-        except:
-            print("Invalid command!\n")
+                print('Invalid command!\n')
+        except ValueError:
+            print('Invalid command!\n')
