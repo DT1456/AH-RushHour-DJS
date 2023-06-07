@@ -1,6 +1,7 @@
 import random
 import string
 from collections import defaultdict
+import matplotlib.colors as mcolors
 
 def generate_random_color():
     """
@@ -35,24 +36,8 @@ for coord, color in data.items():
 
 colored_string_list = colorize_string_list(colors)
 
+# Convert color strings to RGB values
+rgb_values = [mcolors.hex2color(color) for color in colored_string_list]
+
 # Print to check if the colours work
-print(colored_string_list)
-
-
-
-"""
-
-
-# Create an empty matrix to store the colors
-matrix = np.empty((max(y_coords), max(x_coords)))
-
-# Assign numerical values to the colors based on the coordinates
-for x, y, color in zip(x_coords, y_coords, colors):
-    matrix[y-1, x-1] = 0 if color == 'blue' else 1
-
-# Display the matrix using imshow
-plt.imshow(matrix, cmap='bwr')
-plt.axis('off')  # Remove axis ticks
-plt.show()
-
-"""
+print(rgb_values)
