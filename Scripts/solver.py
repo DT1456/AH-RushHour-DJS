@@ -1,4 +1,5 @@
 from game import Game
+from pathlib import Path
 from sys import argv
 import time
 
@@ -31,7 +32,7 @@ def main() -> None:
     # Solve the game amount_of_times times
     for _ in range(amount_of_times):
         # Initialise game
-        game = Game('/home/duco/AH-RushHour-DJS/Input/' +
+        game = Game(str(Path(__file__).parent.parent) + '/Input/' +
                     get_game_csv_string(game_number),
                     get_game_dimension(game_number))
         print_game(game, verbose)
