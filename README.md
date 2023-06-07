@@ -40,4 +40,12 @@ If you want to play the game make sure that you run the file **game.py** from th
 
 #### **Using the solver**:
 
+If you want to use the solver, you first need to type "python3 solver.py" in the same line after that you type the number of the game you want to solve (1, 2, 3, 4, 5, 6 or 7), then you type the name of the kind of solver that you want to use, after that you type the amount of times you want to solve the game and then at last there is the option to print the board while solving the game, if you want to print the board you type "True" at the end of the line,if you don't you type nothing there. This would result in something like this:
 
+*When you **don't** want to print:*
+
+"python3 solver.py game_number solver_name amount_of_times"
+
+*When you **do** want to print:*
+
+"python3 solver.py game_number solver_name amount_of_times True"
