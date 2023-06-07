@@ -15,6 +15,10 @@ class Car:
         """Returns row of Car"""
         return self.row
 
+    def get_length(self) -> int:
+        """Returns length of Car"""
+        return self.length
+
     def set_col(self, col: int) -> None:
         """Changes column of Car"""
         self.col = col
