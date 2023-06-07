@@ -5,8 +5,6 @@
 
 Our project consist of an implementation of the Rush hour game for the course *Algoritmen en Heuristieken*.
 
-<br>
-
 ## Table of contents
 
 [Directories and files](#directories-and-files)
