@@ -2,6 +2,7 @@ import random
 import string
 from collections import defaultdict
 import matplotlib.colors as mcolors
+import numpy as np
 
 def generate_random_color():
     """
@@ -41,3 +42,12 @@ rgb_values = [mcolors.hex2color(color) for color in colored_string_list]
 
 # Print to check if the colours work
 print(rgb_values)
+
+
+
+# Create an empty matrix to hold the colors
+color_matrix = np.empty((len(y_coords), len(x_coords), 3), dtype='float')
+
+
+
+
