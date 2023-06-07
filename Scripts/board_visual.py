@@ -30,4 +30,13 @@ for i in range(len(colors)):
 # Creating the scatter plot
 plt.scatter(x_coords, y_coords, c=colors)
 
+
+# Invert the y axsis to run from 6 to 1 instead of from 1 to 6
+plt.gca().invert_yaxis()
+
+# Remove axsis and tickers and boarder
+plt.axis('off')
+
+
+
 plt.show()
