@@ -30,3 +30,11 @@ class Car:
     def set_row(self, row: int) -> None:
         """Changes row of Car"""
         self.row = row
+
+    def add_to_col(self, x: int) -> None:
+        """Adds x to self.col"""
+        self.col += x
+
+    def add_to_row(self, x: int) -> None:
+        """Adds x to self.row"""
+        self.row += x
