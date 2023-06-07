@@ -41,7 +41,7 @@ If you want to play the game make sure that you run the file **game.py** from th
 1. **Command line arguments:** if you want to start the game immediately you can choose a game you want from the Input directory and then use the game name in the command line arguments, after python3 game.py you need to type "-f", this means you choose a file for the game:
 
 ```python3
-    python3 game.py -f Rushhour6x6_1.csv`
+    python3 game.py -f Rushhour6x6_1.csv
 ```
 
 2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension and which game you want to play and then the game will start.
