@@ -26,7 +26,7 @@ data = {(1, 1): '_', (1, 2): 'A', (1, 3): 'A', (1, 4): 'B', (1, 5): 'B', (1, 6):
 
 x_coords = []
 y_coords = []
-colors = []
+colors = [] 
 
 for coord, color in data.items():
     y_coords.append(coord[0])
@@ -35,6 +35,7 @@ for coord, color in data.items():
 
 colored_string_list = colorize_string_list(colors)
 
+# Print to check if the colours work
 print(colored_string_list)
 
 
