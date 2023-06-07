@@ -19,6 +19,10 @@ class Car:
         """Returns length of Car"""
         return self.length
 
+    def get_orientation(self) -> int:
+        """Returns orientation of Car"""
+        return self.orientation
+
     def set_col(self, col: int) -> None:
         """Changes column of Car"""
         self.col = col
