@@ -1,4 +1,5 @@
 from car import Car
+from pathlib import Path
 
 class Game:
     
@@ -111,10 +112,19 @@ class Game:
         
         return board_string
     
-     
 
-if __name__ == '__main__': 
-    g = Game('/home/duco/AH-RushHour-DJS/Input/Rushhour6x6_1.csv', 6)
+if __name__ == '__main__':
+
+    dimension = int(input("With which board dimension would you like to play (6, 9, or 12)?\n"))
+
+    if dimension == 6:
+        game_number = input("Which game do you want to play (1, 2 or 3)?\n")
+    if dimension == 9:
+        game_number = input("Which game do you want to play (4, 5 or 6)?\n")
+    if dimension == 12:
+        game_number = 7
+    
+    g = Game(Path(__file__).parent/f'../Input/Rushhour{dimension}x{dimension}_{game_number}.csv', dimension)
 
     print(g)
     while not g.is_won():
