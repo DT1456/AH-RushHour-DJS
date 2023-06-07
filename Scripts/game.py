@@ -16,13 +16,13 @@ class Game:
             for j in range(self.dimension):
                 self.board[(i + 1, j + 1)] = '_'
                 
-        for car_name, Car in zip(self.cars, self.cars.values()):
-            if Car.orientation == 'H':
-                for k in range(Car.length):
-                    self.board[(Car.row, Car.col + k)] = car_name
+        for car_name, car in zip(self.cars, self.cars.values()):
+            if car.get_orientation() == 'H':
+                for k in range(car.get_length()):
+                    self.board[(car.get_row(), car.get_col() + k)] = car_name
             else:
-                for k in range(Car.length):
-                    self.board[(Car.row + k, Car.col)] = car_name
+                for k in range(car.get_length()):
+                    self.board[(car.get_row() + k, car.get_col())] = car_name
 
     def load_cars(self, file_name: str) -> None:
         """Loads the cars from file_name"""
@@ -50,23 +50,24 @@ class Game:
                 return False
         # check if empty space (dus ook dimensie bord)
         try:
+            car = self.cars[car_name]
             if direction == 'U':
-                location_x = self.cars[car_name].row - 1
-                location_y = self.cars[car_name].col
+                location_x = car.get_row() - 1
+                location_y = car.get_col()
             elif direction == 'D':
-                location_x = self.cars[car_name].row + self.cars[car_name].length
-                location_y = self.cars[car_name].col
+                location_x = car.get_row() + car.get_length()
+                location_y = car.get_col()
             elif direction == 'L':
-                location_x = self.cars[car_name].row
-                location_y = self.cars[car_name].col - 1
+                location_x = car.get_row()
+                location_y = car.get_col() - 1
             elif direction == 'R':
-                location_x = self.cars[car_name].row
-                location_y = self.cars[car_name].col + self.cars[car_name].length
+                location_x = car.get_row()
+                location_y = car.get_col() + car.get_length()
             else:
                 return False
             if self.board[(location_x, location_y)] != '_':
                 return False
-        except:
+        except KeyError:
             return False
         return True
 
@@ -74,26 +75,27 @@ class Game:
         direction = direction.upper()
         if self.is_valid_move(car_name, direction):
             # adjust empty space (eentje erbij, eentje eraf)
+            car = self.cars[car_name]
             if direction == 'U':
-                location_x = self.cars[car_name].row - 1
-                location_y = self.cars[car_name].col
+                location_x = car.get_row() - 1
+                location_y = car.get_col()
                 self.board[(location_x, location_y)] = car_name
-                self.board[(location_x + self.cars[car_name].length, location_y)] = '_'
+                self.board[(location_x + car.get_length(), location_y)] = '_'
             elif direction == 'D':
-                location_x = self.cars[car_name].row + self.cars[car_name].length
-                location_y = self.cars[car_name].col
+                location_x = car.get_row() + car.get_length()
+                location_y = car.get_col()
                 self.board[(location_x, location_y)] = car_name
-                self.board[(self.cars[car_name].row, location_y)] = '_'
+                self.board[(car.get_row(), location_y)] = '_'
             elif direction == 'L':
-                location_x = self.cars[car_name].row
-                location_y = self.cars[car_name].col - 1
+                location_x = car.get_row()
+                location_y = car.get_col() - 1
                 self.board[(location_x, location_y)] = car_name
-                self.board[(location_x, location_y  + self.cars[car_name].length)] = '_'
+                self.board[(location_x, location_y  + car.get_length())] = '_'
             else:
-                location_x = self.cars[car_name].row
-                location_y = self.cars[car_name].col + self.cars[car_name].length
+                location_x = car.get_row()
+                location_y = car.get_col() + car.get_length()
                 self.board[(location_x, location_y)] = car_name
-                self.board[(location_x, self.cars[car_name].col)] = '_'
+                self.board[(location_x, car.get_col())] = '_'
     	    
     	    # adjust car.col of car.row
             self.cars[car_name].row += (direction == 'D') - (direction == 'U')
