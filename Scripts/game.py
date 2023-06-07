@@ -53,11 +53,9 @@ class Game:
                 # Set car_name, orientation, col, row and length
                 car_name, orientation, col, row, length = line.split(',')
 
-                # Convert col, row and length to integers
-                col, row, length = int(col), int(row), int(length)
-
                 # Load in car
-                self.cars[car_name] = Car(orientation, col, row, length)
+                self.cars[car_name] = Car(orientation, int(col), int(row),
+                                          int(length))
 
     def is_won(self) -> bool:
         """Returns whether the game is won
@@ -86,11 +84,11 @@ class Game:
         # Check if direciton is feasible
         if direction not in ['L', 'R', 'U', 'D']:
             return False
-            
+
         # Get location coordinates for direction to move to
         location_x, location_y = self.get_location(car_name, direction)
-        
-        # Return whether board location is empty, catch KeyError for out of bounds
+
+        # Return whether board location is empty, catching KeyErrors
         try:
             return self.board[(location_x, location_y)] == '_'
         except KeyError:
@@ -98,9 +96,10 @@ class Game:
 
     def get_location(self, car_name: str, direction: str) -> list[int]:
         """Get location to which the car is moving"""
+
         # Set car
         car = self.cars[car_name]
-        
+
         # Use direction to get correct location to move to
         if direction == 'U':
             location_x = car.get_row() - 1
@@ -166,33 +165,35 @@ def ask_user_input() -> Game:
 
     # Based on dimension, ask user for game to play
     if dimension == 6:
-        game_number = input('Which game do you want to play (1, 2 or 3)?\n')
+        game_number = int(input('Which game do you want to play (1, 2 or 3)?\n'
+                                ))
     if dimension == 9:
-        game_number = input('Which game do you want to play (4, 5 or 6)?\n')
+        game_number = int(input('Which game do you want to play (4, 5 or 6)?\n'
+                                ))
     if dimension == 12:
         game_number = 7
 
     # Set path
     path = str(Path(__file__).parent.parent) + '/Input/'
-    full_file_name = path + f'Rushhour{dimension}x{dimension}_{game_number}.csv'
-    
+    full_name = path + f'Rushhour{dimension}x{dimension}_{game_number}.csv'
+
     # Return game
-    return Game(full_file_name, dimension)
+    return Game(full_name, dimension)
 
 
-def use_command_line_input_for_file(argv) -> Game:
+def use_command_line_input_for_file(argv: list[str]) -> Game:
     """Use CLI to specify the game to play"""
-    
+
     # Set file_name, path and full file_name
     file_name = argv[2]
     path = str(Path(__file__).parent.parent) + '/Input/'
-    full_file_name = path + file_name
-    
+    full_name = path + file_name
+
     # Find dimension from file_name
-    dimension = int(file_name[file_name.find('x') + 1 : file_name.find('_')])
+    dimension = int(file_name[file_name.find('x') + 1: file_name.find('_')])
 
     # Return game
-    return Game(full_file_name, dimension)
+    return Game(full_name, dimension)
 
 
 def get_help() -> str:
@@ -200,14 +201,19 @@ def get_help() -> str:
 
     # Define help_str and its header
     help_str = 'Welcome to the Rushhour implementation\n'
-    help_str += 'Implemented by Duco, Jasmijn and Sabrina\n\n'
+    help_str += 'Implemented by Duco, Jasmijn and Sabrina\n'
+    help_str += '-------------------------------\n\n'
     help_str += 'You have the following options:\n'
-    help_str += '-------------------------------\n'
-    
+
     # Add the options
-    help_str += '[-h]              : shows this help menu\n'
-    help_str += '[-f file_name.csv]: loads any game in map Input\n\n'
-    help_str += 'Else              : get a choice menu for the original games\n'
+    help_str += '[-h]                            : shows this help menu\n'
+    help_str += '[-f RushhourDIMxDIM_GAMENUM.csv]: loads any'\
+        ' game (in map Input) via its name\n'
+    help_str += 'Else                            : choice menu for the'\
+        ' original games\n\n'
+
+    # Show output location
+    help_str += 'Output for the game is stored in Output/output.csv\n'
 
     # Return help_str
     return help_str
