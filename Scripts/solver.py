@@ -32,8 +32,7 @@ def main() -> None:
     # Solve the game amount_of_times times
     for _ in range(amount_of_times):
         # Initialise game
-        game = Game(str(Path(__file__).parent.parent) + '/Input/' +
-                    get_game_csv_string(game_number),
+        game = Game(get_game_csv_string(game_number),
                     get_game_dimension(game_number))
         print_game(game, verbose)
 
@@ -56,12 +55,15 @@ def get_game_csv_string(game_number: int) -> str:
         print('Invalid game_number')
         exit(1)
 
+    # Set base_path
+    base_path = str(Path(__file__).parent.parent) + '/Input/'
+
     # Based on game_number, return csv_string
     if game_number in [1, 2, 3]:
-        return 'Rushhour6x6_' + str(game_number) + '.csv'
+        return base_path + 'Rushhour6x6_' + str(game_number) + '.csv'
     elif game_number in [4, 5, 6]:
-        return 'Rushhour9x9_' + str(game_number) + '.csv'
-    return 'Rushhour12x12_7.csv'
+        return base_path + 'Rushhour9x9_' + str(game_number) + '.csv'
+    return base_path + 'Rushhour12x12_7.csv'
 
 
 def get_game_dimension(game_number: int) -> int:
