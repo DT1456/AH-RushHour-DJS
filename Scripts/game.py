@@ -34,14 +34,26 @@ class Game:
     def load_cars(self, file_name: str) -> None:
         """Loads the cars from file_name"""
         with open(file_name) as f:
+            # Skip header
             f.readline()
 
+            # Read in cars, line by line
             while True:
+                # Read in line
                 line = f.readline().strip('\n')
+                
+                # If EOF, break
                 if line == '':
                     break
-                car, orientation, col, row, length = line.split(',')
-                self.cars[car] = Car(orientation, int(col), int(row), int(length))
+
+                # Set car_name, orientation, col, row and length
+                car_name, orientation, col, row, length = line.split(',')
+                
+                # Convert col, row and length to integers
+                col, row, length = int(col), int(row), int(length)
+                
+                # Load in car
+                self.cars[car_name] = Car(orientation, col, row, length)
 
     def is_won(self) -> bool:
         """Returns whether the game is won
@@ -123,10 +135,13 @@ class Game:
 
 
 if __name__ == '__main__':
+    """Run the game in CLI"""
 
+    # Ask user for dimension of game
     dimension = int(input('With which board dimension would you like to play'
-        ' (6, 9, or 12)?\n'))
+                    ' (6, 9, or 12)?\n'))
 
+    # Based on dimension, ask user for game to play
     if dimension == 6:
         game_number = input('Which game do you want to play (1, 2 or 3)?\n')
     if dimension == 9:
@@ -134,17 +149,24 @@ if __name__ == '__main__':
     if dimension == 12:
         game_number = 7
 
-    path = str(Path(__file__).parent.parent) + f'/Input/Rushhour{dimension}x{dimension}_{game_number}.csv'
-    print(path)
-    g = Game(path, dimension)
+    # Set path
+    path = str(Path(__file__).parent.parent)
+    path += f'/Input/Rushhour{dimension}x{dimension}_{game_number}.csv'
 
-    print(g)
-    while not g.is_won():
+    # Initialise game
+    game = Game(path, dimension)
+
+    # Print game
+    print(game)
+
+    # While game not won, choose car and direction and move
+    while not game.is_won():
         try:
-            car_name, direction = input('What car to move? Carname and direction split by space!\n').split()
+            car_name, direction = input('What car to move? Car name and '
+                                        'direction split by space!\n').split()
             car_name = car_name.upper()
-            if g.move(car_name, direction):
-                print(g)
+            if game.move(car_name, direction):
+                print(game)
             else:
                 print('Invalid command!\n')
         except ValueError:
