@@ -1,7 +1,19 @@
-# AH-RushHour-DJS
+# The Game of Rush Hour
 *Sabrina Strijker - Duco Telkamp - Jasmijn Smidt*
 
+<br>
+
 Our project consist of an implementation of the Rush hour game for the course *Algoritmen en Heuristieken*.
+
+<br>
+
+## Table of contents
+
+[Directories and files](#directories-and-files)
+
+[Instructions](#instructions)
+
+<br>
 
 ## Directories and files
 
@@ -14,6 +26,8 @@ Our project consist of an implementation of the Rush hour game for the course *A
 
 **Input**: this directory contains all the different Rush Hour games that the player can choose from.
 
+<br>
+
 ## Instructions
 
-If you want to play the game make sure that you run the file **game.py**.
+If you want to play the game make sure that you run the file **game.py** from the directory that game.py is in. It is also important that every python file is in the same directory. When you want to start the game you type "python3 game.py". Then you will be asked which board dimension you want and after that which game with that dimension you want to play. When the game is ready to be played you can move a car by selecting the letter of the car, typing a space and then the direction (L: left, R: right, U: up or D: down). You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
