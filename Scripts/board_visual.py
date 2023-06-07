@@ -13,14 +13,15 @@ data = {(1, 1): '_', (1, 2): 'A', (1, 3): 'A', (1, 4): 'B', (1, 5): 'B', (1, 6):
 
 x_coords = []
 y_coords = []
+colors = []
 
 for coord, color in data.items():
     x_coords.append(coord[0])
     y_coords.append(coord[1])
-    
+    colors.append(color)
 
 
 # Creating the scatter plot
-plt.scatter(x_coords, y_coords)
+plt.scatter(x_coords, y_coords, c=colors)
 
 plt.show()
