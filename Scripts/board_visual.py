@@ -45,7 +45,7 @@ print(rgb_values)
 
 
 
-# Create an empty matrix to hold the colors
+# Create an empty matrix to hold the color
 color_matrix = np.empty((len(y_coords), len(x_coords), 3), dtype='float')
 
 
