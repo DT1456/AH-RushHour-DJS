@@ -1,11 +1,13 @@
 from car import Car
 from pathlib import Path
+from sys import argv
 
 
 class Game:
 
     def __init__(self, file_name: str, dimension: int) -> None:
         """Initialises game using file_name and dimension"""
+
         # Initialise cars and board as dictionaries, set dimension
         self.cars: dict[str, Car] = {}
         self.board: dict[tuple[int, int], str] = {}
@@ -17,6 +19,7 @@ class Game:
 
     def load_board(self) -> None:
         """Loads the board using dimension and the dictionary cars"""
+
         # Fill the empty board
         for i in range(self.dimension):
             for j in range(self.dimension):
@@ -33,6 +36,7 @@ class Game:
 
     def load_cars(self, file_name: str) -> None:
         """Loads the cars from file_name"""
+
         with open(file_name) as f:
             # Skip header
             f.readline()
@@ -41,17 +45,17 @@ class Game:
             while True:
                 # Read in line
                 line = f.readline().strip('\n')
-                
+
                 # If EOF, break
                 if line == '':
                     break
 
                 # Set car_name, orientation, col, row and length
                 car_name, orientation, col, row, length = line.split(',')
-                
+
                 # Convert col, row and length to integers
                 col, row, length = int(col), int(row), int(length)
-                
+
                 # Load in car
                 self.cars[car_name] = Car(orientation, col, row, length)
 
@@ -63,35 +67,56 @@ class Game:
         return self.cars['X'].get_col() == self.dimension - 1
 
     def is_valid_move(self, car_name: str, direction: str) -> bool:
-        # check if direction correct
+        """Checks and returns whether a certain move is valid"""
+
+        # Check if direction correct
         if self.cars[car_name].orientation == 'H':
             if direction not in ['L', 'R']:
                 return False
         else:
             if direction not in ['U', 'D']:
                 return False
-        # check if empty space (dus ook dimensie bord)
+
+        # Check if empty space is available
+        return self.board_location_is_empty(car_name, direction)
+
+    def board_location_is_empty(self, car_name: str, direction: str) -> bool:
+        """Returns whether board location to move to is empty"""
+
+        # Check if direciton is feasible
+        if direction not in ['L', 'R', 'U', 'D']:
+            return False
+            
+        # Get location coordinates for direction to move to
+        location_x, location_y = self.get_location(car_name, direction)
+        
+        # Return whether board location is empty, catch KeyError for out of bounds
         try:
-            car = self.cars[car_name]
-            if direction == 'U':
-                location_x = car.get_row() - 1
-                location_y = car.get_col()
-            elif direction == 'D':
-                location_x = car.get_row() + car.get_length()
-                location_y = car.get_col()
-            elif direction == 'L':
-                location_x = car.get_row()
-                location_y = car.get_col() - 1
-            elif direction == 'R':
-                location_x = car.get_row()
-                location_y = car.get_col() + car.get_length()
-            else:
-                return False
-            if self.board[(location_x, location_y)] != '_':
-                return False
+            return self.board[(location_x, location_y)] == '_'
         except KeyError:
             return False
-        return True
+
+    def get_location(self, car_name: str, direction: str) -> list[int]:
+        """Get location to which the car is moving"""
+        # Set car
+        car = self.cars[car_name]
+        
+        # Use direction to get correct location to move to
+        if direction == 'U':
+            location_x = car.get_row() - 1
+            location_y = car.get_col()
+        elif direction == 'D':
+            location_x = car.get_row() + car.get_length()
+            location_y = car.get_col()
+        elif direction == 'L':
+            location_x = car.get_row()
+            location_y = car.get_col() - 1
+        else:
+            location_x = car.get_row()
+            location_y = car.get_col() + car.get_length()
+
+        # Return x, y coordinates
+        return [location_x, location_y]
 
     def move(self, car_name: str, direction: str) -> bool:
         direction = direction.upper()
@@ -134,9 +159,7 @@ class Game:
         return board_string
 
 
-if __name__ == '__main__':
-    """Run the game in CLI"""
-
+def ask_user_input() -> Game:
     # Ask user for dimension of game
     dimension = int(input('With which board dimension would you like to play'
                     ' (6, 9, or 12)?\n'))
@@ -150,11 +173,57 @@ if __name__ == '__main__':
         game_number = 7
 
     # Set path
-    path = str(Path(__file__).parent.parent)
-    path += f'/Input/Rushhour{dimension}x{dimension}_{game_number}.csv'
+    path = str(Path(__file__).parent.parent) + '/Input/'
+    full_file_name = path + f'Rushhour{dimension}x{dimension}_{game_number}.csv'
+    
+    # Return game
+    return Game(full_file_name, dimension)
+
+
+def use_command_line_input_for_file(argv) -> Game:
+    """Use CLI to specify the game to play"""
+    
+    # Set file_name, path and full file_name
+    file_name = argv[2]
+    path = str(Path(__file__).parent.parent) + '/Input/'
+    full_file_name = path + file_name
+    
+    # Find dimension from file_name
+    dimension = int(file_name[file_name.find('x') + 1 : file_name.find('_')])
+
+    # Return game
+    return Game(full_file_name, dimension)
+
+
+def get_help() -> str:
+    """Return the help string for the user"""
+
+    # Define help_str and its header
+    help_str = 'Welcome to the Rushhour implementation\n'
+    help_str += 'Implemented by Duco, Jasmijn and Sabrina\n\n'
+    help_str += 'You have the following options:\n'
+    help_str += '-------------------------------\n'
+    
+    # Add the options
+    help_str += '[-h]              : shows this help menu\n'
+    help_str += '[-f file_name.csv]: loads any game in map Input\n\n'
+    help_str += 'Else              : get a choice menu for the original games\n'
+
+    # Return help_str
+    return help_str
+
+
+if __name__ == '__main__':
+    """Run the game in CLI"""
 
     # Initialise game
-    game = Game(path, dimension)
+    if len(argv) == 2 and argv[1] == '-h':
+        print(get_help())
+        exit(1)
+    elif len(argv) == 3 and argv[1] == '-f':
+        game = use_command_line_input_for_file(argv)
+    else:
+        game = ask_user_input()
 
     # Print game
     print(game)
