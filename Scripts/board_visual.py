@@ -1,7 +1,6 @@
 from game import Game
-# import matplotlib
-# matplotlib.use('WXAgg')
 import matplotlib.pyplot as plt
+import numpy as np
 
 data = {(1, 1): '_', (1, 2): 'A', (1, 3): 'A', (1, 4): 'B', (1, 5): 'B', (1, 6): 'B', 
         (2, 1): '_', (2, 2): 'C', (2, 3): 'C', (2, 4): 'E', (2, 5): 'D', (2, 6): 'D',  
@@ -27,8 +26,22 @@ for i in range(len(colors)):
         colors[i] = 'blue'
 
 
+# Create an empty matrix to store the colors
+matrix = np.empty((max(y_coords), max(x_coords)))
+
+# Assign numerical values to the colors based on the coordinates
+for x, y, color in zip(x_coords, y_coords, colors):
+    matrix[y-1, x-1] = 0 if color == 'blue' else 1
+
+# Display the matrix using imshow
+plt.imshow(matrix, cmap='bwr')
+plt.axis('off')  # Remove axis ticks
+plt.show()
+
+
+"""
 # Creating the scatter plot
-plt.scatter(x_coords, y_coords, c=colors)
+plt.scatter(x_coords, y_coords, c=colors, marker= 's', s = 1000)
 
 
 # Invert the y axsis to run from 6 to 1 instead of from 1 to 6
@@ -40,3 +53,4 @@ plt.axis('off')
 
 
 plt.show()
+"""
