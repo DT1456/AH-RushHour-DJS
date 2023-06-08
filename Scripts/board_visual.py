@@ -5,6 +5,9 @@ import matplotlib.colors as mcolors
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+# maak gwn lijst met kleuren. 
+
 def generate_random_color():
     """
     Generate a random color in hexadecimal format.
