@@ -42,6 +42,7 @@ def main() -> None:
             game = solver.play_move(game)
             steps += 1
             print_game(game, verbose)
+        game.output_to_csv()
         steps_list.append(steps)
 
     # Print finished and amount of time passed
