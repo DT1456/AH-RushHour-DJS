@@ -84,7 +84,7 @@ def get_game_dimension(game_number: int) -> int:
 def print_game(game: Game, verbose: int) -> None:
     """Print the game if verbose is True"""
     if verbose == 2:
-    	game.set_terminology_print_to_true()
+        game.set_terminology_print_to_true()
     if verbose in [1, 2]:
         game.show_board()
 
