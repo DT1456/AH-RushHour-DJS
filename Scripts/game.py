@@ -1,9 +1,8 @@
 from car import Car
-from pathlib import Path
-from sys import argv
-import sys
 import os
+from pathlib import Path
 from PIL import Image
+from sys import argv
 
 
 class Game:
@@ -19,7 +18,7 @@ class Game:
         # Load cars and board
         self.load_cars(file_name)
         self.load_board()
-        
+
         # Set print option
         self.terminology_print: bool = False
 
@@ -164,25 +163,37 @@ class Game:
         return board_string
 
     def show_image(self) -> None:
-        pixels_per_square = 50
-        game_image = Image.new('RGB', (self.dimension * pixels_per_square, self.dimension * pixels_per_square))
+        pixel_to_square = 50
+        game_image = Image.new('RGB', (self.dimension * pixel_to_square,
+                                       self.dimension * pixel_to_square))
         for i in range(self.dimension):
             for j in range(self.dimension):
-                game_image.paste(Image.open('empty.png'), (i * pixels_per_square, j * pixels_per_square))
+                game_image.paste(Image.open('empty.png'),
+                                 (i * pixel_to_square, j * pixel_to_square))
 
         for car_name, car in zip(self.cars, self.cars.values()):
             if car_name == 'X':
-                game_image.paste(Image.open('red.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+                game_image.paste(Image.open('red.png'),
+                                 ((car.get_col() - 1) * pixel_to_square,
+                                  (car.get_row() - 1) * pixel_to_square))
             elif car.get_orientation() == 'H':
                 if car.get_length() == 2:
-                    game_image.paste(Image.open('brown.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+                    game_image.paste(Image.open('brown.png'),
+                                     ((car.get_col() - 1) * pixel_to_square,
+                                      (car.get_row() - 1) * pixel_to_square))
                 else:
-                    game_image.paste(Image.open('yellowtruck.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+                    game_image.paste(Image.open('yellowtruck.png'),
+                                     ((car.get_col() - 1) * pixel_to_square,
+                                      (car.get_row() - 1) * pixel_to_square))
             else:
                 if car.get_length() == 2:
-                    game_image.paste(Image.open('brownvertical.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+                    game_image.paste(Image.open('brownvertical.png'),
+                                     ((car.get_col() - 1) * pixel_to_square,
+                                      (car.get_row() - 1) * pixel_to_square))
                 else:
-                    game_image.paste(Image.open('yellowtruckvertical.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+                    game_image.paste(Image.open('yellowtruckvertical.png'),
+                                     ((car.get_col() - 1) * pixel_to_square,
+                                      (car.get_row() - 1) * pixel_to_square))
         game_image.save('game.png')
         os.system("tycat game.png")
 
@@ -190,7 +201,7 @@ class Game:
         if self.terminology_print:
             self.show_image()
         else:
-            print(game)
+            print(self)
 
     def set_terminology_print_to_true(self) -> None:
         self.terminology_print = True
@@ -212,7 +223,7 @@ def ask_user_input() -> Game:
         game_number = int(input('Which game do you want to play (4, 5 or 6)?\n'
                                 ))
     if dimension == 12:
-        game_number = 7    
+        game_number = 7
 
     # Set path
     path = str(Path(__file__).parent.parent) + '/Input/'
@@ -275,9 +286,11 @@ if __name__ == '__main__':
         game = ask_user_input()
 
         # Ask for terminology print
-        if argv[len(argv) - 1] != '-t' and input('Do you want to print a picture (using Terminology)? (Y/N)\n').upper() == 'Y':
+        if argv[len(argv) - 1] != '-t' and \
+            input('Do you want to print a picture (using Terminology)?'
+                  ' (Y/N)\n').upper() == 'Y':
             game.set_terminology_print_to_true()
-        
+
     # Specify print function
     if argv[len(argv) - 1] == '-t':
         game.set_terminology_print_to_true()
