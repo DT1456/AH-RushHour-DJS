@@ -44,9 +44,12 @@ def main() -> None:
             print_game(game, verbose)
             if len(steps_list) > 0 and steps > min(steps_list):
             	break
+
+        # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
-            game.output_to_csv()
             steps_list.append(steps)
+            if steps == min(steps_list):
+            	game.output_to_csv()
 
     # Print finished and amount of time passed
     print(get_statistics_string(steps_list, amount_of_times, start_time))
