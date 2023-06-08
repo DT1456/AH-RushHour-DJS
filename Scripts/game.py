@@ -195,6 +195,9 @@ class Game:
     def set_terminology_print_to_true(self) -> None:
         self.terminology_print = True
 
+    def get_terminology_print(self) -> bool:
+        return self.terminology_print
+
 
 def ask_user_input() -> Game:
     # Ask user for dimension of game
@@ -272,7 +275,7 @@ if __name__ == '__main__':
         game = ask_user_input()
 
         # Ask for terminology print
-        if input('Do you want to print a picture (using Terminology)? (Y/N)\n').upper() == 'Y':
+        if argv[len(argv) - 1] != '-t' and input('Do you want to print a picture (using Terminology)? (Y/N)\n').upper() == 'Y':
             game.set_terminology_print_to_true()
         
     # Specify print function
