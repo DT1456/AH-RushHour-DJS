@@ -209,7 +209,7 @@ def ask_user_input() -> Game:
         game_number = int(input('Which game do you want to play (4, 5 or 6)?\n'
                                 ))
     if dimension == 12:
-        game_number = 7
+        game_number = 7    
 
     # Set path
     path = str(Path(__file__).parent.parent) + '/Input/'
@@ -270,6 +270,10 @@ if __name__ == '__main__':
         game = use_command_line_input_for_file(argv)
     else:
         game = ask_user_input()
+
+        # Ask for terminology print
+        if input('Do you want to print a picture (using Terminology)? (Y/N)\n').upper() == 'Y':
+            game.set_terminology_print_to_true()
         
     # Specify print function
     if argv[len(argv) - 1] == '-t':
