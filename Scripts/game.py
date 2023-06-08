@@ -1,6 +1,9 @@
 from car import Car
 from pathlib import Path
 from sys import argv
+import sys
+import os
+from PIL import Image
 
 
 class Game:
@@ -157,6 +160,28 @@ class Game:
             board_string += '\n\n'
         return board_string
 
+    def show_image(self) -> None:
+        pixels_per_square = 50
+        game_image = Image.new('RGB', (self.dimension * pixels_per_square, self.dimension * pixels_per_square))
+        for i in range(self.dimension):
+            for j in range(self.dimension):
+                game_image.paste(Image.open('empty.png'), (i * pixels_per_square, j * pixels_per_square))
+
+        for car_name, car in zip(self.cars, self.cars.values()):
+            if car_name == 'X':
+                game_image.paste(Image.open('red.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+            elif car.get_orientation() == 'H':
+                if car.get_length() == 2:
+                    game_image.paste(Image.open('brown.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+                else:
+                    game_image.paste(Image.open('yellowtruck.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+            else:
+                if car.get_length() == 2:
+                    game_image.paste(Image.open('brownvertical.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+                else:
+                    game_image.paste(Image.open('yellowtruckvertical.png'), ((car.get_col() - 1) * pixels_per_square, (car.get_row() - 1) * pixels_per_square))
+        game_image.save('game.png')
+        os.system("tycat game.png")
 
 def ask_user_input() -> Game:
     # Ask user for dimension of game
@@ -232,6 +257,7 @@ if __name__ == '__main__':
         game = ask_user_input()
 
     # Print game
+    game.show_image()
     print(game)
 
     # While game not won, choose car and direction and move
