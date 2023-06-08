@@ -14,11 +14,14 @@ class Game:
         # Initialise cars and board as dictionaries, set dimension
         self.cars: dict[str, Car] = {}
         self.board: dict[tuple[int, int], str] = {}
-        self.dimension = dimension
+        self.dimension: int = dimension
 
         # Load cars and board
         self.load_cars(file_name)
         self.load_board()
+        
+        # Set print option
+        self.terminology_print: bool = False
 
     def load_board(self) -> None:
         """Loads the board using dimension and the dictionary cars"""
@@ -183,6 +186,16 @@ class Game:
         game_image.save('game.png')
         os.system("tycat game.png")
 
+    def show_board(self) -> None:
+        if self.terminology_print:
+            self.show_image()
+        else:
+            print(game)
+
+    def set_terminology_print_to_true(self) -> None:
+        self.terminology_print = True
+
+
 def ask_user_input() -> Game:
     # Ask user for dimension of game
     dimension = int(input('With which board dimension would you like to play'
@@ -234,6 +247,8 @@ def get_help() -> str:
     help_str += '[-h]                            : shows this help menu\n'
     help_str += '[-f RushhourDIMxDIM_GAMENUM.csv]: loads any'\
         ' game (in map Input) via its name\n'
+    help_str += 'Adding [-t] at the end            : uses terminology for'\
+        ' the board (better visual)\n'
     help_str += 'Else                            : choice menu for the'\
         ' original games\n\n'
 
@@ -255,10 +270,13 @@ if __name__ == '__main__':
         game = use_command_line_input_for_file(argv)
     else:
         game = ask_user_input()
+        
+    # Specify print function
+    if argv[len(argv) - 1] == '-t':
+        game.set_terminology_print_to_true()
 
     # Print game
-    game.show_image()
-    print(game)
+    game.show_board()
 
     # While game not won, choose car and direction and move
     while not game.is_won():
@@ -267,7 +285,7 @@ if __name__ == '__main__':
                                         'direction split by space!\n').split()
             car_name = car_name.upper()
             if game.move(car_name, direction):
-                print(game)
+                game.show_board()
             else:
                 print('Invalid command!\n')
         except ValueError:
