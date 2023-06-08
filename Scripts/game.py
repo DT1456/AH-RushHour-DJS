@@ -185,12 +185,13 @@ class Game:
 
         for car_name, car in zip(self.cars, self.cars.values()):
             if car_name == 'X':
-                game_image.paste(Image.open('BoardImages/red.png'),
+                game_image.paste(Image.open('BoardImages/red_car.jpeg'),
                                  ((car.get_col() - 1) * pixel_to_square,
                                   (car.get_row() - 1) * pixel_to_square))
             elif car.get_orientation() == 'H':
                 if car.get_length() == 2:
-                    game_image.paste(Image.open('BoardImages/brown.png'),
+                    random_color = random.SystemRandom().choice(['LG'])
+                    game_image.paste(Image.open('BoardImages/H2' + random_color + '.jpeg'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
                 else:
@@ -200,11 +201,13 @@ class Game:
                                       (car.get_row() - 1) * pixel_to_square))
             else:
                 if car.get_length() == 2:
-                    game_image.paste(Image.open('BoardImages/brownvertical.png'),
+                    random_color = random.SystemRandom().choice(['LG'])
+                    game_image.paste(Image.open('BoardImages/V2' + random_color + '.jpeg'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
                 else:
-                    game_image.paste(Image.open('BoardImages/yellowtruckvertical.png'),
+                    random_color = random.SystemRandom().choice(['R','G','B'])
+                    game_image.paste(Image.open('BoardImages/V3' + random_color + '.jpeg'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
         game_image.save('BoardImages/game.png')
