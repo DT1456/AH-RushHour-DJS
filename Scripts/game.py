@@ -168,34 +168,34 @@ class Game:
                                        self.dimension * pixel_to_square))
         for i in range(self.dimension):
             for j in range(self.dimension):
-                game_image.paste(Image.open('empty.png'),
+                game_image.paste(Image.open('BoardImages/empty.png'),
                                  (i * pixel_to_square, j * pixel_to_square))
 
         for car_name, car in zip(self.cars, self.cars.values()):
             if car_name == 'X':
-                game_image.paste(Image.open('red.png'),
+                game_image.paste(Image.open('BoardImages/red.png'),
                                  ((car.get_col() - 1) * pixel_to_square,
                                   (car.get_row() - 1) * pixel_to_square))
             elif car.get_orientation() == 'H':
                 if car.get_length() == 2:
-                    game_image.paste(Image.open('brown.png'),
+                    game_image.paste(Image.open('BoardImages/brown.png'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
                 else:
-                    game_image.paste(Image.open('yellowtruck.png'),
+                    game_image.paste(Image.open('BoardImages/yellowtruck.png'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
             else:
                 if car.get_length() == 2:
-                    game_image.paste(Image.open('brownvertical.png'),
+                    game_image.paste(Image.open('BoardImages/brownvertical.png'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
                 else:
-                    game_image.paste(Image.open('yellowtruckvertical.png'),
+                    game_image.paste(Image.open('BoardImages/yellowtruckvertical.png'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
-        game_image.save('game.png')
-        os.system("tycat game.png")
+        game_image.save('BoardImages/game.png')
+        os.system("tycat BoardImages/game.png")
 
     def show_board(self) -> None:
         if self.terminology_print:
