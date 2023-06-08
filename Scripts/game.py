@@ -62,7 +62,7 @@ class Game:
                 car_name, orientation, col, row, length = line.split(',')
 
                 # Load in car
-                self.cars[car_name] = Car(orientation, int(col), int(row),
+                self.cars[car_name] = Car(car_name, orientation, int(col), int(row),
                                           int(length))
 
     def is_won(self) -> bool:
@@ -184,34 +184,11 @@ class Game:
                                  (i * pixel_to_square, j * pixel_to_square))
 
         for car_name, car in zip(self.cars, self.cars.values()):
-            if car_name == 'X':
-                game_image.paste(Image.open('BoardImages/red_car.jpeg'),
-                                 ((car.get_col() - 1) * pixel_to_square,
-                                  (car.get_row() - 1) * pixel_to_square))
-            elif car.get_orientation() == 'H':
-                if car.get_length() == 2:
-                    random_color = random.SystemRandom().choice(['LG', 'LB'])
-                    game_image.paste(Image.open('BoardImages/H2' + random_color + '.jpeg'),
-                                     ((car.get_col() - 1) * pixel_to_square,
-                                      (car.get_row() - 1) * pixel_to_square))
-                else:
-                    random_color = random.SystemRandom().choice(['R','G','B'])
-                    game_image.paste(Image.open('BoardImages/H3' + random_color + '.jpeg'),
-                                     ((car.get_col() - 1) * pixel_to_square,
-                                      (car.get_row() - 1) * pixel_to_square))
-            else:
-                if car.get_length() == 2:
-                    random_color = random.SystemRandom().choice(['LG', 'LB'])
-                    game_image.paste(Image.open('BoardImages/V2' + random_color + '.jpeg'),
-                                     ((car.get_col() - 1) * pixel_to_square,
-                                      (car.get_row() - 1) * pixel_to_square))
-                else:
-                    random_color = random.SystemRandom().choice(['R','G','B'])
-                    game_image.paste(Image.open('BoardImages/V3' + random_color + '.jpeg'),
-                                     ((car.get_col() - 1) * pixel_to_square,
-                                      (car.get_row() - 1) * pixel_to_square))
-        game_image.save('BoardImages/game.png')
-        os.system("tycat BoardImages/game.png")
+            game_image.paste(Image.open(car.get_image_string()),
+                             ((car.get_col() - 1) * pixel_to_square,
+                              (car.get_row() - 1) * pixel_to_square))
+        game_image.save('BoardImages/game.jpeg')
+        os.system("tycat BoardImages/game.jpeg")
 
     def show_board(self) -> None:
         if self.terminology_print:
@@ -236,6 +213,22 @@ class Game:
             for move in self.moves:
                 csv_writer.writerow(move)
 
+    def clean_moves(self) -> None:
+        #pass
+        for i in range(len(self.moves) - 1, 0, -1):
+            if self.moves[i][0] == self.moves[i - 1][0] and (self.moves[i][1] + self.moves[i - 1][1]) == 0:
+                self.moves.pop(i)
+                self.moves.pop(i - 1)
+                i -= 1
+                
+        for i in range(len(self.moves) - 1, 2, -1):
+            if self.moves[i][0] == self.moves[i - 2][0] and self.moves[i - 1][0] == self.moves[i - 3][0] and (self.moves[i][1] + self.moves[i - 2][1]) == 0 and (self.moves[i - 1][1] + self.moves[i - 3][1]) == 0:
+                self.moves.pop(i)
+                self.moves.pop(i - 1)
+                i -= 1
+
+    def get_step_count(self) -> int:
+        return len(self.moves)
 
 def ask_user_input() -> Game:
     # Ask user for dimension of game

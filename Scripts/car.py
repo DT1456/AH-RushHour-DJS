@@ -1,11 +1,17 @@
+import random
+
+
 class Car:
 
-    def __init__(self, orientation: str, col: int, row: int, length: int):
+    def __init__(self, car_name: str, orientation: str, col: int, row: int, length: int):
         """Initializes Car useing column, row and length"""
+        self.car_name = car_name.upper()
         self.orientation = orientation
         self.col = col
         self.row = row
         self.length = length
+        self.image_string = ''
+        self.set_image_string()
 
     def get_col(self) -> int:
         """Returns column of Car"""
@@ -38,3 +44,24 @@ class Car:
     def add_to_row(self, x: int) -> None:
         """Adds x to self.row"""
         self.row += x
+
+    def get_image_string(self) -> str:
+        return self.image_string
+
+    def set_image_string(self) -> None:
+        if self.car_name == 'X':
+            self.image_string = 'BoardImages/RED.jpeg'
+        elif self.get_orientation() == 'H':
+            if self.get_length() == 2:
+                random_color = random.SystemRandom().choice(['LG', 'LB', 'LP', 'LY', 'TU', 'OR'])
+                self.image_string = 'BoardImages/H2' + random_color + '.jpeg'
+            else:
+                random_color = random.SystemRandom().choice(['R', 'G', 'B'])
+                self.image_string = 'BoardImages/H3' + random_color + '.jpeg'
+        else:
+            if self.get_length() == 2:
+                random_color = random.SystemRandom().choice(['LG', 'LB', 'LP', 'LY', 'TU', 'OR'])
+                self.image_string = 'BoardImages/V2' + random_color + '.jpeg'
+            else:
+                random_color = random.SystemRandom().choice(['R', 'G', 'B'])
+                self.image_string = 'BoardImages/V3' + random_color + '.jpeg'
