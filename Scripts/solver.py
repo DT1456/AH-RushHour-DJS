@@ -81,24 +81,36 @@ def get_game_dimension(game_number: int) -> int:
     return 12
 
 
-def print_game(game: Game, verbose: bool) -> None:
+def print_game(game: Game, verbose: int) -> None:
     """Print the game if verbose is True"""
-    if verbose:
-        print(game)
+    if verbose == 2:
+    	game.set_terminology_print_to_true()
+    if verbose in [1, 2]:
+        game.show_board()
 
 
 def validate_input(argv: list[str]) -> None:
     """Validate the CLI input"""
     if len(argv) in [4, 5]:
         return
+    show_usage_and_exit()
+
+
+def show_usage_and_exit() -> None:
     print('Usage: python3 solver.py game_number solver_name amount_of_times '
-          '[verbose]')
+          '[verbose]\nIf verbose (default = 0) is 0, do not print the board.'
+          ' If verbose is 1, print board in ASCII. If verbose is 2, print '
+          'board as picture using Terminology.')
     exit(1)
 
 
-def set_verbose_option(argv: list[str]) -> bool:
+def set_verbose_option(argv: list[str]) -> int:
     """Set the verbose option: determines whether to print game during solve"""
-    return argv[4].upper() == 'TRUE' if len(argv) == 5 else False
+    if len(argv) > 4 and int(argv[4]) not in [0, 1, 2]:
+        show_usage_and_exit()
+    elif len(argv) > 4:
+        return int(argv[4])
+    return 0
 
 
 def get_statistics_string(steps_list: list[int], amount_of_times: int,
