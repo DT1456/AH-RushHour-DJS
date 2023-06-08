@@ -68,7 +68,7 @@ class Game:
         """Checks and returns whether a certain move is valid"""
 
         # Check if direction correct
-        if self.cars[car_name].orientation == 'H':
+        if self.cars[car_name].get_orientation() == 'H':
             if direction not in ['L', 'R']:
                 return False
         else:
