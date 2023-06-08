@@ -1,4 +1,5 @@
 from car import Car
+import csv
 import os
 from pathlib import Path
 from PIL import Image
@@ -11,10 +12,11 @@ class Game:
     def __init__(self, file_name: str, dimension: int) -> None:
         """Initialises game using file_name and dimension"""
 
-        # Initialise cars and board as dictionaries, set dimension
+        # Initialise cars and board as dictionaries, set dimension and moves
         self.cars: dict[str, Car] = {}
         self.board: dict[tuple[int, int], str] = {}
         self.dimension: int = dimension
+        self.moves: list[list[str, str]] = []
 
         # Load cars and board
         self.load_cars(file_name)
@@ -152,8 +154,17 @@ class Game:
             # adjust car.col of car.row
             car.add_to_row((direction == 'D') - (direction == 'U'))
             car.add_to_col((direction == 'R') - (direction == 'L'))
+
+            # Store move and direction
+            self.moves.append([car_name, self.direction_to_int(direction)])
+
             return True
         return False
+
+    def direction_to_int(self, direction: str) -> int:
+        if direction in ['L', 'U']:
+            return -1
+        return 1
 
     def __str__(self) -> str:
         board_string = ''
@@ -183,7 +194,7 @@ class Game:
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
                 else:
-                    random_color = random.SystemRandom().choice(['R', 'G', 'B'])
+                    random_color = random.SystemRandom().choice(['R','G','B'])
                     game_image.paste(Image.open('BoardImages/H3' + random_color + '.jpeg'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
@@ -210,6 +221,17 @@ class Game:
 
     def get_terminology_print(self) -> bool:
         return self.terminology_print
+
+    def output_to_csv(self) -> None:
+        with open('output.csv', 'w', encoding = 'UTF8', newline = '') as f:
+            csv_writer = csv.writer(f)
+            
+            # Header
+            csv_writer.writerow(['car', 'move'])
+            
+            # Moves
+            for move in self.moves:
+                csv_writer.writerow(move)
 
 
 def ask_user_input() -> Game:
@@ -312,3 +334,6 @@ if __name__ == '__main__':
                 print('Invalid command!\n')
         except ValueError:
             print('Invalid command!\n')
+
+    # Moves to output.csv
+    game.output_to_csv()
