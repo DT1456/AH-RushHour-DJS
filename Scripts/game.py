@@ -2,6 +2,7 @@ from car import Car
 import os
 from pathlib import Path
 from PIL import Image
+import random as random
 from sys import argv
 
 
@@ -168,7 +169,7 @@ class Game:
                                        self.dimension * pixel_to_square))
         for i in range(self.dimension):
             for j in range(self.dimension):
-                game_image.paste(Image.open('BoardImages/empty.png'),
+                game_image.paste(Image.open('BoardImages/empty_tile.jpeg'),
                                  (i * pixel_to_square, j * pixel_to_square))
 
         for car_name, car in zip(self.cars, self.cars.values()):
@@ -182,7 +183,8 @@ class Game:
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
                 else:
-                    game_image.paste(Image.open('BoardImages/yellowtruck.png'),
+                    random_color = random.SystemRandom().choice(['R', 'G', 'B'])
+                    game_image.paste(Image.open('BoardImages/H3' + random_color + '.jpeg'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
             else:
