@@ -190,7 +190,7 @@ class Game:
                                   (car.get_row() - 1) * pixel_to_square))
             elif car.get_orientation() == 'H':
                 if car.get_length() == 2:
-                    random_color = random.SystemRandom().choice(['LG'])
+                    random_color = random.SystemRandom().choice(['LG', 'LB'])
                     game_image.paste(Image.open('BoardImages/H2' + random_color + '.jpeg'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
@@ -201,7 +201,7 @@ class Game:
                                       (car.get_row() - 1) * pixel_to_square))
             else:
                 if car.get_length() == 2:
-                    random_color = random.SystemRandom().choice(['LG'])
+                    random_color = random.SystemRandom().choice(['LG', 'LB'])
                     game_image.paste(Image.open('BoardImages/V2' + random_color + '.jpeg'),
                                      ((car.get_col() - 1) * pixel_to_square,
                                       (car.get_row() - 1) * pixel_to_square))
