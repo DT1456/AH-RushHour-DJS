@@ -42,8 +42,11 @@ def main() -> None:
             game = solver.play_move(game)
             steps += 1
             print_game(game, verbose)
-        game.output_to_csv()
-        steps_list.append(steps)
+            if len(steps_list) > 0 and steps > min(steps_list):
+            	break
+        if game.is_won():
+            game.output_to_csv()
+            steps_list.append(steps)
 
     # Print finished and amount of time passed
     print(get_statistics_string(steps_list, amount_of_times, start_time))
