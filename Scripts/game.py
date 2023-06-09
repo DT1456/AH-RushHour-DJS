@@ -192,7 +192,7 @@ class Game:
         if self.get_terminology_print():
             os.system('tycat BoardImages/game.jpeg')
         else:
-            print('imgcat BoardImages/game.jpeg')
+            os.system('imgcat BoardImages/game.jpeg')
 
     def show_image_imgcat(self) -> None:
         pixel_to_square = 50
