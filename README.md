@@ -15,6 +15,10 @@ Our project consist of an implementation of the Rush hour game for the course *A
 - [Playing the game](#playing-the-game)
 - [Using the solver](#using-the-solver)
 
+[Installations](#installations)
+- [Terminology (Linux)](#terminology)
+- [iTerm2: imgcat (MacOS)](#imgcat)
+
 <br>
 
 ## Directories and files
@@ -71,3 +75,40 @@ There is an option to ask for help before you run the game, this is a short summ
 You get the following output:
 
 ![help](/Images/help-function.jpeg)
+
+<br>
+
+## Installations
+
+To make the game visual and see the board with all the cars, installing a terminal that can display pictures is needed. For Linux there is Terminology and for MacOS there is iTerm2 with imgcat. Below there are explanations on how to install these terminals.
+
+<br>
+
+#### **Terminology:**
+
+To install Terminology you type in this line in your current terminal:
+
+```python3
+sudo apt-get install terminology
+```
+
+After installing this you can open Terminology by typing in "terminology" in your terminal.
+Then a new terminal will be opened that you can use like your normal terminal, but in here the option to display images is possible.
+
+To use this as a command line argument when starting the game you need to add "-t" to your command:
+
+```python3
+python3 game.py -t
+```
+
+<br>
+
+#### **iTerm2 -> imgcat:**
+
+To install iTerm2 on your Mac you can go to the website "https://iterm2.com" and dowload the terminal from there. Then you can open the terminal as an app on your laptop. When you open the app the left corner in the taskbar says "iTerm2", click on that. A menu pops up and then you need to click "Install Shell Integration". After installing this imgcat will be installed automatically. Imgcat does not work immediatly, you need to close down the iTerm2 terminal and open it up again, then it will work.
+
+To use this terminal as a command line argument when starting the game you need to add "-i" to your command:
+
+```python3
+python3 game.py -i
+```
