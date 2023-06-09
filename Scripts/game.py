@@ -333,7 +333,7 @@ if __name__ == '__main__':
             game.set_terminology_print_to_true()
 
         # Ask for imgcat print
-        if not game.get_terminology_print() and argv[len(argv) - 1] != ['-i', '-t'] and \
+        if not game.get_terminology_print() and argv[len(argv) - 1] not in ['-i', '-t'] and \
             input('Do you want to print a picture (using Imgcat)?'
                   ' (Y/N)\n').upper() == 'Y':
             game.set_imgcat_print_to_true()
