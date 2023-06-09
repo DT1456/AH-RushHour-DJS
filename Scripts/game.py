@@ -24,6 +24,7 @@ class Game:
 
         # Set print option
         self.terminology_print: bool = False
+        self.imgcat_print: bool = False
 
     def load_board(self) -> None:
         """Loads the board using dimension and the dictionary cars"""
@@ -188,10 +189,29 @@ class Game:
                              ((car.get_col() - 1) * pixel_to_square,
                               (car.get_row() - 1) * pixel_to_square))
         game_image.save('BoardImages/game.jpeg')
-        os.system("tycat BoardImages/game.jpeg")
+        if self.get_terminology_print():
+            os.system('tycat BoardImages/game.jpeg')
+        else:
+            os.system('imgcat BoardImages/game.jpeg')
+
+    def show_image_imgcat(self) -> None:
+        pixel_to_square = 50
+        game_image = Image.new('RGB', (self.dimension * pixel_to_square,
+                                       self.dimension * pixel_to_square))
+        for i in range(self.dimension):
+            for j in range(self.dimension):
+                game_image.paste(Image.open('BoardImages/empty_tile.jpeg'),
+                                 (i * pixel_to_square, j * pixel_to_square))
+
+        for car_name, car in zip(self.cars, self.cars.values()):
+            game_image.paste(Image.open(car.get_image_string()),
+                             ((car.get_col() - 1) * pixel_to_square,
+                              (car.get_row() - 1) * pixel_to_square))
+        game_image.save('BoardImages/game.jpeg')
+        os.system("imgcat BoardImages/game.jpeg")
 
     def show_board(self) -> None:
-        if self.terminology_print:
+        if self.get_terminology_print() or self.get_imgcat_print():
             self.show_image()
         else:
             print(self)
@@ -201,6 +221,12 @@ class Game:
 
     def get_terminology_print(self) -> bool:
         return self.terminology_print
+
+    def set_imgcat_print_to_true(self) -> None:
+        self.imgcat_print = True
+
+    def get_imgcat_print(self) -> bool:
+        return self.imgcat_print
 
     def output_to_csv(self) -> None:
         with open('output.csv', 'w', encoding = 'UTF8', newline = '') as f:
@@ -276,6 +302,8 @@ def get_help() -> str:
         ' game (in map Input) via its name\n'
     help_str += 'Adding [-t] at the end            : uses terminology for'\
         ' the board (better visual)\n'
+    help_str += 'Adding [-i] at the end            : uses terminology for'\
+        ' the board (better visual)\n'
     help_str += 'Else                            : choice menu for the'\
         ' original games\n\n'
 
@@ -304,9 +332,17 @@ if __name__ == '__main__':
                   ' (Y/N)\n').upper() == 'Y':
             game.set_terminology_print_to_true()
 
+        # Ask for terminology print
+        if argv[len(argv) - 1] != '-t' and \
+            input('Do you want to print a picture (using Imgcat)?'
+                  ' (Y/N)\n').upper() == 'Y':
+            game.set_imgcat_print_to_true()
+
     # Specify print function
     if argv[len(argv) - 1] == '-t':
         game.set_terminology_print_to_true()
+    elif argv[len(argv) - 1] == '-i':
+        game.set_imgcat_print_to_true()
 
     # Print game
     game.show_board()
