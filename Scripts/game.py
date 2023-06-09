@@ -216,6 +216,13 @@ class Game:
     def get_step_count(self) -> int:
         return len(self.moves)
 
+    def get_cars(self) -> dict[str, Car]:
+        return self.cars
+
+    def get_moves(self) -> list[list[str, str]]:
+        return self.moves
+
+
 def ask_user_input() -> Game:
     # Ask user for dimension of game
     dimension = int(input('With which board dimension would you like to play'
