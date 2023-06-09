@@ -47,7 +47,6 @@ def main() -> None:
 
         # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
-            game.clean_moves()
             steps_list.append(game.get_step_count())
             if game.get_step_count() == min(steps_list):
             	game.output_to_csv()
