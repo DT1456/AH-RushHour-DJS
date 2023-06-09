@@ -192,7 +192,7 @@ class Game:
         if self.get_terminology_print():
             os.system('tycat BoardImages/game.jpeg')
         else:
-            os.system('imgcat BoardImages/game.jpeg')
+            print('imgcat BoardImages/game.jpeg')
 
     def show_image_imgcat(self) -> None:
         pixel_to_square = 50
@@ -327,13 +327,13 @@ if __name__ == '__main__':
         game = ask_user_input()
 
         # Ask for terminology print
-        if argv[len(argv) - 1] != '-t' and \
+        if argv[len(argv) - 1] not in ['-i', '-t'] and \
             input('Do you want to print a picture (using Terminology)?'
                   ' (Y/N)\n').upper() == 'Y':
             game.set_terminology_print_to_true()
 
-        # Ask for terminology print
-        if argv[len(argv) - 1] != '-t' and \
+        # Ask for imgcat print
+        if not game.get_terminology_print() and argv[len(argv) - 1] != ['-i', '-t'] and \
             input('Do you want to print a picture (using Imgcat)?'
                   ' (Y/N)\n').upper() == 'Y':
             game.set_imgcat_print_to_true()
