@@ -30,7 +30,7 @@ def main() -> None:
     steps_list = []
 
     # Solve the game amount_of_times times
-    for _ in range(amount_of_times):
+    for i in range(amount_of_times):
         # Initialise game
         game = Game(get_game_csv_string(game_number),
                     get_game_dimension(game_number))
@@ -42,14 +42,15 @@ def main() -> None:
             game = solver.play_move(game)
             steps += 1
             print_game(game, verbose)
-            if len(steps_list) > 0 and steps > min(steps_list):
-            	break
 
         # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
             steps_list.append(game.get_step_count())
             if game.get_step_count() == min(steps_list):
             	game.output_to_csv()
+        
+        # Print step completed
+        print(f'Completed step {i}, game was {"" if game.is_won() else "NOT "}solved')
 
     # Print finished and amount of time passed
     print(get_statistics_string(steps_list, amount_of_times, start_time))
