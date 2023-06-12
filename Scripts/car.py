@@ -13,6 +13,10 @@ class Car:
         self.image_string = ''
         self.set_image_string()
 
+    def get_car_name(self) -> str:
+        """Returns car name"""
+        return self.car_name
+
     def get_col(self) -> int:
         """Returns column of Car"""
         return self.col
