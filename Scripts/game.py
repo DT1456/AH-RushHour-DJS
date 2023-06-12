@@ -178,58 +178,38 @@ class Game:
         return board_string
 
     def show_image(self) -> None:
+        """Shows image in terminal (Terminology or Imgcat)"""
         pixel_to_square = 50
+
+        # Set empty image
         game_image = Image.new('RGB', (self.dimension * pixel_to_square,
                                        self.dimension * pixel_to_square))
+
+        # Fill image with empty tiles
         for i in range(self.dimension):
             for j in range(self.dimension):
                 game_image.paste(Image.open('BoardImages/empty_tile.jpeg'),
                                  (i * pixel_to_square, j * pixel_to_square))
 
+        # Fill with pictures of cars
         for car_name, car in zip(self.cars, self.cars.values()):
             game_image.paste(Image.open(car.get_image_string()),
                              ((car.get_col() - 1) * pixel_to_square,
                               (car.get_row() - 1) * pixel_to_square))
 
+        # Print car names (letters) on cars
         game_image_draw = ImageDraw.Draw(game_image)
-        font = ImageFont.truetype('/Font/FreeSerif.ttf', size = 16)
+        font = ImageFont.truetype('Font/FreeSerif.ttf', size = 16)
         for car_name, car in zip(self.cars, self.cars.values()):
-            image_string = car.get_image_string()
-            image_orientation = image_string[-6:-5]
-            if car_name == 'X':
-                text_offset_x = 30
-                text_offset_y = 17
-            elif car.get_length() == 2:
-                if car.get_orientation() == 'H' and image_orientation == 'L':
-                    text_offset_x = 47
-                    text_offset_y = 17
-                elif car.get_orientation() == 'H':
-                    text_offset_x = 30
-                    text_offset_y = 17
-                elif car.get_orientation() == 'V' and image_orientation == 'D':
-                    text_offset_x = 13.5
-                    text_offset_y = 34
-                else:
-                    text_offset_x = 13.5
-                    text_offset_y = 50
-            else:
-                if car.get_orientation() == 'H' and image_orientation == 'L':
-                    text_offset_x = 75
-                    text_offset_y = 17
-                elif car.get_orientation() == 'H':
-                    text_offset_x = 50
-                    text_offset_y = 17
-                elif car.get_orientation() == 'V' and image_orientation == 'D':
-                    text_offset_x = 13.5
-                    text_offset_y = 50
-                else:
-                    text_offset_x = 13.5
-                    text_offset_y = 75
+            text_offset_x, text_offset_y = car.get_text_offset()
             game_image_draw.text(((car.get_col() - 1) * pixel_to_square + text_offset_x,
                              (car.get_row() - 1) * pixel_to_square + text_offset_y),
                              car.car_name, fill = (0, 0, 0), font = font)
 
+        # Save image
         game_image.save('BoardImages/game.jpeg')
+
+        # Show image in desired terminal (Terminology or Imgcat)
         if self.get_terminology_print():
             os.system('tycat BoardImages/game.jpeg')
         else:
