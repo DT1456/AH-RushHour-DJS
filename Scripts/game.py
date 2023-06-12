@@ -3,6 +3,8 @@ import csv
 import os
 from pathlib import Path
 from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 import random as random
 from sys import argv
 
