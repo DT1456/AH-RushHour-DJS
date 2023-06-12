@@ -48,7 +48,7 @@ If you want to play the game make sure that you run the file **game.py** from th
     python3 game.py -f Rushhour6x6_1.csv
 ```
 
-2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension and which game you want to play and then the game will start.
+2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension, which game you want to play, if you want to use terminology yes or no and if you want to use imgcat yes or no (see [installations](#installations) for the explanation of terminology and imgcat) after this the game will start.
 
 When the game is ready to be played you can move a car by selecting the letter of the car, typing a space and then the direction (L: left, R: right, U: up or D: down). You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
 
