@@ -188,11 +188,51 @@ class Game:
             game_image.paste(Image.open(car.get_image_string()),
                              ((car.get_col() - 1) * pixel_to_square,
                               (car.get_row() - 1) * pixel_to_square))
+
+        game_image_draw = ImageDraw.Draw(game_image)
+        font = ImageFont.truetype('/Font/FreeSerif.ttf', size = 16)
+        for car_name, car in zip(self.cars, self.cars.values()):
+            image_string = car.get_image_string()
+            image_orientation = image_string[-6:-5]
+            if car_name == 'X':
+                text_offset_x = 30
+                text_offset_y = 17
+            elif car.get_length() == 2:
+                if car.get_orientation() == 'H' and image_orientation == 'L':
+                    text_offset_x = 47
+                    text_offset_y = 17
+                elif car.get_orientation() == 'H':
+                    text_offset_x = 30
+                    text_offset_y = 17
+                elif car.get_orientation() == 'V' and image_orientation == 'D':
+                    text_offset_x = 13.5
+                    text_offset_y = 34
+                else:
+                    text_offset_x = 13.5
+                    text_offset_y = 50
+            else:
+                if car.get_orientation() == 'H' and image_orientation == 'L':
+                    text_offset_x = 75
+                    text_offset_y = 17
+                elif car.get_orientation() == 'H':
+                    text_offset_x = 50
+                    text_offset_y = 17
+                elif car.get_orientation() == 'V' and image_orientation == 'D':
+                    text_offset_x = 13.5
+                    text_offset_y = 50
+                else:
+                    text_offset_x = 13.5
+                    text_offset_y = 75
+            game_image_draw.text(((car.get_col() - 1) * pixel_to_square + text_offset_x,
+                             (car.get_row() - 1) * pixel_to_square + text_offset_y),
+                             car.car_name, fill = (0, 0, 0), font = font)
+
         game_image.save('BoardImages/game.jpeg')
         if self.get_terminology_print():
             os.system('tycat BoardImages/game.jpeg')
         else:
             os.system('$HOME/.iterm2/imgcat BoardImages/game.jpeg')
+
 
     def show_image_imgcat(self) -> None:
         pixel_to_square = 50
