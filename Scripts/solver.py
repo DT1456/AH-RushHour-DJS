@@ -6,6 +6,7 @@ import time
 
 def main() -> None:
     """Main program: run your favorite solver_script on any of the games"""
+
     # Check command line arguments
     validate_input(argv)
 
@@ -48,7 +49,7 @@ def main() -> None:
             steps_list.append(game.get_step_count())
             if game.get_step_count() == min(steps_list):
                 game.output_to_csv()
-        
+
         # Print step completed
         print(f'Completed step {i + 1}, game was {"" if game.is_won() else "NOT "}solved')
 
@@ -58,6 +59,7 @@ def main() -> None:
 
 def get_game_csv_string(game_number: int) -> str:
     """Based on the game_number, return the name of csv to load"""
+
     # Any game_number should be in range 1 to 8
     if game_number not in range(1, 8):
         print('Invalid game_number')
@@ -76,6 +78,7 @@ def get_game_csv_string(game_number: int) -> str:
 
 def get_game_dimension(game_number: int) -> int:
     """Based on the game_number, return game dimension"""
+
     # Any game_number should be in range 1 to 8
     if game_number not in [1, 2, 3, 4, 5, 6, 7]:
         print('Invalid game_number')

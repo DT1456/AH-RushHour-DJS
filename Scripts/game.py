@@ -7,6 +7,7 @@ from PIL import ImageDraw
 from PIL import ImageFont
 import random as random
 from sys import argv
+from typing import Union
 
 
 class Game:
@@ -18,7 +19,7 @@ class Game:
         self.cars: dict[str, Car] = {}
         self.board: dict[tuple[int, int], str] = {}
         self.dimension: int = dimension
-        self.moves: list[list[str, str]] = []
+        self.moves: list[list[Union[int, str]]] = []
 
         # Load cars and board
         self.load_cars(file_name)
@@ -267,7 +268,7 @@ class Game:
     def get_cars(self) -> dict[str, Car]:
         return self.cars
 
-    def get_moves(self) -> list[list[str, str]]:
+    def get_moves(self) -> list[list[Union[int, str]]]:
         return self.moves
 
 
