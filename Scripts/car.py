@@ -57,15 +57,15 @@ class Car:
             self.image_string = 'BoardImages/RED.jpeg'
         elif self.get_orientation() == 'H':
             if self.get_length() == 2:
-                random_color = random.SystemRandom().choice(['LG', 'LB', 'LP', 'LY', 'TU', 'OR'])
+                random_color = random.SystemRandom().choice(['LGL', 'LBR', 'LPR', 'LYL', 'TUL', 'ORR'])
                 self.image_string = 'BoardImages/H2' + random_color + '.jpeg'
             else:
-                random_color = random.SystemRandom().choice(['R', 'G', 'B'])
+                random_color = random.SystemRandom().choice(['RL', 'GR', 'BR'])
                 self.image_string = 'BoardImages/H3' + random_color + '.jpeg'
         else:
             if self.get_length() == 2:
-                random_color = random.SystemRandom().choice(['LG', 'LB', 'LP', 'LY', 'TU', 'OR'])
+                random_color = random.SystemRandom().choice(['LGD', 'LBU', 'LPU', 'LYD', 'TUD', 'ORU'])
                 self.image_string = 'BoardImages/V2' + random_color + '.jpeg'
             else:
-                random_color = random.SystemRandom().choice(['R', 'G', 'B'])
+                random_color = random.SystemRandom().choice(['RU', 'GU', 'BD'])
                 self.image_string = 'BoardImages/V3' + random_color + '.jpeg'
