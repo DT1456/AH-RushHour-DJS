@@ -15,6 +15,7 @@ def generate_random_color():
     color = ''.join(random.choices(string.hexdigits[:-6], k=6))
     return '#' + color
 
+
 def colorize_string_list(string_list):
     """
     Color each character in the string list with a random color.
@@ -26,6 +27,7 @@ def colorize_string_list(string_list):
     color_map['X'] = '#FF0000'
     colorized_string_list = [color_map[char] for char in string_list]
     return colorized_string_list
+
 
 def create_color_matrix(data):
     """

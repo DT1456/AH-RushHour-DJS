@@ -47,7 +47,7 @@ def main() -> None:
         if game.is_won():
             steps_list.append(game.get_step_count())
             if game.get_step_count() == min(steps_list):
-            	game.output_to_csv()
+                game.output_to_csv()
         
         # Print step completed
         print(f'Completed step {i + 1}, game was {"" if game.is_won() else "NOT "}solved')

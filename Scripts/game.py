@@ -199,12 +199,13 @@ class Game:
 
         # Print car names (letters) on cars
         game_image_draw = ImageDraw.Draw(game_image)
-        font = ImageFont.truetype('Font/FreeSerif.ttf', size = 16)
+        font = ImageFont.truetype('Font/FreeSerif.ttf', size=16)
         for car_name, car in zip(self.cars, self.cars.values()):
             text_offset_x, text_offset_y = car.get_text_offset()
-            game_image_draw.text(((car.get_col() - 1) * pixel_to_square + text_offset_x,
-                             (car.get_row() - 1) * pixel_to_square + text_offset_y),
-                             car.car_name, fill = (0, 0, 0), font = font)
+            game_image_draw.text(((car.get_col() - 1) * pixel_to_square +
+                                 text_offset_x,
+                                 (car.get_row() - 1) * pixel_to_square + text_offset_y),
+                                 car.car_name, fill=(0, 0, 0), font=font)
 
         # Save image
         game_image.save('BoardImages/game.jpeg')
@@ -214,7 +215,6 @@ class Game:
             os.system('tycat BoardImages/game.jpeg')
         else:
             os.system('$HOME/.iterm2/imgcat BoardImages/game.jpeg')
-
 
     def show_image_imgcat(self) -> None:
         pixel_to_square = 50
@@ -251,7 +251,7 @@ class Game:
         return self.imgcat_print
 
     def output_to_csv(self) -> None:
-        with open('output.csv', 'w', encoding = 'UTF8', newline = '') as f:
+        with open('output.csv', 'w', encoding='UTF8', newline='') as f:
             csv_writer = csv.writer(f)
             
             # Header
