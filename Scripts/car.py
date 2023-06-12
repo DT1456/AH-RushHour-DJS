@@ -11,7 +11,10 @@ class Car:
         self.row = row
         self.length = length
         self.image_string = ''
+        self.text_offset_x = 0
+        self.text_offset_y = 0
         self.set_image_string()
+        self.set_text_offset()
 
     def get_car_name(self) -> str:
         """Returns car name"""
@@ -69,3 +72,39 @@ class Car:
             else:
                 random_color = random.SystemRandom().choice(['RU', 'GU', 'BD'])
                 self.image_string = 'BoardImages/V3' + random_color + '.jpeg'
+
+    def set_text_offset(self) -> None:
+        image_string = self.get_image_string()
+        image_orientation = image_string[-6:-5]
+        if self.car_name == 'X':
+            self.text_offset_x = 30
+            self.text_offset_y = 17
+        elif self.get_length() == 2:
+            if self.get_orientation() == 'H' and image_orientation == 'L':
+                self.text_offset_x = 47
+                self.text_offset_y = 17
+            elif self.get_orientation() == 'H':
+                self.text_offset_x = 30
+                self.text_offset_y = 17
+            elif self.get_orientation() == 'V' and image_orientation == 'D':
+                self.text_offset_x = 13.5
+                self.text_offset_y = 34
+            else:
+                self.text_offset_x = 13.5
+                self.text_offset_y = 50
+        else:
+            if self.get_orientation() == 'H' and image_orientation == 'L':
+                self.text_offset_x = 75
+                self.text_offset_y = 17
+            elif self.get_orientation() == 'H':
+                self.text_offset_x = 50
+                self.text_offset_y = 17
+            elif self.get_orientation() == 'V' and image_orientation == 'D':
+                self.text_offset_x = 13.5
+                self.text_offset_y = 50
+            else:
+                self.text_offset_x = 13.5
+                self.text_offset_y = 75
+
+    def get_text_offset(self) -> list[int]:
+        return self.text_offset_x, self.text_offset_y
