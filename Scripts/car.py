@@ -3,8 +3,9 @@ import random
 
 class Car:
 
-    def __init__(self, car_name: str, orientation: str, col: int, row: int, length: int):
-        """Initializes Car useing column, row and length"""
+    def __init__(self, car_name: str, orientation: str, col: int, row: int,
+                 length: int):
+        """Initializes Car using column, row and length"""
         self.car_name = car_name.upper()
         self.orientation = orientation
         self.col = col
@@ -53,58 +54,65 @@ class Car:
         self.row += x
 
     def get_image_string(self) -> str:
+        """Returns image_string"""
         return self.image_string
 
     def set_image_string(self) -> None:
+        """Stores image name as string for loading car visualisation"""
+
+        # Either the red car, or a horizontal/vertical car with length 2/3
         if self.car_name == 'X':
             self.image_string = 'BoardImages/RED.jpeg'
-        elif self.get_orientation() == 'H':
-            if self.get_length() == 2:
-                random_color = random.SystemRandom().choice(['LGL', 'LBR', 'LPR', 'LYL', 'TUL', 'ORR'])
-                self.image_string = 'BoardImages/H2' + random_color + '.jpeg'
-            else:
-                random_color = random.SystemRandom().choice(['RL', 'GR', 'BR'])
-                self.image_string = 'BoardImages/H3' + random_color + '.jpeg'
+        elif self.get_orientation() == 'H' and self.get_length() == 2:
+            random_color = random.SystemRandom().choice(['LGL', 'LBR', 'LPR',
+                                                         'LYL', 'TUL', 'ORR'])
+            self.image_string = 'BoardImages/H2' + random_color + '.jpeg'
+        elif self.get_orientation() == 'H' and self.get_length() == 3:
+            random_color = random.SystemRandom().choice(['RL', 'GR', 'BR'])
+            self.image_string = 'BoardImages/H3' + random_color + '.jpeg'
+        elif self.get_orientation() == 'V' and self.get_length() == 2:
+            random_color = random.SystemRandom().choice(['LGD', 'LBU', 'LPU',
+                                                         'LYD', 'TUD', 'ORU'])
+            self.image_string = 'BoardImages/V2' + random_color + '.jpeg'
         else:
-            if self.get_length() == 2:
-                random_color = random.SystemRandom().choice(['LGD', 'LBU', 'LPU', 'LYD', 'TUD', 'ORU'])
-                self.image_string = 'BoardImages/V2' + random_color + '.jpeg'
-            else:
-                random_color = random.SystemRandom().choice(['RU', 'GU', 'BD'])
-                self.image_string = 'BoardImages/V3' + random_color + '.jpeg'
+            random_color = random.SystemRandom().choice(['RU', 'GU', 'BD'])
+            self.image_string = 'BoardImages/V3' + random_color + '.jpeg'
 
     def set_text_offset(self) -> None:
-        image_string = self.get_image_string()
-        image_orientation = image_string[-6:-5]
+        """Stores text offset coordinates for naming cars in visualisation"""
+
+        # Set image_orientation
+        image_orientation = self.get_image_string()[-6:-5]
+
+        # Based on car_name, length and image orientation, set text offsets
         if self.car_name == 'X':
             self.text_offset_x = 30
             self.text_offset_y = 17
-        elif self.get_length() == 2:
-            if self.get_orientation() == 'H' and image_orientation == 'L':
-                self.text_offset_x = 47
-                self.text_offset_y = 17
-            elif self.get_orientation() == 'H':
-                self.text_offset_x = 30
-                self.text_offset_y = 17
-            elif self.get_orientation() == 'V' and image_orientation == 'D':
-                self.text_offset_x = 13.5
-                self.text_offset_y = 34
-            else:
-                self.text_offset_x = 13.5
-                self.text_offset_y = 50
+        elif self.get_length() == 2 and image_orientation == 'L':
+            self.text_offset_x = 47
+            self.text_offset_y = 17
+        elif self.get_length() == 2 and image_orientation == 'R':
+            self.text_offset_x = 30
+            self.text_offset_y = 17
+        elif self.get_length() == 2 and image_orientation == 'D':
+            self.text_offset_x = 13.5
+            self.text_offset_y = 34
+        elif self.get_length() == 2 and image_orientation == 'U':
+            self.text_offset_x = 13.5
+            self.text_offset_y = 50
+        elif self.get_length() == 3 and image_orientation == 'L':
+            self.text_offset_x = 75
+            self.text_offset_y = 17
+        elif self.get_length() == 3 and image_orientation == 'R':
+            self.text_offset_x = 50
+            self.text_offset_y = 17
+        elif self.get_length() == 3 and image_orientation == 'D':
+            self.text_offset_x = 13.5
+            self.text_offset_y = 50
         else:
-            if self.get_orientation() == 'H' and image_orientation == 'L':
-                self.text_offset_x = 75
-                self.text_offset_y = 17
-            elif self.get_orientation() == 'H':
-                self.text_offset_x = 50
-                self.text_offset_y = 17
-            elif self.get_orientation() == 'V' and image_orientation == 'D':
-                self.text_offset_x = 13.5
-                self.text_offset_y = 50
-            else:
-                self.text_offset_x = 13.5
-                self.text_offset_y = 75
+            self.text_offset_x = 13.5
+            self.text_offset_y = 75
 
     def get_text_offset(self) -> list[int]:
+        """Returns text offset coordinates"""
         return self.text_offset_x, self.text_offset_y
