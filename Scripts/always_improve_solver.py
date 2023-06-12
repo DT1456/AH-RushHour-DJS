@@ -1,6 +1,6 @@
 from game import Game
 import os
-import random as random
+import random.SystemRandom as random_pick
 
 
 class Solver:
@@ -15,7 +15,7 @@ class Solver:
         """Play one move in order to solve the game"""
         # If amount of steps is too big already, break and solve the game
         output_moves = []
-        
+
         if os.path.exists('output.csv'):
             with open('output.csv') as f:
                 # Skip header
@@ -33,7 +33,8 @@ class Solver:
                     # Set car_name, orientation, col, row and length
                     output_moves += [line.split(',')]
 
-        if os.path.exists('output.csv') and game.get_step_count() > len(output_moves):
+        if os.path.exists('output.csv') and \
+                game.get_step_count() > len(output_moves):
             moves_reversed = game.get_moves()[::-1]
             for i in range(len(moves_reversed)):
                 moves_reversed[i][1] = -moves_reversed[i][1]
@@ -52,8 +53,8 @@ class Solver:
         else:
             while True:
                 # Pick a random car and a random direction
-                car_name = random.SystemRandom().choice(list(game.get_cars()))
-                direction = random.SystemRandom().choice(self.possible_directions)
+                car_name = random_pick().choice(list(game.get_cars()))
+                direction = random_pick().choice(self.possible_directions)
 
                 # If the chosen car and direction represent a valid move, move
                 if game.move(car_name, direction):
