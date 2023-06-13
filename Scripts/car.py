@@ -12,8 +12,8 @@ class Car:
         self.row = row
         self.length = length
         self.image_string = ''
-        self.text_offset_x = 0
-        self.text_offset_y = 0
+        self.text_offset_x = 0.0
+        self.text_offset_y = 0.0
         self.set_image_string()
         self.set_text_offset()
 
@@ -113,6 +113,6 @@ class Car:
             self.text_offset_x = 13.5
             self.text_offset_y = 75
 
-    def get_text_offset(self) -> list[int]:
+    def get_text_offset(self) -> tuple[float, float]:
         """Returns text offset coordinates"""
         return self.text_offset_x, self.text_offset_y

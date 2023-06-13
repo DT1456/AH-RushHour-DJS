@@ -1,5 +1,5 @@
 from game import Game
-import random as random
+import random.SystemRandom as random_pick
 
 
 class Solver:
@@ -12,16 +12,16 @@ class Solver:
         """Play one move in order to solve the game"""
         while True:
             # Pick a random car and a random direction
-            car_name = random.SystemRandom().choice(list(game.get_cars()))
-            direction = random.SystemRandom().choice(self.possible_directions)
-            
+            car_name = random_pick().choice(list(game.get_cars()))
+            direction = random_pick().choice(self.possible_directions)
+
             # Repick if same car & opposing direction (repetition)
             if len(game.get_moves()) > 0:
                 last_car, last_direction = game.get_moves()[-1]
                 while car_name == last_car and direction == last_direction:
                     # Repick a random car and a random direction
-                    car_name = random.SystemRandom().choice(list(game.get_cars()))
-                    direction = random.SystemRandom().choice(self.possible_directions)
+                    car_name = random_pick().choice(list(game.get_cars()))
+                    direction = random_pick().choice(self.possible_directions)
 
             # If the chosen car and direction represent a valid move, move
             if game.move(car_name, direction):
