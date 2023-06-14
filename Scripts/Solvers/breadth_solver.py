@@ -1,67 +1,94 @@
-from game import Game
+import sys
 
+# add parent path
+sys.path.append('..')
+
+# importing Game
+from game import Game
 
 
 class Solver:
 
     def __init__(self) -> None:
-        """Initialise the possible directions to be chosen in every move"""
-        self.states: dict[str, list[tuple[str]]] = {}
-        self.winning_moves = []
+        """Initializes dictionary of states and list of winning moves"""
+        self.states: dict[str, list[tuple[str, str]]] = {}
+        self.winning_moves: list[tuple[str, str]] = []
         self.found_winning = False
 
     def reverse_direction(self, direction: str) -> str:
+        """Defining and returning a reversed direction"""
         reverse_direction = 'L'
         if direction == 'L':
-            reverse_direction  = 'R'
+            reverse_direction = 'R'
         elif direction == 'U':
             reverse_direction = 'D'
         elif direction == 'D':
             reverse_direction = 'U'
-        
+
         return reverse_direction
 
     def fill_states(self, game: Game) -> None:
+        """Fills all states until a series of winning moves is found.
+
+        While the winning the series of winning moves hasn't been found yet
+        this method will check each new state, and checks moves.
+        If the state has already been visited a reversed move is made.
+        When the game is won it will put all te moves that led to
+        that win in a list of winning moves.
+        """
         self.states[game.__str__()] = []
-        old_game_str = game.__str__()
         length = 0
 
         while not self.found_winning:
-            state_lst = {}
+            # Make copy of self.states
+            state_dict = {}
             for state in self.states:
                 if len(self.states[state]) == length:
-                    state_lst[state] = self.states[state]
+                    state_dict[state] = self.states[state]
 
-            for state in state_lst:
-                moves_so_far = state_lst[state]
-                moves_so_far_reversed = [(state[0], self.reverse_direction(state[1])) for state in moves_so_far]
+            for state in state_dict:
+                moves_so_far = state_dict[state]
+                # Make list with reversed directions
+                moves_so_far_reversed = [(state[0],
+                                         self.reverse_direction(state[1]))
+                                         for state in moves_so_far]
+                # Reverse list so last move becomes te first reversed move
                 moves_so_far_reversed.reverse()
 
                 # Move forward
                 for move in moves_so_far:
                     game.move(move[0], move[1])
-                old_game_str = game.__str__()
 
                 moves_list = self.get_possible_moves(game)
                 for move in moves_list:
                     game.move(move[0], move[1])
+                    # If new state is found, put in dictionary with value
+                    # of all moves so far + most recent move
                     if game.__str__() not in self.states:
                         self.states[game.__str__()] = moves_so_far + [move]
+                    elif len(self.states[game.__str__()]) > len(moves_so_far
+                                                                + [move]):
+                        print('nu wel')
+                        self.states[game.__str__()] = moves_so_far + [move]
+                    # When game is won, put all previous moves and
+                    # most recent move in list of winning moves.
                     if game.is_won():
                         self.found_winning = True
                         self.winning_moves = moves_so_far + [move]
                     reverse_direction = self.reverse_direction(move[1])
                     game.move(move[0], reverse_direction)
 
-                # move backward
+                # Move backwards
                 for move in moves_so_far_reversed:
                     game.move(move[0], move[1])
+                # Break when game is won
                 if self.found_winning:
                     break
-            
+
             length += 1
-    
-    def get_possible_moves(self, game: Game) -> list:
+
+    def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
+        """Get list of possible moves in this state"""
         moves_list = []
         for car_name, car in zip(game.cars, game.cars.values()):
             for direction in ['L', 'R', 'U', 'D']:
@@ -70,6 +97,8 @@ class Solver:
         return moves_list
 
     def play_move(self, game: Game) -> Game:
+        """Finds the series of winning moves and then plays one move"""
+        # Checks if game is played (solved) yet
         if game.get_step_count() == 0 or len(self.states) == 0:
             # Reset solver
             self.states = {}
@@ -79,6 +108,7 @@ class Solver:
             # Fill states
             self.fill_states(game)
             game.moves = []
+        # Plays the winning moves
         if self.found_winning:
             move = self.winning_moves[0]
             game.move(move[0], move[1])
