@@ -252,7 +252,7 @@ class Game:
         return self.imgcat_print
 
     def output_to_csv(self) -> None:
-        with open('output.csv', 'w', encoding='UTF8', newline='') as f:
+        with open('Output/output.csv', 'w', encoding='UTF8', newline='') as f:
             csv_writer = csv.writer(f)
             
             # Header
