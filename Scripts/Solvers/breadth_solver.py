@@ -21,6 +21,13 @@ class Solver:
 
         return reverse_direction
 
+    def copy_states(self, state_dict: dict[str, tuple[str, str]], length: int) -> dict[str, tuple[str, str]]:
+        """Makes a copy of self.states that is named named state_dict"""
+        for state in self.states:
+            if len(self.states[state]) == length:
+                state_dict[state] = self.states[state]
+        return state_dict
+
     def fill_states(self, game: Game) -> None:
         """Fills all states until a series of winning moves is found.
 
@@ -36,9 +43,7 @@ class Solver:
         while not self.found_winning:
             # Make copy of self.states
             state_dict = {}
-            for state in self.states:
-                if len(self.states[state]) == length:
-                    state_dict[state] = self.states[state]
+            state_dict = self.copy_states(state_dict, length)
 
             for state in state_dict:
                 moves_so_far = state_dict[state]
