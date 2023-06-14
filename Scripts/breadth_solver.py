@@ -31,29 +31,27 @@ class Solver:
             for state in self.states:
                 if len(self.states[state]) == length:
                     state_lst[state] = self.states[state]
-            
+
             for state in state_lst:
                 moves_so_far = state_lst[state]
-                moves_so_far_reversed  = [(state[0], self.reverse_direction(state[1])) for state in moves_so_far]
+                moves_so_far_reversed = [(state[0], self.reverse_direction(state[1])) for state in moves_so_far]
                 moves_so_far_reversed.reverse()
-            
-            for move in moves_so_far:
-                game.move(move[0], move[1])
-            old_game_str = game.__str__()
 
-            # move forward
-            moves_list = self.get_possible_moves(game)
-            for move in moves_list:
-                game.move(move[0], move[1])
-                if game.__str__() not in self.states:
-                    self.states[game.__str__()] = moves_so_far + [move]
-                elif len(self.states[game.__str__()]) > len(moves_so_far) + 1:
-                    self.states[game.__str__()] = moves_so_far + [move]
-                if game.is_won():
-                    self.found_winning = True
-                    self.winning_moves = moves_so_far + [move]
-                reverse_direction = self.reverse_direction(move[1])
-                game.move(move[0], reverse_direction)
+                # Move forward
+                for move in moves_so_far:
+                    game.move(move[0], move[1])
+                old_game_str = game.__str__()
+
+                moves_list = self.get_possible_moves(game)
+                for move in moves_list:
+                    game.move(move[0], move[1])
+                    if game.__str__() not in self.states:
+                        self.states[game.__str__()] = moves_so_far + [move]
+                    if game.is_won():
+                        self.found_winning = True
+                        self.winning_moves = moves_so_far + [move]
+                    reverse_direction = self.reverse_direction(move[1])
+                    game.move(move[0], reverse_direction)
 
                 # move backward
                 for move in moves_so_far_reversed:
