@@ -1,9 +1,3 @@
-import sys
-
-# add parent path
-sys.path.append('..')
-
-# importing Game
 from game import Game
 
 
