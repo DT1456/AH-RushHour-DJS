@@ -9,6 +9,7 @@ Our project consist of an implementation of the Rush hour game for the course *A
 
 [Directories and files](#directories-and-files)
 - [Scripts](#scripts)
+- [Solvers](#solvers)
 - [input](#input)
 
 [Instructions](#instructions)
