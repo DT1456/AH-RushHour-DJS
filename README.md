@@ -24,15 +24,22 @@ Our project consist of an implementation of the Rush hour game for the course *A
 ## Directories and files
 
 #### **Scripts:** 
-this is a directory that contains the python files that together create the game.
+This is a directory that contains the python files that together create the game.
 - [Game.py:](Scripts/game.py) this file contains the code that brings all the code from the other files together and forms the game.
 - [Car.py:](Scripts/car.py) in this file the code for the implementation of the cars in the game is written.
-- [Random_solver.py:](Scripts/random_solver.py) this file can solve the Rush Hour game by randomly selecting a car an making random moves with that car.
-- [Solver.py:](Scripts/solver.py) this file contains the implementation of the code where you can choose what solver you want to apply to the game and how many times you want to solve this.
-- [Board_visual.py](Scripts/board_visual.py) this file consist of the code that makes the game more visual and easier to play.
+- [Solvers](Scripts/Solvers) this is the directory with all the solvers (more information below).
+
+#### **Solvers**:
+This directory contains all the solvers that the player can choose from to solve the Rush Hour game:
+- [Solver.py:](Scripts/Solvers/solver.py) this file contains the implementation of the code where you can choose what solver you want to apply to the game and how many times you want to solve it.
+- [Random_solver.py:](Scripts/Solvers/random_solver.py) this file can solve the Rush Hour game by randomly selecting a car an making random moves with that car.
+- [Breadth_solver.py:](Scripts/Solvers/breadth_solver.py) this is the breadth solver, this solver iterates over all the possible options and in the end it chooses the best one (the one with the least steps).
 
 #### **Input**: 
-this directory contains all the different Rush Hour games that the player can choose from.
+This directory contains all the different Rush Hour games that the player can choose from.
+
+#### **Legacy**:
+In this directory there are some files that we don't use anymore, but they can show some of the process we made. 
 
 <br>
 
@@ -54,7 +61,7 @@ When the game is ready to be played you can move a car by selecting the letter o
 
 <br>
 
-#### **Using the solver**:
+#### **Using the solvers**:
 
 If you want to use the solver, you first need to type "python3 solver.py" in the same line after that you type the number of the game you want to solve (1, 2, 3, 4, 5, 6 or 7), then you type the name of the kind of solver that you want to use, after that you type the amount of times you want to solve the game and then at last there is the option to print the board while solving the game, if you want to print the board you type "True" at the end of the line,if you don't you type nothing there. This would result in something like this:
 
@@ -66,7 +73,7 @@ If you want to use the solver, you first need to type "python3 solver.py" in the
 
     python3 solver.py game_number solver_name amount_of_times True
 
-#### Help:
+#### **Help**:
 
 There is an option to ask for help before you run the game, this is a short summary of what is described above. If you type:
 
