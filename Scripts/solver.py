@@ -18,8 +18,8 @@ def main() -> None:
     verbose = set_verbose_option(argv)
 
     # Set solver
-    solver_module = __import__(solver_name)
-    solver = solver_module.Solver()
+    SolverClass = __import__('Solvers.' + solver_name, fromlist = ['Solver'])
+    solver = SolverClass.Solver()
 
     # Welcome the user
     print('Started solving game ' + str(game_number) + ' for a total of ' +
