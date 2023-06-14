@@ -52,8 +52,8 @@ def main() -> None:
                 game.output_to_csv()
 
         # Print step completed
-        print(f'Completed step {i + 1}, game was '
-              '{"" if game.is_won() else "NOT "}solved')
+        print(f'Completed step {i + 1}, game was '\
+              f'{"" if game.is_won() else "NOT "}solved')
 
     # Print finished and amount of time passed
     print(get_statistics_string(steps_list, amount_of_times, start_time))

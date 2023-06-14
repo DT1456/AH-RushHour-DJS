@@ -70,7 +70,13 @@ class Solver:
         return moves_list
 
     def play_move(self, game: Game) -> Game:
-        if len(self.states) == 0:
+        if game.get_step_count() == 0 or len(self.states) == 0:
+            # Reset solver
+            self.states = {}
+            self.winning_moves = []
+            self.found_winning = False
+
+            # Fill states
             self.fill_states(game)
             game.moves = []
         if self.found_winning:
