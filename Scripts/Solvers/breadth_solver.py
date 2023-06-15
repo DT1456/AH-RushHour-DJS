@@ -21,15 +21,17 @@ class Solver:
 
         return reverse_direction
 
-    def copy_states(self, state_dict: dict[str, tuple[str, str]],
-                    length: int) -> dict[str, tuple[str, str]]:
+    def copy_states(self, state_dict: dict[str, list[tuple[str, str]]],
+                    length: int) -> dict[str, list[tuple[str, str]]]:
         """Makes a copy of self.states that is named named state_dict"""
         for state in self.states:
             if len(self.states[state]) == length:
                 state_dict[state] = self.states[state]
         return state_dict
 
-    def fill_moves(self, moves_list: list[tuple[str, str]], moves_so_far: list[tuple[str, str]], game: Game):
+    def fill_moves(self, moves_list: list[tuple[str, str]],
+                   moves_so_far: list[tuple[str, str]], game: Game):
+        """Moves are tracked and put in a moves list or a winning moves list"""
         for move in moves_list:
             game.move(move[0], move[1])
             # If new state is found, put in dictionary with value
@@ -62,7 +64,7 @@ class Solver:
 
         while not self.found_winning:
             # Make copy of self.states
-            state_dict = {}
+            state_dict: dict[str, list[tuple[str, str]]] = {}
             state_dict = self.copy_states(state_dict, length)
 
             for state in state_dict:
