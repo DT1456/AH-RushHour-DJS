@@ -21,12 +21,34 @@ class Solver:
 
         return reverse_direction
 
-    def copy_states(self, state_dict: dict[str, tuple[str, str]], length: int) -> dict[str, tuple[str, str]]:
+    def copy_states(self, state_dict: dict[str, list[tuple[str, str]]],
+                    length: int) -> dict[str, list[tuple[str, str]]]:
         """Makes a copy of self.states that is named named state_dict"""
         for state in self.states:
             if len(self.states[state]) == length:
                 state_dict[state] = self.states[state]
         return state_dict
+
+    def fill_moves(self, moves_list: list[tuple[str, str]],
+                   moves_so_far: list[tuple[str, str]], game: Game):
+        """Moves are tracked and put in a moves list or a winning moves list"""
+        for move in moves_list:
+            game.move(move[0], move[1])
+            # If new state is found, put in dictionary with value
+            # of all moves so far + most recent move
+            if game.__str__() not in self.states:
+                self.states[game.__str__()] = moves_so_far + [move]
+            elif len(self.states[game.__str__()]) > len(moves_so_far
+                                                        + [move]):
+                print('nu wel')
+                self.states[game.__str__()] = moves_so_far + [move]
+            # When game is won, put all previous moves and
+            # most recent move in list of winning moves.
+            if game.is_won():
+                self.found_winning = True
+                self.winning_moves = moves_so_far + [move]
+            reverse_direction = self.reverse_direction(move[1])
+            game.move(move[0], reverse_direction)
 
     def fill_states(self, game: Game) -> None:
         """Fills all states until a series of winning moves is found.
@@ -42,7 +64,7 @@ class Solver:
 
         while not self.found_winning:
             # Make copy of self.states
-            state_dict = {}
+            state_dict: dict[str, list[tuple[str, str]]] = {}
             state_dict = self.copy_states(state_dict, length)
 
             for state in state_dict:
@@ -59,23 +81,7 @@ class Solver:
                     game.move(move[0], move[1])
 
                 moves_list = self.get_possible_moves(game)
-                for move in moves_list:
-                    game.move(move[0], move[1])
-                    # If new state is found, put in dictionary with value
-                    # of all moves so far + most recent move
-                    if game.__str__() not in self.states:
-                        self.states[game.__str__()] = moves_so_far + [move]
-                    elif len(self.states[game.__str__()]) > len(moves_so_far
-                                                                + [move]):
-                        print('nu wel')
-                        self.states[game.__str__()] = moves_so_far + [move]
-                    # When game is won, put all previous moves and
-                    # most recent move in list of winning moves.
-                    if game.is_won():
-                        self.found_winning = True
-                        self.winning_moves = moves_so_far + [move]
-                    reverse_direction = self.reverse_direction(move[1])
-                    game.move(move[0], reverse_direction)
+                self.fill_moves(moves_list, moves_so_far, game)
 
                 # Move backwards
                 for move in moves_so_far_reversed:
