@@ -7,6 +7,11 @@ class Solver:
     def __init__(self) -> None:
         pass
 
+    def solve(self, game: Game) -> Game:
+        while not game.is_won():
+            game = self.play_move(game)
+        return game
+
     def play_move(self, game: Game) -> Game:
         """Play one move in order to solve the game"""
         moves_list = self.get_possible_moves(game)
