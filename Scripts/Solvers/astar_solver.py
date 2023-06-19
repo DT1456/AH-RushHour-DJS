@@ -14,8 +14,8 @@ class Solver:
         self.original_board: str
 
     def heuristic(self, game: Game):
-        return 0 
-        #return game.dimension - game.cars['X'].get_col()
+        #return 0 
+        return game.dimension - game.cars['X'].get_col()
 
     def solve(self, game: Game) -> Game:
         game = self.get_solution(game)
