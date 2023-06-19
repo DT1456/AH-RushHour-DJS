@@ -23,13 +23,13 @@ class Solver:
 
     def copy_states(self, state_dict: dict[str, list[tuple[str, str]]],
                     length: int) -> dict[str, list[tuple[str, str]]]:
-        """Makes a copy of self.states that is named named state_dict"""
+        """Makes a copy of self.states that is named state_dict"""
         for state in self.states:
             if len(self.states[state]) == length:
                 state_dict[state] = self.states[state]
         return state_dict
 
-    def fill_moves(self, moves_list: list[tuple[str, str]],
+    def check_moves(self, moves_list: list[tuple[str, str]],
                    moves_so_far: list[tuple[str, str]], game: Game):
         """Moves are tracked and put in a moves list or a winning moves list"""
         for move in moves_list:
@@ -81,7 +81,7 @@ class Solver:
                     game.move(move[0], move[1])
 
                 moves_list = self.get_possible_moves(game)
-                self.fill_moves(moves_list, moves_so_far, game)
+                self.check_moves(moves_list, moves_so_far, game)
 
                 # Move backwards
                 for move in moves_so_far_reversed:
