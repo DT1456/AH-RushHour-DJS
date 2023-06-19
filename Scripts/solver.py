@@ -39,11 +39,9 @@ def main() -> None:
         print_game(game, verbose)
 
         # Solve the game, storing the number of steps it took
-        steps = 0
-        while not game.is_won():
-            game = solver.play_move(game)
-            steps += 1
-            print_game(game, verbose)
+        game = solver.solve(game)
+        steps = game.get_step_count()
+        print_game(game, verbose)
 
         # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
