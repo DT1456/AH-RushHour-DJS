@@ -5,7 +5,6 @@ from pathlib import Path
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-import random as random
 from sys import argv
 from sys import maxsize
 from typing import Union
@@ -30,6 +29,7 @@ class Game:
         self.terminology_print: bool = False
         self.imgcat_print: bool = False
 
+        # Initialise the best solution steps at maxsize
         self.best_solution_steps = maxsize
 
     def load_board(self) -> None:
@@ -52,6 +52,7 @@ class Game:
     def load_cars(self, file_name: str) -> None:
         """Loads the cars from file_name"""
 
+        # Open file
         with open(file_name) as f:
             # Skip header
             f.readline()
@@ -69,8 +70,8 @@ class Game:
                 car_name, orientation, col, row, length = line.split(',')
 
                 # Load in car
-                self.cars[car_name] = Car(car_name, orientation, int(col), int(row),
-                                          int(length))
+                self.cars[car_name] = Car(car_name, orientation, int(col),
+                                          int(row), int(length))
 
     def is_won(self) -> bool:
         """Returns whether the game is won
@@ -112,72 +113,84 @@ class Game:
         car = self.cars[car_name]
 
         # Use direction to get correct location to move to
-        if car.get_orientation() == 'H':
-            if direction == -1:
-                location_x = car.get_row()
-                location_y = car.get_col() - 1
-            else:
-                location_x = car.get_row()
-                location_y = car.get_col() + car.get_length()
+        if car.get_orientation() == 'H' and direction == -1:
+            location_x = car.get_row()
+            location_y = car.get_col() - 1
+        elif car.get_orientation() == 'H':
+            location_x = car.get_row()
+            location_y = car.get_col() + car.get_length()
+        elif direction == -1:
+            location_x = car.get_row() - 1
+            location_y = car.get_col()
         else:
-            if direction == -1:
-                location_x = car.get_row() - 1
-                location_y = car.get_col()
-            else:
-                location_x = car.get_row() + car.get_length()
-                location_y = car.get_col()
+            location_x = car.get_row() + car.get_length()
+            location_y = car.get_col()
 
         # Return x, y coordinates
         return [location_x, location_y]
 
     def convert_direction_str_to_int(self, direction: Union[str, int]) -> int:
+        """Convert direction to int from str"""
+        # Convert to uppercase if needed
         direction = direction.upper() if type(direction) == str else direction
+
+        # Convert str to int
         if direction in ['U', 'L']:
             return -1
         if direction in ['D', 'R']:
             return 1
+
+        # Convert direction to int, raise exception if invalid move
         try:
             return int(direction)
         except ValueError:
             raise Exception('Invalid move, not in [U, L, D, R, -1, 1]!')
 
     def move(self, car_name: str, direction: str) -> bool:
+        """Move a car in a certain direction based on its name"""
+
+        # First convert direction to int if necessary
         direction = self.convert_direction_str_to_int(direction)
+
+        # If move is valid, move the car
         if self.is_valid_move(car_name, direction):
-            # adjust empty space (eentje erbij, eentje eraf)
+            # Adjust the board based on the car to be moved. Move the car
             car = self.cars[car_name]
-            if car.get_orientation() == 'H':
-                if direction == -1:
-                    location_x = car.get_row()
-                    location_y = car.get_col() - 1
-                    self.board[(location_x, location_y)] = car_name
-                    self.board[(location_x, location_y + car.get_length())] = '_'
-                else:
-                    location_x = car.get_row()
-                    location_y = car.get_col() + car.get_length()
-                    self.board[(location_x, location_y)] = car_name
-                    self.board[(location_x, car.get_col())] = '_'
+
+            # Get location to adjust on the board
+            location_x, location_y = self.get_location(car_name, direction)
+
+            # Based on orientation and direction, move car and board
+            if car.get_orientation() == 'H' and direction == -1:
+                self.board[(location_x, location_y)] = car_name
+                self.board[(location_x, location_y + car.get_length())] = '_'
                 car.add_to_col(direction)
+            elif car.get_orientation() == 'H':
+                self.board[(location_x, location_y)] = car_name
+                self.board[(location_x, car.get_col())] = '_'
+                car.add_to_col(direction)
+            elif direction == -1:
+                self.board[(location_x, location_y)] = car_name
+                self.board[(location_x + car.get_length(), location_y)] = '_'
+                car.add_to_row(direction)
             else:
-                if direction == -1:    
-                    location_x = car.get_row() - 1
-                    location_y = car.get_col()
-                    self.board[(location_x, location_y)] = car_name
-                    self.board[(location_x + car.get_length(), location_y)] = '_'
-                else:
-                    location_x = car.get_row() + car.get_length()
-                    location_y = car.get_col()
-                    self.board[(location_x, location_y)] = car_name
-                    self.board[(car.get_row(), location_y)] = '_'
-                car.add_to_row(direction)                
+                self.board[(location_x, location_y)] = car_name
+                self.board[(car.get_row(), location_y)] = '_'
+                car.add_to_row(direction)
 
             # Store move and direction
             self.moves.append([car_name, direction])
 
+            # Return True to indicate move succeeded
             return True
+
+        # Return False to indicate move not possible
         return False
 
     def __str__(self) -> str:
+        """String representation to show game properly in terminal"""
+
+        # Build the board in a loop by going over its values
         board_string = ''
         for i in range(self.dimension):
             for j in range(self.dimension):
@@ -187,6 +200,8 @@ class Game:
 
     def show_image(self) -> None:
         """Shows image in terminal (Terminology or Imgcat)"""
+
+        # Set conversion factor
         pixel_to_square = 50
 
         # Set empty image
@@ -200,7 +215,7 @@ class Game:
                                  (i * pixel_to_square, j * pixel_to_square))
 
         # Fill with pictures of cars
-        for car_name, car in zip(self.cars, self.cars.values()):
+        for car in self.cars.values():
             game_image.paste(Image.open(car.get_image_string()),
                              ((car.get_col() - 1) * pixel_to_square,
                               (car.get_row() - 1) * pixel_to_square))
@@ -212,8 +227,9 @@ class Game:
             text_offset_x, text_offset_y = car.get_text_offset()
             game_image_draw.text(((car.get_col() - 1) * pixel_to_square +
                                  text_offset_x,
-                                 (car.get_row() - 1) * pixel_to_square + text_offset_y),
-                                 car.car_name, fill=(0, 0, 0), font=font)
+                                 (car.get_row() - 1) * pixel_to_square +
+                                 text_offset_y),
+                                 car_name, fill=(0, 0, 0), font=font)
 
         # Save image
         game_image.save('BoardImages/game.jpeg')
@@ -224,73 +240,71 @@ class Game:
         else:
             os.system('$HOME/.iterm2/imgcat BoardImages/game.jpeg')
 
-    def show_image_imgcat(self) -> None:
-        pixel_to_square = 50
-        game_image = Image.new('RGB', (self.dimension * pixel_to_square,
-                                       self.dimension * pixel_to_square))
-        for i in range(self.dimension):
-            for j in range(self.dimension):
-                game_image.paste(Image.open('BoardImages/empty_tile.jpeg'),
-                                 (i * pixel_to_square, j * pixel_to_square))
-
-        for car_name, car in zip(self.cars, self.cars.values()):
-            game_image.paste(Image.open(car.get_image_string()),
-                             ((car.get_col() - 1) * pixel_to_square,
-                              (car.get_row() - 1) * pixel_to_square))
-        game_image.save('BoardImages/game.jpeg')
-        os.system("imgcat BoardImages/game.jpeg")
-
     def show_board(self) -> None:
+        """Show board based on print settings"""
         if self.get_terminology_print() or self.get_imgcat_print():
             self.show_image()
         else:
             print(self)
 
     def set_terminology_print_to_true(self) -> None:
+        """Set terminology print to True"""
         self.terminology_print = True
 
     def get_terminology_print(self) -> bool:
+        """Return terminology print option"""
         return self.terminology_print
 
     def set_imgcat_print_to_true(self) -> None:
+        """Set terminology print to True"""
         self.imgcat_print = True
 
     def get_imgcat_print(self) -> bool:
+        """Return imgcat print option"""
         return self.imgcat_print
 
     def output_to_csv(self) -> None:
+        """Store moves as output.csv"""
         with open('Output/output.csv', 'w', encoding='UTF8', newline='') as f:
             csv_writer = csv.writer(f)
-            
+
             # Header
             csv_writer.writerow(['car', 'move'])
-            
+
             # Moves
             for move in self.moves:
                 csv_writer.writerow(move)
 
     def get_step_count(self) -> int:
+        """Get step count"""
         return len(self.moves)
 
     def get_cars(self) -> dict[str, Car]:
+        """Get all cars"""
         return self.cars
 
     def get_moves(self) -> list[list[Union[int, str]]]:
+        """Get all moves"""
         return self.moves
-        
+
     def tuple_form(self) -> tuple[str]:
+        """Return game in tuple form (sparse)"""
+
+        # Initialise list and fill
         lst = []
         for i in range(self.dimension):
             for j in range(self.dimension):
                 lst.append(self.board[(i + 1, j + 1)])
+
+        # Return list as tuple
         return tuple(lst)
-        
+
     def set_game_via_str(self, game_tuple: tuple[str]) -> None:
         """Move the game to a certain state using its tuple form"""
         if self.tuple_form() != game_tuple:
             # Store car names
             car_names = self.cars
-            
+
             # While car_names not empty: iterate over board
             i, j = 0
             while len(car_names) != 0 and i + j < 2 * self.dimension:
@@ -298,28 +312,33 @@ class Game:
                 if car_name in car_names:
                     self.cars[car_name].set_row(i + 1)
                     self.cars[car_name].set_col(j + 1)
-                    
+
                     car_names.remove(car_name)
-                
+
                 if j == self.dimension:
                     i, j = i + 1, 0
                 else:
                     j += 1
-                
+
             # Fill board
-            self.fill_board()   
-            
+            self.fill_board()
+
             # Check if moving worked
             if self.tuple_form() != game_tuple:
                 raise Exception('Moving using tuple failed!')
-    
+
     def set_best_solution_steps(self, best_solution_steps: int) -> None:
+        """Set amount of steps for best solution"""
         self.best_solution_steps = best_solution_steps
-        
+
     def get_best_solution_steps(self) -> int:
+        """Get amount of steps for best solution"""
         return self.best_solution_steps
 
+
 def ask_user_input() -> Game:
+    """Ask user input and return game"""
+
     # Ask user for dimension of game
     dimension = int(input('With which board dimension would you like to play'
                     ' (6, 9, or 12)?\n'))
@@ -403,7 +422,8 @@ if __name__ == '__main__':
             game.set_terminology_print_to_true()
 
         # Ask for imgcat print
-        if not game.get_terminology_print() and argv[len(argv) - 1] not in ['-i', '-t'] and \
+        if not game.get_terminology_print() \
+            and argv[len(argv) - 1] not in ['-i', '-t'] and \
             input('Do you want to print a picture (using Imgcat)?'
                   ' (Y/N)\n').upper() == 'Y':
             game.set_imgcat_print_to_true()

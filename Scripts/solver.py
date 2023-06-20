@@ -18,7 +18,7 @@ def main() -> None:
     verbose = set_verbose_option(argv)
 
     # Set solver
-    SolverClass = __import__('Solvers.' + solver_name, fromlist = ['Solver'])
+    SolverClass = __import__('Solvers.' + solver_name, fromlist=['Solver'])
     solver = SolverClass.Solver()
 
     # Welcome the user
@@ -29,7 +29,7 @@ def main() -> None:
     # Save start_time and initialise steps_list to store the amount of steps
     start_time = time.time()
     steps_list = []
-    best_solution_steps_list = []	
+    best_solution_steps_list = []
 
     # Solve the game amount_of_times times
     for i in range(amount_of_times):
@@ -41,7 +41,6 @@ def main() -> None:
 
         # Solve the game, storing the number of steps it took
         game = solver.solve(game)
-        steps = game.get_step_count()
         print_game(game, verbose)
 
         # Only store data if game is won. Only print csv if fastest attempt
@@ -52,11 +51,12 @@ def main() -> None:
                 game.output_to_csv()
 
         # Print step completed
-        print(f'Completed step {i + 1}, game was '\
+        print(f'Completed step {i + 1}, game was '
               f'{"" if game.is_won() else "NOT "}solved')
 
     # Print finished and amount of time passed
-    print(get_statistics_string(steps_list, amount_of_times, start_time, best_solution_steps_list))
+    print(get_statistics_string(steps_list, amount_of_times, start_time,
+                                best_solution_steps_list))
 
 
 def get_game_csv_string(game_number: int) -> str:
@@ -127,7 +127,8 @@ def set_verbose_option(argv: list[str]) -> int:
 
 
 def get_statistics_string(steps_list: list[int], amount_of_times: int,
-                          start_time: float, best_solution_steps_list: list[int]) -> str:
+                          start_time: float,
+                          best_solution_steps_list: list[int]) -> str:
     """Return the statistics in a formatted string to be printed"""
 
     # Add the time to finish
@@ -136,7 +137,8 @@ def get_statistics_string(steps_list: list[int], amount_of_times: int,
 
     # Print step statistics header
     statistics_string += '----------------------\nBest solution found:\n'
-    statistics_string += 'Amount of moves best solution: {0}\n'.format(min(best_solution_steps_list))
+    statistics_string += 'Amount of moves best solution: '
+    statistics_string += '{0}\n'.format(min(best_solution_steps_list))
     statistics_string += '----------------------\nSteps statistics:\n'
     statistics_string += 'Amount of repititions: {0}\n'.format(amount_of_times)
 
