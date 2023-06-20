@@ -54,7 +54,7 @@ def main() -> None:
               f'{"" if game.is_won() else "NOT "}solved')
 
     # Print finished and amount of time passed
-    print(get_statistics_string(steps_list, amount_of_times, start_time))
+    print(get_statistics_string(steps_list, amount_of_times, start_time, game))
 
 
 def get_game_csv_string(game_number: int) -> str:
@@ -125,7 +125,7 @@ def set_verbose_option(argv: list[str]) -> int:
 
 
 def get_statistics_string(steps_list: list[int], amount_of_times: int,
-                          start_time: float) -> str:
+                          start_time: float, game: Game) -> str:
     """Return the statistics in a formatted string to be printed"""
 
     # Add the time to finish
@@ -133,6 +133,8 @@ def get_statistics_string(steps_list: list[int], amount_of_times: int,
                                                                 - start_time)
 
     # Print step statistics header
+    statistics_string += '----------------------\nBest solution found:\n'
+    statistics_string += 'Amount of moves best solution: {0}\n'.format(game.best_solution_steps)
     statistics_string += '----------------------\nSteps statistics:\n'
     statistics_string += 'Amount of repititions: {0}\n'.format(amount_of_times)
 
