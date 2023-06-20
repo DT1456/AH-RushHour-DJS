@@ -36,7 +36,7 @@ class Solver:
         moves_list = []
 
         # For all cars, try both moves and add them to moves if valid
-        for car_name, car in zip(game.cars, game.cars.values()):
+        for car_name in game.get_cars():
             for direction in [-1, 1]:
                 if game.is_valid_move(car_name, direction):
                     moves_list.append((car_name, direction))

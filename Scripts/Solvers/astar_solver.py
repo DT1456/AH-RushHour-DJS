@@ -1,7 +1,6 @@
 from game import Game
-import random as random
-import sys
 from queue import PriorityQueue
+import sys
 
 
 class Solver:
@@ -21,7 +20,12 @@ class Solver:
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
-        return self.h0(game)
+        #return self.h0(game)
+        #return self.h1(game)
+        #return self.h2(game)
+        #return self.h3(game)
+        #return self.h1(game) + self.h2(game)
+        return self.h1(game) + self.h3(game)
 
     def h0(self, game: Game) -> int:
         """Heuristic 0: always returns zero"""
@@ -35,7 +39,8 @@ class Solver:
         """Heuristic 2: returns the number of cars in the way of the red car"""
         cars_in_way = 0
         for j in range(game.cars['X'].get_col() + 1, game.dimension + 1):
-            cars_in_way += (game.board[(game.cars['X'].get_row(), j)] not in ['X', '_'])
+            cars_in_way += (game.board[(game.cars['X'].get_row(), j)]
+                            not in ['X', '_'])
         return cars_in_way
 
     def h3(self, game: Game) -> int:
@@ -48,22 +53,29 @@ class Solver:
         red_car_col = game.cars['X'].get_col()
 
         cars_in_way = 0
-        for j in range(red_car_col + 1, game.dimension + 1):
-            car_name = game.board[(red_car_row, j)]
+        for col_num in range(red_car_col + 1, game.dimension + 1):
+            car_name = game.board[(red_car_row, col_num)]
             if car_name not in ['X', '_']:
                 cars_in_way += 1
-                if game.cars[car_name].get_orientation() == 'H':
-                    return sys.maxsize
-                elif game.cars[car_name].get_row() > 1 and game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
-                    cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, j)] != '_' or game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), j)] != '_')
-                elif game.cars[car_name].get_row() > 1:
-                    cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, j)] != '_')
-                elif game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
-                    cars_in_way += (game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), j)] != '_')
-                else:
-                    return sys.maxsize
+                cars_in_way = self.get_blocking_cars_value(cars_in_way,
+                                                           car_name, game,
+                                                           col_num)
+                
         return cars_in_way
 
+    def get_blocking_cars_value(self, cars_in_way: int, car_name: str,
+                                game: Game, col_num: int) -> int:
+        if game.cars[car_name].get_orientation() == 'H':
+            return sys.maxsize
+        elif game.cars[car_name].get_row() > 1 and game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
+            cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, col_num)] != '_' or game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), col_num)] != '_')
+        elif game.cars[car_name].get_row() > 1:
+            cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, col_num)] != '_')
+        elif game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
+            cars_in_way += (game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), col_num)] != '_')
+        else:
+            cars_in_way = sys.maxsize
+        return cars_in_way
 
     def solve(self, game: Game) -> Game:
         game = self.get_solution(game)
@@ -133,7 +145,7 @@ class Solver:
         moves_list = []
 
         # For all cars, try both moves and add them to moves if valid
-        for car_name, car in zip(game.cars, game.cars.values()):
+        for car_name in game.get_cars():
             for direction in [-1, 1]:
                 if game.is_valid_move(car_name, direction):
                     moves_list.append((car_name, direction))
