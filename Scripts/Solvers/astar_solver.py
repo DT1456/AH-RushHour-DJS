@@ -20,11 +20,11 @@ class Solver:
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
-        #return self.h0(game)
-        #return self.h1(game)
-        #return self.h2(game)
-        #return self.h3(game)
-        #return self.h1(game) + self.h2(game)
+        # return self.h0(game)
+        # return self.h1(game)
+        # return self.h2(game)
+        # return self.h3(game)
+        # return self.h1(game) + self.h2(game)
         return self.h1(game) + self.h3(game)
 
     def h0(self, game: Game) -> int:
@@ -60,29 +60,46 @@ class Solver:
                 cars_in_way = self.get_blocking_cars_value(cars_in_way,
                                                            car_name, game,
                                                            col_num)
-                
+
         return cars_in_way
 
     def get_blocking_cars_value(self, cars_in_way: int, car_name: str,
                                 game: Game, col_num: int) -> int:
-        if game.cars[car_name].get_orientation() == 'H':
+        """Get the blocking value of a specific car
+
+        If a car can not directly be moved, add 1 to cars_in_way
+        If a car is horizontal, return maxsize (unsolvable)
+        """
+
+        # Set car
+        car = game.cars[car_name]
+
+        # Get car specifics
+        car_orientation = car.get_orientation()
+        car_row = car.get_row()
+        car_length = car.get_length()
+
+        # Increment cars_in_way
+        if car_orientation == 'H':
             return sys.maxsize
-        elif game.cars[car_name].get_row() > 1 and game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
-            cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, col_num)] != '_' or game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), col_num)] != '_')
-        elif game.cars[car_name].get_row() > 1:
-            cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, col_num)] != '_')
-        elif game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
-            cars_in_way += (game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), col_num)] != '_')
+        elif car_row > 1 and car_row + car_length < game.dimension:
+            cars_in_way += (game.board[(car_row - 1, col_num)] != '_' or
+                            game.board[(car_row + car_length, col_num)] != '_')
+        elif car_row > 1:
+            cars_in_way += (game.board[(car_row - 1, col_num)] != '_')
+        elif car_row + car_length < game.dimension:
+            cars_in_way += (game.board[(car_row + car_length, col_num)] != '_')
         else:
-            cars_in_way = sys.maxsize
+            return sys.maxsize
         return cars_in_way
 
     def solve(self, game: Game) -> Game:
+        """Solve the game"""
         game = self.get_solution(game)
         return game
 
     def get_solution(self, game: Game) -> Game:
-        """Play one move in order to solve the game"""
+        """Get the full (best) solution via heuristic search"""
         self.open_set.put((0, 0, game.tuple_form()))
         self.moves_cost = {game.tuple_form(): 0}
         self.parents = {game.tuple_form(): None}
@@ -98,12 +115,14 @@ class Solver:
             # If the game is won, print the length
             if game.is_won():
                 game.set_best_solution_steps(self.get_steps(game.tuple_form()))
+                moves_list = []
+                ############################ self.get_best_path()
                 return game
 
             # Mark the current state as visited by adding to closed_set
             self.closed_set.add(current_state)
 
-            # Get possible moves from current state and store the moves (for cost)
+            # Get possible moves from current state and store the moves (cost)
             moves_list = self.get_possible_moves(game)
             moves_current_state = self.moves_cost[game.tuple_form()]
 
@@ -111,18 +130,20 @@ class Solver:
             for move in moves_list:
                 car_name, direction = move
                 game.move(car_name, direction)
-    
+
                 # If state not visited before:
                 if game.tuple_form() not in self.closed_set:
                     move_cost = moves_current_state + 1
-                    if game.tuple_form() not in self.moves_cost or move_cost < self.moves_cost[game.tuple_form()]:
+                    if game.tuple_form() not in self.moves_cost or \
+                            move_cost < self.moves_cost[game.tuple_form()]:
                         self.moves_cost[game.tuple_form()] = move_cost
                         priority = move_cost + self.heuristic(game)
-                        self.open_set.put((priority, move_cost, game.tuple_form()))
+                        self.open_set.put((priority, move_cost,
+                                           game.tuple_form()))
                         self.parents[game.tuple_form()] = current_state
                         self.parents_move[game.tuple_form()] = move
                 game.move(car_name, self.reverse_direction(direction))
-        raise Exception('The game can not be solved via our a star + heuristics!')
+        raise Exception('The game can not be solved via astar + heuristics!')
 
     def get_steps(self, game_str):
         if self.parents[game_str] is not None:
@@ -130,7 +151,7 @@ class Solver:
             return self.get_steps(game_str) + 1
         return 0
 
-    def get_best_path(self, current_board_str, moves_list = []):
+    def get_best_path(self, current_board_str, moves_list):
         if self.parents[current_board_str] is not None:
             moves_list.append(self.parents_move[current_board_str])
             current_board_str = self.parents[current_board_str]
