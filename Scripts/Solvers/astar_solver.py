@@ -61,11 +61,11 @@ class Solver:
 
     def get_solution(self, game: Game) -> Game:
         """Play one move in order to solve the game"""
-        self.open_set.put((0, 0, str(game)))
-        self.moves_cost = {str(game): 0}
-        self.parents = {str(game): None}
-        self.parents_move = {str(game): None}
-        self.original_board = str(game)
+        self.open_set.put((0, 0, game.tuple_form()))
+        self.moves_cost = {game.tuple_form(): 0}
+        self.parents = {game.tuple_form(): None}
+        self.parents_move = {game.tuple_form(): None}
+        self.original_board = game.tuple_form()
 
         while not self.open_set.empty():
             # Gets (using PriorityQueue) the node with lowest fscore
@@ -76,7 +76,7 @@ class Solver:
             
             # If the game is won, print the length
             if game.is_won():
-                game.best_solution_steps = self.get_steps(str(game))
+                game.best_solution_steps = self.get_steps(game.tuple_form())
                 return game
 
             # Mark the current state as visited by adding to closed_set
@@ -84,7 +84,7 @@ class Solver:
 
             # Get possible moves from current state and store the moves (for cost)
             moves_list = self.get_possible_moves(game)
-            moves_current_state = self.moves_cost[str(game)]
+            moves_current_state = self.moves_cost[game.tuple_form()]
 
             # Move in all directions from current state
             for move in moves_list:
@@ -92,21 +92,21 @@ class Solver:
                 game.move(car_name, direction)
                 
                 # If state not visited before:
-                if str(game) not in self.closed_set:
+                if game.tuple_form() not in self.closed_set:
                     move_cost = moves_current_state + 1
-                    if str(game) not in self.moves_cost or move_cost < self.moves_cost[str(game)]:
-                        self.moves_cost[str(game)] = move_cost
+                    if game.tuple_form() not in self.moves_cost or move_cost < self.moves_cost[game.tuple_form()]:
+                        self.moves_cost[game.tuple_form()] = move_cost
                         priority = move_cost + self.heuristic(game)
-                        self.open_set.put((priority, move_cost, str(game)))
-                        self.parents[str(game)] = current_state
-                        self.parents_move[str(game)] = move
+                        self.open_set.put((priority, move_cost, game.tuple_form()))
+                        self.parents[game.tuple_form()] = current_state
+                        self.parents_move[game.tuple_form()] = move
                 game.move(car_name, self.reverse_direction(direction))
         raise Exception('The game can not be solved via our a star + heuristics!')
 
     def move_to_state(self, game: Game, state: str) -> Game:
         # move back
-        while str(game) != self.original_board:
-            move = self.parents_move[str(game)]
+        while game.tuple_form() != self.original_board:
+            move = self.parents_move[game.tuple_form()]
             car_name, direction = move
             game.move(car_name, self.reverse_direction(direction))
             

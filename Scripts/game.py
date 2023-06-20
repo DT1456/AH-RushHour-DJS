@@ -273,6 +273,41 @@ class Game:
 
     def get_moves(self) -> list[list[Union[int, str]]]:
         return self.moves
+        
+    def tuple_form(self) -> tuple[str]:
+        lst = []
+        for i in range(self.dimension):
+            for j in range(self.dimension):
+                lst.append(self.board[(i + 1, j + 1)])
+        return tuple(lst)
+        
+    def set_game_via_str(self, game_tuple: tuple[str]) -> None:
+        """Move the game to a certain state using its tuple form"""
+        if self.tuple_form() != game_tuple:
+            # Store car names
+            car_names = self.cars
+            
+            # While car_names not empty: iterate over board
+            i, j = 0
+            while len(car_names) != 0 and i + j < 2 * self.dimension:
+                car_name = game_tuple[i * self.dimension + j]
+                if car_name in car_names:
+                    self.cars[car_name].set_row(i + 1)
+                    self.cars[car_name].set_col(j + 1)
+                    
+                    car_names.remove(car_name)
+                
+                if j == self.dimension:
+                    i, j = i + 1, 0
+                else:
+                    j += 1
+                
+            # Fill board
+            self.fill_board()   
+            
+            # Check if moving worked
+            if self.tuple_form() != game_tuple:
+                raise Exception('Moving using tuple failed!')
 
 
 def ask_user_input() -> Game:
