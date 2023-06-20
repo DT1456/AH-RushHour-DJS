@@ -50,6 +50,7 @@ class Solver:
         return reverse_direction
     
     def move_to_state(self, game: Game, state: str) -> Game:
+        """Moving to different board state"""
         # Moving backwards
         while str(game) != self.original_board:
             move = self.parents_move[str(game)]
@@ -64,7 +65,6 @@ class Solver:
             state = self.parents[state]
         
         # Move forwards
-
         # Reverse list put most recent move to front
         moves_forward.reverse()
         for move in moves_forward:
@@ -72,3 +72,43 @@ class Solver:
             game.move(car_name, direction)
         
         return game
+
+    def solve(self, game: Game) -> Game:
+        self.queue.enqueue(str(game))
+        self.visited = set()
+        self.parents = {str(game): None}
+        self.original_board = str(game)
+        self.parents_move = {str(game): None}
+
+        while self.queue.size() > 0:
+            # Remove first item from queue
+            current_state = self.queue.dequeue()
+
+            # Move to current state
+            game = self.move_to_state(game, current_state)
+
+            # WON? QUIT (TO DO: CHANGES MOVES?)
+            if game.is_won():
+                # USE self.parents here
+                return game
+            
+            # Mark current state as visited
+            self.visited.add(current_state)
+
+            moves_list = self.get_possible_moves(game)
+
+            # Move in all directions from current state
+            for move in moves_list:
+                car_name, direction = move
+                game.move(car_name, direction)
+
+                # Add str(game) to queue
+                if str(game) not in self.visited:
+                    self.queue.enqueue(str(game))
+                    self.visited.add(str(game))
+                    self.parents[str(game)] = current_state
+                    self.parents_move[str(game)] = move
+                # Go back to current state
+                game.move(car_name, self.reverse_direction(direction))
+        
+        raise Exception('No solution found!\n')
