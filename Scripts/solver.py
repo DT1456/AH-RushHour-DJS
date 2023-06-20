@@ -96,6 +96,8 @@ def get_game_dimension(game_number: int) -> int:
 
 def print_game(game: Game, verbose: int) -> None:
     """Print the game if verbose is True"""
+
+    # Based on verbose option, print game    
     if verbose == 2:
         game.set_terminology_print_to_true()
     if verbose in [1, 2]:
@@ -104,6 +106,8 @@ def print_game(game: Game, verbose: int) -> None:
 
 def validate_input(argv: list[str]) -> None:
     """Validate the CLI input"""
+
+    # Return without warning if correct amount of arguments
     if len(argv) in [4, 5]:
         return
     show_usage_and_exit()
@@ -119,6 +123,8 @@ def show_usage_and_exit() -> None:
 
 def set_verbose_option(argv: list[str]) -> int:
     """Set the verbose option: determines whether to print game during solve"""
+
+    # Check print option and notify if incorrect
     if len(argv) > 4 and int(argv[4]) not in [0, 1, 2]:
         show_usage_and_exit()
     elif len(argv) > 4:

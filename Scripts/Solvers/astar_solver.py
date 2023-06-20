@@ -14,12 +14,12 @@ class Solver:
         self.original_board: str
 
     def heuristic(self, game: Game):
-        #return self.h2(game) + self.h3(game)
-        #return self.h1(game)
-        #return self.h2(game)
-        #return self.h3(game)
-        #return self.h4(game)
+        return self.h2(game)
         return self.h2(game) + self.h4(game)
+        #return self.h4(game)
+        #return self.h2(game) + self.h3(game)
+        #return self.h3(game)
+        #return self.h1(game)
         
     def h1(self, game: Game) -> int:
         return 0
