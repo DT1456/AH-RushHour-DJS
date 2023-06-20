@@ -7,6 +7,7 @@ from PIL import ImageDraw
 from PIL import ImageFont
 import random as random
 from sys import argv
+from sys import maxsize
 from typing import Union
 
 
@@ -28,6 +29,8 @@ class Game:
         # Set print option
         self.terminology_print: bool = False
         self.imgcat_print: bool = False
+
+        self.best_solution_steps = maxsize
 
     def load_board(self) -> None:
         """Loads the board using dimension and the dictionary cars"""
