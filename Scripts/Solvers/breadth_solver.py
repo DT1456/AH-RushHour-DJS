@@ -101,23 +101,26 @@ class Solver:
                     moves_list.append((car_name, direction))
         return moves_list
 
-    def play_move(self, game: Game) -> Game:
-        """Finds the series of winning moves and then plays one move"""
-        # Checks if game is played (solved) yet
-        if game.get_step_count() == 0 or len(self.states) == 0:
-            # Reset solver
-            self.states = {}
-            self.winning_moves = []
-            self.found_winning = False
+    def solve(self, game: Game) -> Game:
+        # Reset solver
+        self.states = {}
+        self.winning_moves = []
+        self.found_winning = False
 
-            # Fill states
-            self.fill_states(game)
-            game.moves = []
-        # Plays the winning moves
+        # Fill states
+        self.fill_states(game)
+        game.moves = []
+
         if self.found_winning:
-            move = self.winning_moves[0]
-            game.move(move[0], move[1])
-            self.winning_moves = self.winning_moves[1:]
+            while not game.is_won():
+                game = self.play_move(game)
         else:
             raise Exception('No solution found!')
+        return game     
+
+    def play_move(self, game: Game) -> Game:
+        """Finds the series of winning moves and then plays one move"""
+        move = self.winning_moves.pop(0)
+        car_name, direction = move
+        game.move(car_name, direction)
         return game
