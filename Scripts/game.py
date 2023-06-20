@@ -306,7 +306,8 @@ class Game:
             car_names = self.cars
 
             # While car_names not empty: iterate over board
-            i, j = 0
+            i: int = 0
+            j: int = 0
             while len(car_names) != 0 and i + j < 2 * self.dimension:
                 car_name = game_tuple[i * self.dimension + j]
                 if car_name in car_names:
