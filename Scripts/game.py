@@ -90,7 +90,7 @@ class Game:
         # Check if empty space is available
         return self.board_location_is_empty(car_name, direction)
 
-    def board_location_is_empty(self, car_name: str, direction: str) -> bool:
+    def board_location_is_empty(self, car_name: str, direction: int) -> bool:
         """Returns whether board location to move to is empty"""
 
         # Check if direciton is feasible
@@ -106,7 +106,7 @@ class Game:
         except KeyError:
             return False
 
-    def get_location(self, car_name: str, direction: str) -> list[int]:
+    def get_location(self, car_name: str, direction: int) -> list[int]:
         """Get location to which the car is moving"""
 
         # Set car
@@ -150,36 +150,36 @@ class Game:
         """Move a car in a certain direction based on its name"""
 
         # First convert direction to int if necessary
-        direction = self.convert_direction_str_to_int(direction)
+        direction_int = self.convert_direction_str_to_int(direction)
 
         # If move is valid, move the car
-        if self.is_valid_move(car_name, direction):
+        if self.is_valid_move(car_name, direction_int):
             # Adjust the board based on the car to be moved. Move the car
             car = self.cars[car_name]
 
             # Get location to adjust on the board
-            location_x, location_y = self.get_location(car_name, direction)
+            location_x, location_y = self.get_location(car_name, direction_int)
 
             # Based on orientation and direction, move car and board
-            if car.get_orientation() == 'H' and direction == -1:
+            if car.get_orientation() == 'H' and direction_int == -1:
                 self.board[(location_x, location_y)] = car_name
                 self.board[(location_x, location_y + car.get_length())] = '_'
-                car.add_to_col(direction)
+                car.add_to_col(direction_int)
             elif car.get_orientation() == 'H':
                 self.board[(location_x, location_y)] = car_name
                 self.board[(location_x, car.get_col())] = '_'
-                car.add_to_col(direction)
-            elif direction == -1:
+                car.add_to_col(direction_int)
+            elif direction_int == -1:
                 self.board[(location_x, location_y)] = car_name
                 self.board[(location_x + car.get_length(), location_y)] = '_'
-                car.add_to_row(direction)
+                car.add_to_row(direction_int)
             else:
                 self.board[(location_x, location_y)] = car_name
                 self.board[(car.get_row(), location_y)] = '_'
-                car.add_to_row(direction)
+                car.add_to_row(direction_int)
 
             # Store move and direction
-            self.moves.append([car_name, direction])
+            self.moves.append([car_name, direction_int])
 
             # Return True to indicate move succeeded
             return True
@@ -287,7 +287,7 @@ class Game:
         """Get all moves"""
         return self.moves
 
-    def tuple_form(self) -> tuple[str]:
+    def tuple_form(self) -> tuple[str, ...]:
         """Return game in tuple form (sparse)"""
 
         # Initialise list and fill
@@ -303,7 +303,7 @@ class Game:
         """Move the game to a certain state using its tuple form"""
         if self.tuple_form() != game_tuple:
             # Store car names
-            car_names = self.cars
+            car_names = list(self.cars)
 
             # While car_names not empty: iterate over board
             i: int = 0
@@ -322,7 +322,7 @@ class Game:
                     j += 1
 
             # Fill board
-            self.fill_board()
+            self.load_board()
 
             # Check if moving worked
             if self.tuple_form() != game_tuple:
