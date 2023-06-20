@@ -146,7 +146,7 @@ class Game:
         except ValueError:
             raise Exception('Invalid move, not in [U, L, D, R, -1, 1]!')
 
-    def move(self, car_name: str, direction: str) -> bool:
+    def move(self, car_name: str, direction: Union[str, int]) -> bool:
         """Move a car in a certain direction based on its name"""
 
         # First convert direction to int if necessary
@@ -299,7 +299,7 @@ class Game:
         # Return list as tuple
         return tuple(lst)
 
-    def set_game_via_str(self, game_tuple: tuple[str]) -> None:
+    def set_game_via_str(self, game_tuple: tuple[str, ...]) -> None:
         """Move the game to a certain state using its tuple form"""
 
         if self.tuple_form() != game_tuple:
