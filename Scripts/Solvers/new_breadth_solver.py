@@ -72,6 +72,13 @@ class Solver:
             game.move(car_name, direction)
         
         return game
+    
+    def get_steps(self, game_str):
+        steps = 0
+        while game_str != self.original_board:
+            steps += 1
+            game_str = self.parents[game_str]
+        return steps
 
     def solve(self, game: Game) -> Game:
         self.queue.enqueue(str(game))
@@ -89,7 +96,7 @@ class Solver:
 
             # WON? QUIT (TO DO: CHANGES MOVES?)
             if game.is_won():
-                # USE self.parents here
+                game.best_solution_steps = self.get_steps(str(game))
                 return game
             
             # Mark current state as visited
