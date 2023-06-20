@@ -18,7 +18,8 @@ class Solver:
         #return self.h1(game)
         #return self.h2(game)
         #return self.h3(game)
-        return self.h4(game)
+        #return self.h4(game)
+        return self.h2(game) + self.h4(game)
         
     def h1(self, game: Game) -> int:
         return 0
@@ -35,37 +36,27 @@ class Solver:
     def h4(self, game: Game) -> int:
         red_car_row = game.cars['X'].get_row()
         red_car_col = game.cars['X'].get_col()
-        print(game)
+
         cars_in_way = 0
         for j in range(red_car_col + 1, game.dimension + 1):
             car_name = game.board[(red_car_row, j)] 
             if car_name not in ['X', '_']:
-                print(car_name, 'before cars_in_way: ', cars_in_way)
                 cars_in_way += 1
-                if game.cars[car_name].get_orientation() == 'V':
+                if game.cars[car_name].get_orientation() == 'H':
                     return sys.maxsize
-                elif game.cars[car_name].get_row() > 1 and game.cars[car_name].get_row() + game.cars[car_name].get_length() < self.dimension:
+                elif game.cars[car_name].get_row() > 1 and game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
                     cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, j)] != '_' or game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), j)] != '_') 
                 elif game.cars[car_name].get_row() > 1:
                     cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, j)] != '_')
-                elif game.cars[car_name].get_row() + game.cars[car_name].get_length() < self.dimension:
+                elif game.cars[car_name].get_row() + game.cars[car_name].get_length() < game.dimension:
                     cars_in_way += (game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), j)] != '_')
                 else:
                     return sys.maxsize
-                print(car_name, 'after cars_in_way: ', cars_in_way)
-                print(1/0)
-        print(cars_in_way)
-        print(1/0)
         return cars_in_way
         
 
     def solve(self, game: Game) -> Game:
         game = self.get_solution(game)
-        print(len(game.moves))
-        game.moves = []
-        for move in self.get_best_path(str(game)):
-            car_name, direction = move
-            game.moves.append([car_name, game.direction_to_int(direction)])
         return game
 
     def get_solution(self, game: Game) -> Game:
@@ -85,6 +76,7 @@ class Solver:
             
             # If the game is won, print the length
             if game.is_won():
+                game.best_solution_steps = self.get_steps(str(game))
                 return game
 
             # Mark the current state as visited by adding to closed_set
@@ -133,6 +125,13 @@ class Solver:
             
 
         return game
+
+    def get_steps(self, game_str):
+        steps = 0
+        while game_str != self.original_board:
+            steps += 1
+            game_str = self.parents[game_str]
+        return steps
 
     def get_best_path(self, current_board_str, moves_list = []):
         if self.parents[current_board_str] is not None:
