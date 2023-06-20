@@ -8,8 +8,11 @@ class Solver:
         pass
 
     def solve(self, game: Game) -> Game:
+        steps = 0
         while not game.is_won():
             game = self.play_move(game)
+            steps += 1
+        game.set_best_solution_steps(steps)
         return game
 
     def play_move(self, game: Game) -> Game:
@@ -26,7 +29,7 @@ class Solver:
         """Get list of possible moves in this state"""
         moves_list = []
         for car_name, car in zip(game.cars, game.cars.values()):
-            for direction in ['L', 'R', 'U', 'D']:
+            for direction in [-1, 1]:
                 if game.is_valid_move(car_name, direction):
                     moves_list.append((car_name, direction))
         return moves_list

@@ -79,16 +79,12 @@ class Game:
         """
         return self.cars['X'].get_col() == self.dimension - 1
 
-    def is_valid_move(self, car_name: str, direction: str) -> bool:
+    def is_valid_move(self, car_name: str, direction: int) -> bool:
         """Checks and returns whether a certain move is valid"""
 
         # Check if direction correct
-        if self.cars[car_name].get_orientation() == 'H':
-            if direction not in ['L', 'R']:
-                return False
-        else:
-            if direction not in ['U', 'D']:
-                return False
+        if direction not in [-1, 1]:
+            return False
 
         # Check if empty space is available
         return self.board_location_is_empty(car_name, direction)
@@ -97,7 +93,7 @@ class Game:
         """Returns whether board location to move to is empty"""
 
         # Check if direciton is feasible
-        if direction not in ['L', 'R', 'U', 'D']:
+        if direction not in [-1, 1]:
             return False
 
         # Get location coordinates for direction to move to
@@ -116,62 +112,70 @@ class Game:
         car = self.cars[car_name]
 
         # Use direction to get correct location to move to
-        if direction == 'U':
-            location_x = car.get_row() - 1
-            location_y = car.get_col()
-        elif direction == 'D':
-            location_x = car.get_row() + car.get_length()
-            location_y = car.get_col()
-        elif direction == 'L':
-            location_x = car.get_row()
-            location_y = car.get_col() - 1
+        if car.get_orientation() == 'H':
+            if direction == -1:
+                location_x = car.get_row()
+                location_y = car.get_col() - 1
+            else:
+                location_x = car.get_row()
+                location_y = car.get_col() + car.get_length()
         else:
-            location_x = car.get_row()
-            location_y = car.get_col() + car.get_length()
+            if direction == -1:
+                location_x = car.get_row() - 1
+                location_y = car.get_col()
+            else:
+                location_x = car.get_row() + car.get_length()
+                location_y = car.get_col()
 
         # Return x, y coordinates
         return [location_x, location_y]
 
+    def convert_direction_str_to_int(self, direction: Union[str, int]) -> int:
+        direction = direction.upper() if type(direction) == str else direction
+        if direction in ['U', 'L']:
+            return -1
+        if direction in ['D', 'R']:
+            return 1
+        try:
+            return int(direction)
+        except ValueError:
+            raise Exception('Invalid move, not in [U, L, D, R, -1, 1]!')
+
     def move(self, car_name: str, direction: str) -> bool:
-        direction = direction.upper()
+        direction = self.convert_direction_str_to_int(direction)
         if self.is_valid_move(car_name, direction):
             # adjust empty space (eentje erbij, eentje eraf)
             car = self.cars[car_name]
-            if direction == 'U':
-                location_x = car.get_row() - 1
-                location_y = car.get_col()
-                self.board[(location_x, location_y)] = car_name
-                self.board[(location_x + car.get_length(), location_y)] = '_'
-            elif direction == 'D':
-                location_x = car.get_row() + car.get_length()
-                location_y = car.get_col()
-                self.board[(location_x, location_y)] = car_name
-                self.board[(car.get_row(), location_y)] = '_'
-            elif direction == 'L':
-                location_x = car.get_row()
-                location_y = car.get_col() - 1
-                self.board[(location_x, location_y)] = car_name
-                self.board[(location_x, location_y + car.get_length())] = '_'
+            if car.get_orientation() == 'H':
+                if direction == -1:
+                    location_x = car.get_row()
+                    location_y = car.get_col() - 1
+                    self.board[(location_x, location_y)] = car_name
+                    self.board[(location_x, location_y + car.get_length())] = '_'
+                else:
+                    location_x = car.get_row()
+                    location_y = car.get_col() + car.get_length()
+                    self.board[(location_x, location_y)] = car_name
+                    self.board[(location_x, car.get_col())] = '_'
+                car.add_to_col(direction)
             else:
-                location_x = car.get_row()
-                location_y = car.get_col() + car.get_length()
-                self.board[(location_x, location_y)] = car_name
-                self.board[(location_x, car.get_col())] = '_'
-
-            # adjust car.col of car.row
-            car.add_to_row((direction == 'D') - (direction == 'U'))
-            car.add_to_col((direction == 'R') - (direction == 'L'))
+                if direction == -1:    
+                    location_x = car.get_row() - 1
+                    location_y = car.get_col()
+                    self.board[(location_x, location_y)] = car_name
+                    self.board[(location_x + car.get_length(), location_y)] = '_'
+                else:
+                    location_x = car.get_row() + car.get_length()
+                    location_y = car.get_col()
+                    self.board[(location_x, location_y)] = car_name
+                    self.board[(car.get_row(), location_y)] = '_'
+                car.add_to_row(direction)                
 
             # Store move and direction
-            self.moves.append([car_name, self.direction_to_int(direction)])
+            self.moves.append([car_name, direction])
 
             return True
         return False
-
-    def direction_to_int(self, direction: str) -> int:
-        if direction in ['L', 'U']:
-            return -1
-        return 1
 
     def __str__(self) -> str:
         board_string = ''
@@ -308,7 +312,12 @@ class Game:
             # Check if moving worked
             if self.tuple_form() != game_tuple:
                 raise Exception('Moving using tuple failed!')
-
+    
+    def set_best_solution_steps(self, best_solution_steps: int) -> None:
+        self.best_solution_steps = best_solution_steps
+        
+    def get_best_solution_steps(self) -> int:
+        return self.best_solution_steps
 
 def ask_user_input() -> Game:
     # Ask user for dimension of game
