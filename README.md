@@ -34,7 +34,9 @@ This is a directory that contains the python files that together create the game
 #### **Solvers**:
 This directory contains all the solvers that the player can choose from to solve the Rush Hour game:
 - [Random_solver.py:](Scripts/Solvers/random_solver.py) this file can solve the Rush Hour game by randomly selecting a car an making random moves with that car.
-- [Breadth_solver.py:](Scripts/Solvers/breadth_solver.py) this is the breadth solver, this solver iterates over all the possible options and in the end it chooses the best one (the one with the least steps).
+- [Breadth_solver.py:](Scripts/Solvers/breadth_solver.py) this is the breadth solver, this solver iterates over all the possible options via breadth first search and in the end it chooses the best one (the one with the least steps).
+- [Depth_solver.py](Scripts/Solvers/depth_solver.py) after the breadth solver we created the depth solver. This solver iterates over all the possible options via depth first search, when it has found a solution it stops.
+- [Astar_solver.py:](Scripts/Solvers/astar_solver.py) this solver... HIER NOG INFO TYPEN!
 
 #### **Input**: 
 This directory contains all the different Rush Hour games that the player can choose from.
