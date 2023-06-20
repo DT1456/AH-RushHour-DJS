@@ -1,7 +1,7 @@
 from game import Game
 import random as random
 from queue import PriorityQueue
-
+import sys
 
 class Solver:
 
@@ -14,11 +14,54 @@ class Solver:
         self.original_board: str
 
     def heuristic(self, game: Game):
-        #return 0 
+        #return self.h2(game) + self.h3(game)
+        #return self.h1(game)
+        #return self.h2(game)
+        #return self.h3(game)
+        return self.h4(game)
+        
+    def h1(self, game: Game) -> int:
+        return 0
+
+    def h2(self, game: Game) -> int:
         return game.dimension - game.cars['X'].get_col()
+        
+    def h3(self, game: Game) -> int:
+        cars_in_way = 0
+        for j in range(game.cars['X'].get_col() + 1, game.dimension + 1):
+            cars_in_way += (game.board[(game.cars['X'].get_row(), j)] not in ['X', '_'])
+        return cars_in_way
+        
+    def h4(self, game: Game) -> int:
+        red_car_row = game.cars['X'].get_row()
+        red_car_col = game.cars['X'].get_col()
+        print(game)
+        cars_in_way = 0
+        for j in range(red_car_col + 1, game.dimension + 1):
+            car_name = game.board[(red_car_row, j)] 
+            if car_name not in ['X', '_']:
+                print(car_name, 'before cars_in_way: ', cars_in_way)
+                cars_in_way += 1
+                if game.cars[car_name].get_orientation() == 'V':
+                    return sys.maxsize
+                elif game.cars[car_name].get_row() > 1 and game.cars[car_name].get_row() + game.cars[car_name].get_length() < self.dimension:
+                    cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, j)] != '_' or game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), j)] != '_') 
+                elif game.cars[car_name].get_row() > 1:
+                    cars_in_way += (game.board[(game.cars[car_name].get_row() - 1, j)] != '_')
+                elif game.cars[car_name].get_row() + game.cars[car_name].get_length() < self.dimension:
+                    cars_in_way += (game.board[(game.cars[car_name].get_row() + game.cars[car_name].get_length(), j)] != '_')
+                else:
+                    return sys.maxsize
+                print(car_name, 'after cars_in_way: ', cars_in_way)
+                print(1/0)
+        print(cars_in_way)
+        print(1/0)
+        return cars_in_way
+        
 
     def solve(self, game: Game) -> Game:
         game = self.get_solution(game)
+        print(len(game.moves))
         game.moves = []
         for move in self.get_best_path(str(game)):
             car_name, direction = move
