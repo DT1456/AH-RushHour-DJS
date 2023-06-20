@@ -1,14 +1,42 @@
 from game import Game
 
+class Queue:
+
+    # Initialise empty queue
+    def __init__(self):
+        self._data = []
+
+    # Add element to back of queue
+    def enqueue(self, element):
+        self._data.append(element) 
+
+    # Remove and return element from front of queue
+    def dequeue(self):
+        assert self.size() > 0
+        return self._data.pop(0)
+
+    # Find and return size of the queue
+    def size(self):
+        return len(self._data)
 
 class Solver:
+    def __init__(self):
+        # dict of states previous to current state (key) and current states
+        self.parents: dict[str, str]
+        self.queue = Queue()
+        self.original_board: str
+        # dict of moves that that take you from previous state to the current state
+        self.parents_move: dict[str, tuple[str, str]]
 
-    def __init__(self) -> None:
-        """Initializes dictionary of states and list of winning moves"""
-        self.states: dict[str, list[tuple[str, str]]] = {}
-        self.winning_moves: list[tuple[str, str]] = []
-        self.found_winning = False
-
+    def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
+        """Get list of possible moves in this state"""
+        moves_list = []
+        for car_name, car in zip(game.cars, game.cars.values()):
+            for direction in ['L', 'R', 'U', 'D']:
+                if game.is_valid_move(car_name, direction):
+                    moves_list.append((car_name, direction))
+        return moves_list
+        
     def reverse_direction(self, direction: str) -> str:
         """Defining and returning a reversed direction"""
         reverse_direction = 'L'
@@ -20,107 +48,74 @@ class Solver:
             reverse_direction = 'U'
 
         return reverse_direction
+    
+    def move_to_state(self, game: Game, state: str) -> Game:
+        """Moving to different board state"""
+        # Moving backwards
+        while game.tuple_form() != self.original_board:
+            move = self.parents_move[game.tuple_form()]
+            car_name, direction = move
+            game.move(car_name, self.reverse_direction(direction))
+        
+        # Fill forward moves
+        moves_forward = []
 
-    def copy_states(self, state_dict: dict[str, list[tuple[str, str]]],
-                    length: int) -> dict[str, list[tuple[str, str]]]:
-        """Makes a copy of self.states that is named state_dict"""
-        for state in self.states:
-            if len(self.states[state]) == length:
-                state_dict[state] = self.states[state]
-        return state_dict
-
-    def check_moves(self, moves_list: list[tuple[str, str]],
-                   moves_so_far: list[tuple[str, str]], game: Game):
-        """Moves are tracked and put in a moves list or a winning moves list"""
-        for move in moves_list:
-            game.move(move[0], move[1])
-            # If new state is found, put in dictionary with value
-            # of all moves so far + most recent move
-            if game.__str__() not in self.states:
-                self.states[game.__str__()] = moves_so_far + [move]
-            elif len(self.states[game.__str__()]) > len(moves_so_far
-                                                        + [move]):
-                print('nu wel')
-                self.states[game.__str__()] = moves_so_far + [move]
-            # When game is won, put all previous moves and
-            # most recent move in list of winning moves.
-            if game.is_won():
-                self.found_winning = True
-                self.winning_moves = moves_so_far + [move]
-            reverse_direction = self.reverse_direction(move[1])
-            game.move(move[0], reverse_direction)
-
-    def fill_states(self, game: Game) -> None:
-        """Fills all states until a series of winning moves is found.
-
-        While the winning the series of winning moves hasn't been found yet
-        this method will check each new state, and checks moves.
-        If the state has already been visited a reversed move is made.
-        When the game is won it will put all te moves that led to
-        that win in a list of winning moves.
-        """
-        self.states[game.__str__()] = []
-        length = 0
-
-        while not self.found_winning:
-            # Make copy of self.states
-            state_dict: dict[str, list[tuple[str, str]]] = {}
-            state_dict = self.copy_states(state_dict, length)
-
-            for state in state_dict:
-                moves_so_far = state_dict[state]
-                # Make list with reversed directions
-                moves_so_far_reversed = [(state[0],
-                                         self.reverse_direction(state[1]))
-                                         for state in moves_so_far]
-                # Reverse list so last move becomes te first reversed move
-                moves_so_far_reversed.reverse()
-
-                # Move forward
-                for move in moves_so_far:
-                    game.move(move[0], move[1])
-
-                moves_list = self.get_possible_moves(game)
-                self.check_moves(moves_list, moves_so_far, game)
-
-                # Move backwards
-                for move in moves_so_far_reversed:
-                    game.move(move[0], move[1])
-                # Break when game is won
-                if self.found_winning:
-                    break
-
-            length += 1
-
-    def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
-        """Get list of possible moves in this state"""
-        moves_list = []
-        for car_name, car in zip(game.cars, game.cars.values()):
-            for direction in ['L', 'R', 'U', 'D']:
-                if game.is_valid_move(car_name, direction):
-                    moves_list.append((car_name, direction))
-        return moves_list
+        while self.original_board != state:
+            moves_forward.append(self.parents_move[state])
+            state = self.parents[state]
+        
+        # Move forwards
+        # Reverse list put most recent move to front
+        moves_forward.reverse()
+        for move in moves_forward:
+            car_name, direction = move
+            game.move(car_name, direction)
+        
+        return game
+    
+    def get_steps(self, game_str):
+        steps = 0
+        while game_str != self.original_board:
+            steps += 1
+            game_str = self.parents[game_str]
+        return steps
 
     def solve(self, game: Game) -> Game:
-        # Reset solver
-        self.states = {}
-        self.winning_moves = []
-        self.found_winning = False
+        self.queue.enqueue(game.tuple_form())
+        self.visited = set()
+        self.parents = {game.tuple_form(): None}
+        self.original_board = game.tuple_form()
+        self.parents_move = {game.tuple_form(): None}
 
-        # Fill states
-        self.fill_states(game)
-        game.moves = []
+        while self.queue.size() > 0:
+            # Remove first item from queue
+            current_state = self.queue.dequeue()
 
-        if self.found_winning:
-            while not game.is_won():
-                game = self.play_move(game)
-        else:
-            raise Exception('No solution found!')
-        return game     
+            # Move to current state
+            game = self.move_to_state(game, current_state)
 
-    def play_move(self, game: Game) -> Game:
-        """Finds the series of winning moves and then plays one move"""
-        move = self.winning_moves.pop(0)
-        car_name, direction = move
-        game.move(car_name, direction)
-        return game
+            # WON? QUIT (TO DO: CHANGES MOVES?)
+            if game.is_won():
+                game.best_solution_steps = self.get_steps(game.tuple_form())
+                return game
+            
+            # Mark current state as visited
+            self.visited.add(current_state)
+
+            moves_list = self.get_possible_moves(game)
+
+            # Move in all directions from current state
+            for move in moves_list:
+                car_name, direction = move
+                game.move(car_name, direction)
+
+                # Add game.tuple_form() to queue
+                if game.tuple_form() not in self.visited:
+                    self.queue.enqueue(game.tuple_form())
+                    self.visited.add(game.tuple_form())
+                    self.parents[game.tuple_form()] = current_state
+                    self.parents_move[game.tuple_form()] = move
+                # Go back to current state
+                game.move(car_name, self.reverse_direction(direction))
+        
+        raise Exception('No solution found!\n')
