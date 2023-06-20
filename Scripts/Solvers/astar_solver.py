@@ -12,11 +12,11 @@ class Solver:
         Store parents and moves in dict(s) for getting the correct solution
         Use an open and closed set for marking states as open and closed
         """
-        self.open_set = PriorityQueue()
-        self.closed_set = set()
-        self.moves_cost: dict[str, int]
-        self.parents: dict[str, str]
-        self.parents_move: dict[str, str]
+        self.open_set: PriorityQueue[tuple[int, int, tuple[str, ...]]] = PriorityQueue()
+        self.closed_set: set[tuple[str, ...]] = set()
+        self.moves_cost: dict[tuple[str, ...], int]
+        self.parents: dict[tuple[str, ...], tuple[str, ...]]
+        self.parents_move: dict[tuple[str, ...], tuple[str, int]]
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
@@ -102,8 +102,8 @@ class Solver:
         """Get the full (best) solution via heuristic search"""
         self.open_set.put((0, 0, game.tuple_form()))
         self.moves_cost = {game.tuple_form(): 0}
-        self.parents = {game.tuple_form(): None}
-        self.parents_move = {game.tuple_form(): None}
+        self.parents = {game.tuple_form(): ()}
+        self.parents_move = {game.tuple_form(): ('', 0)}
 
         while not self.open_set.empty():
             # Gets (using PriorityQueue) the node with lowest fscore
@@ -145,21 +145,21 @@ class Solver:
                 game.move(car_name, self.reverse_direction(direction))
         raise Exception('The game can not be solved via astar + heuristics!')
 
-    def get_steps(self, game_str):
-        if self.parents[game_str] is not None:
-            game_str = self.parents[game_str]
-            return self.get_steps(game_str) + 1
+    def get_steps(self, tuple_form: tuple[str, ...]) -> int:
+        while self.parents[tuple_form] is not ():
+            tuple_form = self.parents[tuple_form]
+            return self.get_steps(tuple_form) + 1
         return 0
 
-    def get_best_path(self, current_board_str, moves_list):
-        if self.parents[current_board_str] is not None:
-            moves_list.append(self.parents_move[current_board_str])
-            current_board_str = self.parents[current_board_str]
-            return self.get_best_path(current_board_str, moves_list)
-        moves_list.reverse()
-        return moves_list
+    #def get_best_path(self, current_board_str, moves_list):
+    #    if self.parents[current_board_str] is not None:
+    #        moves_list.append(self.parents_move[current_board_str])
+    #        current_board_str = self.parents[current_board_str]
+    #        return self.get_best_path(current_board_str, moves_list)
+    #    moves_list.reverse()
+    #    return moves_list
 
-    def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
+    def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
 
         # Initialise moves_list as an empty list of possible moves
