@@ -8,18 +8,31 @@ class Solver:
         pass
 
     def solve(self, game: Game) -> Game:
+    	"""Solve the game iteratively by playing random moves"""
+    	
+    	# For step count, initialise steps at 0
         steps = 0
+
+        # While game not won, keep playing moves and incrementing steps
         while not game.is_won():
             game = self.play_move(game)
             steps += 1
+
+        # Set best solution and return game
         game.set_best_solution_steps(steps)
+
         return game
 
     def play_move(self, game: Game) -> Game:
-        """Play one move in order to solve the game"""
+        """Play one random move in order to solve the game"""
+
+        # Get the possible moves
         moves_list = self.get_possible_moves(game)
-        # Pick a random car and a random direction
+
+        # Pick a random car and a random direction from possible moves
         move = random.SystemRandom().choice(moves_list)
+
+        # Play the move
         car_name, direction = move
         game.move(car_name, direction)
 
@@ -27,9 +40,15 @@ class Solver:
 
     def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
         """Get list of possible moves in this state"""
+
+        # Initialise moves_list as an empty list of possible moves
         moves_list = []
+
+        # For all cars, try both moves and add them to moves if valid
         for car_name, car in zip(game.cars, game.cars.values()):
             for direction in [-1, 1]:
                 if game.is_valid_move(car_name, direction):
                     moves_list.append((car_name, direction))
+
+        # Return the filled list of moves
         return moves_list

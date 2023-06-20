@@ -301,6 +301,7 @@ class Game:
 
     def set_game_via_str(self, game_tuple: tuple[str]) -> None:
         """Move the game to a certain state using its tuple form"""
+
         if self.tuple_form() != game_tuple:
             # Store car names
             car_names = list(self.cars)
@@ -310,13 +311,14 @@ class Game:
             j: int = 0
             while len(car_names) != 0 and i + j < 2 * self.dimension:
                 car_name = game_tuple[i * self.dimension + j]
+
                 if car_name in car_names:
                     self.cars[car_name].set_row(i + 1)
                     self.cars[car_name].set_col(j + 1)
 
                     car_names.remove(car_name)
 
-                if j == self.dimension:
+                if j == self.dimension - 1:
                     i, j = i + 1, 0
                 else:
                     j += 1
