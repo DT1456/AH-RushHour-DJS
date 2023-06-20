@@ -52,8 +52,8 @@ class Solver:
     def move_to_state(self, game: Game, state: str) -> Game:
         """Moving to different board state"""
         # Moving backwards
-        while str(game) != self.original_board:
-            move = self.parents_move[str(game)]
+        while game.tuple_form() != self.original_board:
+            move = self.parents_move[game.tuple_form()]
             car_name, direction = move
             game.move(car_name, self.reverse_direction(direction))
         
@@ -81,11 +81,11 @@ class Solver:
         return steps
 
     def solve(self, game: Game) -> Game:
-        self.queue.enqueue(str(game))
+        self.queue.enqueue(game.tuple_form())
         self.visited = set()
-        self.parents = {str(game): None}
-        self.original_board = str(game)
-        self.parents_move = {str(game): None}
+        self.parents = {game.tuple_form(): None}
+        self.original_board = game.tuple_form()
+        self.parents_move = {game.tuple_form(): None}
 
         while self.queue.size() > 0:
             # Remove first item from queue
@@ -96,7 +96,7 @@ class Solver:
 
             # WON? QUIT (TO DO: CHANGES MOVES?)
             if game.is_won():
-                game.best_solution_steps = self.get_steps(str(game))
+                game.best_solution_steps = self.get_steps(game.tuple_form())
                 return game
             
             # Mark current state as visited
@@ -109,12 +109,12 @@ class Solver:
                 car_name, direction = move
                 game.move(car_name, direction)
 
-                # Add str(game) to queue
-                if str(game) not in self.visited:
-                    self.queue.enqueue(str(game))
-                    self.visited.add(str(game))
-                    self.parents[str(game)] = current_state
-                    self.parents_move[str(game)] = move
+                # Add game.tuple_form() to queue
+                if game.tuple_form() not in self.visited:
+                    self.queue.enqueue(game.tuple_form())
+                    self.visited.add(game.tuple_form())
+                    self.parents[game.tuple_form()] = current_state
+                    self.parents_move[game.tuple_form()] = move
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
         
