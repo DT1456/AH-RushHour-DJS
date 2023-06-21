@@ -1,35 +1,36 @@
 from game import Game
+from typing import Optional
 
 
 class Stack:
 
     # Initialise empty stack
-    def __init__(self):
-        self._data = []
+    def __init__(self) -> None:
+        self._data: list[tuple[str, ...]] = []
 
     # Add element to back of stack
-    def push(self, element):
+    def push(self, element: tuple[str, ...]) -> None:
         self._data.append(element)
 
     # Remove and return element from front of stack
-    def pop(self):
+    def pop(self) -> tuple[str, ...]:
         assert self.size() > 0
         return self._data.pop()
 
     # Find and return size of the stack
-    def size(self):
+    def size(self) -> int:
         return len(self._data)
 
 
 class Solver:
 
-    def __init__(self):
+    def __init__(self) -> None:
         # dict of states previous to current state (key) and current states
-        self.parents: dict[str, str]
+        self.parents: dict[tuple[str, ...], tuple[str, ...]]
         self.stack = Stack()
-        self.original_board: str
+        self.original_board: tuple[str, ...]
 
-    def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
+    def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
 
         # Initialise moves_list as an empty list of possible moves
@@ -44,21 +45,20 @@ class Solver:
         # Return the filled list of moves
         return moves_list
 
-    def reverse_direction(self, direction: str) -> str:
+    def reverse_direction(self, direction: int) -> int:
         """Defining and returning a reversed direction"""
         return -direction
 
-    def get_steps(self, game_str):
-        steps = 0
-        while game_str != self.original_board:
-            steps += 1
-            game_str = self.parents[game_str]
-        return steps
+    def get_steps(self, tuple_form: tuple[str, ...]) -> int:
+        while self.parents[tuple_form] is not ():
+            tuple_form = self.parents[tuple_form]
+            return self.get_steps(tuple_form) + 1
+        return 0
 
     def solve(self, game: Game) -> Game:
         self.stack.push(game.tuple_form())
         self.visited = set()
-        self.parents = {game.tuple_form(): None}
+        self.parents = {game.tuple_form(): ()}
         self.original_board = game.tuple_form()
 
         while self.stack.size() > 0:
@@ -68,7 +68,7 @@ class Solver:
             # Move to current state
             game.set_game_via_str(current_state)
 
-            # WON? QUIT (TO DO: CHANGES MOVES?)
+            # When game is won, save  winning steps
             if game.is_won():
                 game.best_solution_steps = self.get_steps(game.tuple_form())
                 return game
@@ -92,3 +92,4 @@ class Solver:
                 game.move(car_name, self.reverse_direction(direction))
 
         raise Exception('No solution found!\n')
+
