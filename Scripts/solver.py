@@ -2,7 +2,8 @@ from game import Game
 from pathlib import Path
 from sys import argv
 import time
-
+import tracemalloc
+tracemalloc.start()
 
 def main() -> None:
     """Main program: run your favorite solver_script on any of the games"""
@@ -33,7 +34,7 @@ def main() -> None:
 
     # Solve the game amount_of_times times
     for i in range(amount_of_times):
-
+        tracemalloc.start()
         # Initialise game
         game = Game(get_game_csv_string(game_number),
                     get_game_dimension(game_number))
@@ -52,7 +53,9 @@ def main() -> None:
 
         # Print step completed
         print(f'Completed step {i + 1}, game was '
-              f'{"" if game.is_won() else "NOT "}solved')
+              f'{"" if game.is_won() else "NOT "}solved'
+              f'. MAX MB RAM used: {int(tracemalloc.get_traced_memory()[1] / 1000000)}')
+        tracemalloc.stop()
 
     # Print finished and amount of time passed
     print(get_statistics_string(steps_list, amount_of_times, start_time,
