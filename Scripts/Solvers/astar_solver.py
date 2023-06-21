@@ -1,8 +1,7 @@
 from game import Game
 from queue import PriorityQueue
 import sys
-import tracemalloc
-tracemalloc.start()
+
 
 class Solver:
 
@@ -99,7 +98,6 @@ class Solver:
         
         game = self.get_solution(game)
         
-        tracemalloc.stop()
         return game
 
     def get_solution(self, game: Game) -> Game:
@@ -147,7 +145,6 @@ class Solver:
                         self.parents[game.tuple_form()] = current_state
                         #self.parents_move[game.tuple_form()] = move
                 game.move(car_name, self.reverse_direction(direction))
-            print(tracemalloc.get_traced_memory())
         raise Exception('The game can not be solved via astar + heuristics!')
 
     def get_steps(self, tuple_form: tuple[str, ...]) -> int:
