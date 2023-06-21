@@ -31,6 +31,7 @@ class Game:
 
         # Initialise the best solution steps at maxsize
         self.best_solution_steps = maxsize
+        self.visited_state_count = 0
 
     def load_board(self) -> None:
         """Loads the board using dimension and the dictionary cars"""
@@ -278,6 +279,14 @@ class Game:
     def get_step_count(self) -> int:
         """Get step count"""
         return len(self.moves)
+
+    def increase_visited_state_count(self) -> None:
+        """Increment visited_state_count"""
+        self.visited_state_count += 1
+
+    def get_visited_state_count(self) -> int:
+        """Return visited_state_count"""
+        return self.visited_state_count
 
     def get_cars(self) -> dict[str, Car]:
         """Get all cars"""

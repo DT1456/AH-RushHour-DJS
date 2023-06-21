@@ -97,7 +97,6 @@ class Solver:
         """Solve the game"""
         
         game = self.get_solution(game)
-        
         return game
 
     def get_solution(self, game: Game) -> Game:
@@ -113,6 +112,7 @@ class Solver:
 
             # Move to that state of the game
             game.set_game_via_str(current_state)
+            game.increase_visited_state_count()
 
             # If the game is won, print the length
             if game.is_won():
@@ -143,7 +143,6 @@ class Solver:
                         self.open_set.put((priority, move_cost,
                                            game.tuple_form()))
                         self.parents[game.tuple_form()] = current_state
-                        #self.parents_move[game.tuple_form()] = move
                 game.move(car_name, self.reverse_direction(direction))
         raise Exception('The game can not be solved via astar + heuristics!')
 

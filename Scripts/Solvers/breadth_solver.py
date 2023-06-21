@@ -69,6 +69,7 @@ class Solver:
 
             # Move to current state
             game.set_game_via_str(current_state)
+            game.increase_visited_state_count()
 
             # If game is won, quit and set best solution steps for game
             if game.is_won():
