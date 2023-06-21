@@ -47,6 +47,7 @@ class Solver:
 
         # Set best solution and return game
         if steps <= self.best_solution_steps:
+            #print(steps, self.best_solution_steps)
             self.best_solution_steps = steps
             game.set_best_solution_steps(steps)
 
