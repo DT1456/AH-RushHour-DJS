@@ -1,7 +1,8 @@
 from game import Game
 from queue import PriorityQueue
 import sys
-
+import tracemalloc
+tracemalloc.start()
 
 class Solver:
 
@@ -16,7 +17,7 @@ class Solver:
         self.closed_set: set[tuple[str, ...]] = set()
         self.moves_cost: dict[tuple[str, ...], int]
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
-        self.parents_move: dict[tuple[str, ...], tuple[str, int]]
+        #self.parents_move: dict[tuple[str, ...], tuple[str, int]]
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
@@ -95,7 +96,10 @@ class Solver:
 
     def solve(self, game: Game) -> Game:
         """Solve the game"""
+        
         game = self.get_solution(game)
+        
+        tracemalloc.stop()
         return game
 
     def get_solution(self, game: Game) -> Game:
@@ -103,7 +107,7 @@ class Solver:
         self.open_set.put((0, 0, game.tuple_form()))
         self.moves_cost = {game.tuple_form(): 0}
         self.parents = {game.tuple_form(): ()}
-        self.parents_move = {game.tuple_form(): ('', 0)}
+        #self.parents_move = {game.tuple_form(): ('', 0)}
 
         while not self.open_set.empty():
             # Gets (using PriorityQueue) the node with lowest fscore
@@ -141,12 +145,13 @@ class Solver:
                         self.open_set.put((priority, move_cost,
                                            game.tuple_form()))
                         self.parents[game.tuple_form()] = current_state
-                        self.parents_move[game.tuple_form()] = move
+                        #self.parents_move[game.tuple_form()] = move
                 game.move(car_name, self.reverse_direction(direction))
+            print(tracemalloc.get_traced_memory())
         raise Exception('The game can not be solved via astar + heuristics!')
 
     def get_steps(self, tuple_form: tuple[str, ...]) -> int:
-        while self.parents[tuple_form] is not ():
+        while self.parents[tuple_form] != ():
             tuple_form = self.parents[tuple_form]
             return self.get_steps(tuple_form) + 1
         return 0
