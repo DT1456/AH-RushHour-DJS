@@ -46,10 +46,17 @@ def main() -> None:
 
         # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
-            steps_list.append(game.get_visited_state_count())
+            if game.get_visited_state_count() == 0:
+                steps_list.append(game.get_step_count())
+            else:
+                steps_list.append(game.get_visited_state_count())    
             best_solution_steps_list.append(game.get_best_solution_steps())
-            if game.get_visited_state_count() == min(steps_list):
-                game.output_to_csv()
+            if game.get_step_count() == 0:
+                if game.get_step_count() == min(steps_list):
+                    game.output_to_csv()
+            else:
+                if game.get_visited_state_count() == min(steps_list):
+                    game.output_to_csv()
 
         # Print step completed
         print(f'Completed step {i + 1}, game was '
