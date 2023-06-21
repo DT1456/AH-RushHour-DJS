@@ -12,6 +12,7 @@ class Solver:
         self.best_solution_steps = sys.maxsize
         self.original_board: tuple[str, ...] = ()
         self.winning_strategy: tuple[str, ...] ()
+        self.visited_states: set[str] = set()
 
     def solve(self, game: Game) -> Game:
         """Solve the game by repeating solve_once"""
@@ -36,6 +37,7 @@ class Solver:
 
         # For step count, initialise steps at 0
         steps = 0
+        self.visited_states = set()
 
         # While game not won, keep playing moves and incrementing steps
         while not game.is_won() and steps <= self.best_solution_steps:
@@ -54,17 +56,29 @@ class Solver:
         return game
 
     def play_move(self, game: Game) -> Game:
-        """Play one random move in order to solve the game"""
+        """Play one move in order to solve the game"""
+        if len(self.visited_states) == 0:
+            self.visited_states = set(str(game))
 
-        # Get the possible moves
         moves_list = self.get_possible_moves(game)
 
-        # Pick a random car and a random direction from possible moves
+        # Pick a random car and a random direction
         move = random.SystemRandom().choice(moves_list)
-
-        # Play the move
         car_name, direction = move
         game.move(car_name, direction)
+        
+        while str(game) in self.visited_states and len(moves_list) > 1:
+            moves_list.remove(move)
+            game.move(car_name, self.reverse_direction(direction))
+            move = random.SystemRandom().choice(moves_list)
+            car_name, direction = move
+            game.move(car_name, direction)
+        
+        if len(moves_list) == 1:
+            move = random.SystemRandom().choice(moves_list)
+            car_name, direction = move
+            game.move(car_name, direction)
+        self.visited_states.add(str(game))
 
         return game
 
@@ -82,3 +96,7 @@ class Solver:
 
         # Return the filled list of moves
         return moves_list
+    
+    def reverse_direction(self, direction: int) -> int:
+        """Defining and returning a reversed direction"""
+        return -direction
