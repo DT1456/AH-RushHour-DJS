@@ -46,9 +46,9 @@ def main() -> None:
 
         # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
-            steps_list.append(game.get_step_count())
+            steps_list.append(game.get_visited_state_count())
             best_solution_steps_list.append(game.get_best_solution_steps())
-            if game.get_step_count() == min(steps_list):
+            if game.get_visited_state_count() == min(steps_list):
                 game.output_to_csv()
 
         # Print step completed
@@ -145,18 +145,17 @@ def get_statistics_string(steps_list: list[int], amount_of_times: int,
                                                                 - start_time)
 
     # Print step statistics header
-    statistics_string += '----------------------\nBest solution found:\n'
     statistics_string += 'Amount of moves best solution: '
     statistics_string += '{0}\n'.format(min(best_solution_steps_list))
-    statistics_string += '----------------------\nSteps statistics:\n'
-    statistics_string += 'Amount of repititions: {0}\n'.format(amount_of_times)
+    statistics_string += '----------------------\nVisited statistics:\n'
+    statistics_string += 'Amount of repetitions: {0}\n'.format(amount_of_times)
 
     # Add average, max and min of steps in steps_list
-    statistics_string += 'Average number of steps to solve: {0:0.0f}\n'.format(
+    statistics_string += 'Average number of boards visited to solve: {0:0.0f}\n'.format(
         sum(steps_list) / len(steps_list))
-    statistics_string += 'Max number of steps to solve: {0}\n'.format(
+    statistics_string += 'Max number of boards visited to solve: {0}\n'.format(
         max(steps_list))
-    statistics_string += 'Min number of steps to solve: {0}\n'.format(
+    statistics_string += 'Min number of boards visited to solve: {0}\n'.format(
         min(steps_list))
     return statistics_string
 
