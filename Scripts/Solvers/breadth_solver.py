@@ -1,5 +1,8 @@
 from game import Game
+import sys
 
+# set recusion depth
+sys.setrecursionlimit(10000)
 
 class Queue:
 
@@ -49,7 +52,7 @@ class Solver:
         return -direction
 
     def get_steps(self, tuple_form: tuple[str, ...]) -> int:
-        while self.parents[tuple_form] is not ():
+        while self.parents[tuple_form] != ():
             tuple_form = self.parents[tuple_form]
             return self.get_steps(tuple_form) + 1
         return 0
