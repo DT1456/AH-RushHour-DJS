@@ -1,5 +1,9 @@
 from game import Game
 from typing import Optional
+import sys
+
+# set recusion depth
+sys.setrecursionlimit(10000)
 
 
 class Stack:
