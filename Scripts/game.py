@@ -296,6 +296,10 @@ class Game:
         """Get all moves"""
         return self.moves
 
+    def set_moves(self, best_moves: list[list[Union[int, str]]]) -> None:
+    	"""Set all moves"""
+    	self.moves = best_moves
+
     def tuple_form(self) -> tuple[str, ...]:
         """Return game in tuple form (sparse)"""
 
