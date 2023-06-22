@@ -7,7 +7,7 @@ class Solver:
 
     def __init__(self) -> None:
         """Initialise hil climber by setting repetition count"""
-        self.repetition_count = 100
+        self.repetition_count = 10000
         self.current_solution_steps = 0
         self.best_solution_steps = sys.maxsize
         self.original_board: tuple[str, ...] = ()
@@ -49,7 +49,7 @@ class Solver:
 
         # Set best solution and return game
         if steps <= self.best_solution_steps:
-            #print(steps, self.best_solution_steps)
+            print(steps, self.best_solution_steps)
             self.best_solution_steps = steps
             game.set_best_solution_steps(steps)
 
