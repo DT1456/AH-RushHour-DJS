@@ -58,14 +58,6 @@ class Solver:
 
         return -direction
 
-    def get_steps(self, tuple_form: tuple[str, ...]) -> int:
-        """Return number of steps for best solution"""
-
-        while self.parents[tuple_form] != ():
-            tuple_form = self.parents[tuple_form]
-            return self.get_steps(tuple_form) + 1
-        return 0
-
     def solve(self, game: Game) -> Game:
         """Searching for solution of the game"""
 
@@ -84,7 +76,6 @@ class Solver:
 
             # If game is won, quit and set best solution steps for game
             if game.is_won():
-                game.best_solution_steps = self.get_steps(game.tuple_form())
                 game.set_moves(self.get_best_path(game))
                 return game
 
