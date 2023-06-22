@@ -27,9 +27,9 @@ def main() -> None:
           str(amount_of_times) + ' times using solver: ' + solver_name +
           '.py...\n')
 
-    # Save start_time and initialise steps_list to store the amount of steps
+    # Save start_time and initialise states_list to store the amount of steps
     start_time = time.time()
-    steps_list = []
+    states_list = []
     best_solution_steps_list = []
 
     # Solve the game amount_of_times times
@@ -46,16 +46,19 @@ def main() -> None:
 
         # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
+            
+            # State based versions (breadth, depth, astar) versus random
             if game.get_visited_state_count() == 0:
-                steps_list.append(game.get_step_count())
-            else:
-                steps_list.append(game.get_visited_state_count())    
-            best_solution_steps_list.append(game.get_best_solution_steps())
-            if game.get_step_count() == 0:
-                if game.get_step_count() == min(steps_list):
+                # Add states amount
+                states_list.append(game.get_step_count())
+                best_solution_steps_list.append(game.get_step_count())
+                if game.get_step_count() == min(states_list):
                     game.output_to_csv()
             else:
-                if game.get_visited_state_count() == min(steps_list):
+                # Add states amount
+                states_list.append(game.get_visited_state_count())
+                best_solution_steps_list.append(game.get_step_count())
+                if game.get_visited_state_count() == min(states_list):
                     game.output_to_csv()
 
         # Print step completed
@@ -65,7 +68,7 @@ def main() -> None:
         tracemalloc.stop()
 
     # Print finished and amount of time passed
-    print(get_statistics_string(steps_list, amount_of_times, start_time,
+    print(get_statistics_string(states_list, amount_of_times, start_time,
                                 best_solution_steps_list))
 
 
@@ -142,7 +145,7 @@ def set_verbose_option(argv: list[str]) -> int:
     return 0
 
 
-def get_statistics_string(steps_list: list[int], amount_of_times: int,
+def get_statistics_string(states_list: list[int], amount_of_times: int,
                           start_time: float,
                           best_solution_steps_list: list[int]) -> str:
     """Return the statistics in a formatted string to be printed"""
@@ -157,13 +160,13 @@ def get_statistics_string(steps_list: list[int], amount_of_times: int,
     statistics_string += '----------------------\nVisited statistics:\n'
     statistics_string += 'Amount of repetitions: {0}\n'.format(amount_of_times)
 
-    # Add average, max and min of steps in steps_list
+    # Add average, max and min of steps in states_list
     statistics_string += 'Average number of boards visited to solve: {0:0.0f}\n'.format(
-        sum(steps_list) / len(steps_list))
+        sum(states_list) / len(states_list))
     statistics_string += 'Max number of boards visited to solve: {0}\n'.format(
-        max(steps_list))
+        max(states_list))
     statistics_string += 'Min number of boards visited to solve: {0}\n'.format(
-        min(steps_list))
+        min(states_list))
     return statistics_string
 
 

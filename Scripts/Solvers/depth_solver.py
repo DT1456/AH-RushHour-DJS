@@ -1,6 +1,7 @@
 from game import Game
 from typing import Optional
 import sys
+from typing import Union
 
 # set recusion depth
 sys.setrecursionlimit(10000)
@@ -53,12 +54,6 @@ class Solver:
         """Defining and returning a reversed direction"""
         return -direction
 
-    def get_steps(self, tuple_form: tuple[str, ...]) -> int:
-        while self.parents[tuple_form] != ():
-            tuple_form = self.parents[tuple_form]
-            return self.get_steps(tuple_form) + 1
-        return 0
-
     def solve(self, game: Game) -> Game:
         self.stack.push(game.tuple_form())
         self.visited = set()
@@ -75,7 +70,6 @@ class Solver:
 
             # When game is won, save  winning steps
             if game.is_won():
-                game.best_solution_steps = self.get_steps(game.tuple_form())
                 game.set_moves(self.get_best_path(game))
                 return game
 

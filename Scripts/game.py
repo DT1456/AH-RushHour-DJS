@@ -343,14 +343,6 @@ class Game:
             if self.tuple_form() != game_tuple:
                 raise Exception('Moving using tuple failed!')
 
-    def set_best_solution_steps(self, best_solution_steps: int) -> None:
-        """Set amount of steps for best solution"""
-        self.best_solution_steps = best_solution_steps
-
-    def get_best_solution_steps(self) -> int:
-        """Get amount of steps for best solution"""
-        return self.best_solution_steps
-
 
 def ask_user_input() -> Game:
     """Ask user input and return game"""
