@@ -7,7 +7,7 @@ class Solver:
 
     def __init__(self) -> None:
         """Initialise hil climber by setting repetition count"""
-        self.repetition_count = 100000
+        self.repetition_count = 100
         self.current_solution_steps = 0
         self.best_solution_steps = sys.maxsize
         self.original_board: tuple[str, ...] = ()
