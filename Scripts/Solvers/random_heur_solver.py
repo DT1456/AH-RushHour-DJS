@@ -61,19 +61,19 @@ class Solver:
         moves_list = self.get_possible_moves(game)
 
         # Pick a random car and a random direction
-        move = random.SystemRandom().choice(moves_list)
+        move = random.choice(moves_list)
         car_name, direction = move
         game.move(car_name, direction)
         
         while str(game) in self.visited_states and len(moves_list) > 1:
             moves_list.remove(move)
             game.move(car_name, self.reverse_direction(direction))
-            move = random.SystemRandom().choice(moves_list)
+            move = random.choice(moves_list)
             car_name, direction = move
             game.move(car_name, direction)
         
         if len(moves_list) == 1:
-            move = random.SystemRandom().choice(moves_list)
+            move = random.choice(moves_list)
             car_name, direction = move
             game.move(car_name, direction)
         self.visited_states.add(str(game))

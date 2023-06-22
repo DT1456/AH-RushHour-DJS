@@ -27,7 +27,7 @@ class Solver:
         moves_list = self.get_possible_moves(game)
 
         # Pick a random car and a random direction from possible moves
-        move = random.SystemRandom().choice(moves_list)
+        move = random.choice(moves_list)
 
         # Play the move
         car_name, direction = move

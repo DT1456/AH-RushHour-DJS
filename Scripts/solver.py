@@ -1,8 +1,14 @@
 from game import Game
 from pathlib import Path
+import random
 from sys import argv
 import time
 import tracemalloc
+
+
+# Set random seed
+random.seed(123456789)
+
 tracemalloc.start()
 
 def main() -> None:
