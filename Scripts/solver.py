@@ -1,3 +1,4 @@
+import csv
 from game import Game
 from pathlib import Path
 import random
@@ -29,9 +30,10 @@ def main() -> None:
     solver = SolverClass.Solver()
 
     # Welcome the user
-    print('Started solving game ' + str(game_number) + ' for a total of ' +
-          str(amount_of_times) + ' times using solver: ' + solver_name +
-          '.py...\n')
+    text = 'Started solving game ' + str(game_number) + ' for a total of ' + \
+          str(amount_of_times) + ' times using solver: ' + solver_name + \
+          '.py...\n'
+    print(text)
 
     # Save start_time and initialise states_list to store the amount of steps
     start_time = time.time()
@@ -68,14 +70,32 @@ def main() -> None:
                     game.output_to_csv()
 
         # Print step completed
+        if game.is_won():
+            text += f'Completed step {i + 1}, game was ' + \
+                'solved' + \
+                '. MAX MB RAM used: ' + str(int(tracemalloc.get_traced_memory()[1] / 1000000)) + '\n'
+        else:
+            text += f'Completed step {i + 1}, game was ' + \
+                ' NOT solved' + \
+                '. MAX MB RAM used: ' + str(int(tracemalloc.get_traced_memory()[1] / 1000000)) + '\n'
         print(f'Completed step {i + 1}, game was '
               f'{"" if game.is_won() else "NOT "}solved'
               f'. MAX MB RAM used: {int(tracemalloc.get_traced_memory()[1] / 1000000)}')
         tracemalloc.stop()
+        
+    # Write to txt file
+    with open('Output/'+ str(game_number) + ',' +
+      str(amount_of_times) + ',' + solver_name + '.txt', 'w', encoding='UTF8', newline='') as f:
 
-    # Print finished and amount of time passed
-    print(get_statistics_string(states_list, amount_of_times, start_time,
-                                best_solution_steps_list))
+        # Write text
+        f.write(text)
+        
+        # Empty line
+        f.write('\n')
+
+        # Statistics
+        f.write(get_statistics_string(states_list, amount_of_times, start_time,
+                                    best_solution_steps_list))
 
 
 def get_game_csv_string(game_number: int) -> str:
