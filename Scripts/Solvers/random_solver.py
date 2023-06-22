@@ -18,9 +18,6 @@ class Solver:
             game = self.play_move(game)
             steps += 1
 
-        # Set best solution and return game
-        game.set_best_solution_steps(steps)
-
         return game
 
     def play_move(self, game: Game) -> Game:

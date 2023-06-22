@@ -17,7 +17,6 @@ class Solver:
         self.closed_set: set[tuple[str, ...]] = set()
         self.moves_cost: dict[tuple[str, ...], int]
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
-        #self.parents_move: dict[tuple[str, ...], tuple[str, int]]
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
@@ -116,7 +115,6 @@ class Solver:
 
             # If the game is won, print the length
             if game.is_won():
-                game.set_best_solution_steps(self.get_steps(game.tuple_form()))
                 game.set_moves(self.get_best_path(game))
                 return game
 
