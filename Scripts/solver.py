@@ -82,7 +82,7 @@ def main() -> None:
               f'{"" if game.is_won() else "NOT "}solved'
               f'. MAX MB RAM used: {int(tracemalloc.get_traced_memory()[1] / 1000000)}')
         tracemalloc.stop()
-        print(get_statistics_string(states_list, amount_of_times, start_time,
+    print(get_statistics_string(states_list, amount_of_times, start_time,
                                     best_solution_steps_list))
         
     # Write to txt file
