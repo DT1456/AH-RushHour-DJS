@@ -1,6 +1,7 @@
 from game import Game
 from queue import PriorityQueue
 import sys
+from typing import Union
 
 
 class Solver:
@@ -95,7 +96,7 @@ class Solver:
 
     def solve(self, game: Game) -> Game:
         """Solve the game"""
-        
+
         game = self.get_solution(game)
         return game
 
@@ -104,7 +105,6 @@ class Solver:
         self.open_set.put((0, 0, game.tuple_form()))
         self.moves_cost = {game.tuple_form(): 0}
         self.parents = {game.tuple_form(): ()}
-        #self.parents_move = {game.tuple_form(): ('', 0)}
 
         while not self.open_set.empty():
             # Gets (using PriorityQueue) the node with lowest fscore
@@ -117,8 +117,7 @@ class Solver:
             # If the game is won, print the length
             if game.is_won():
                 game.set_best_solution_steps(self.get_steps(game.tuple_form()))
-                moves_list = []
-                ############################ self.get_best_path()
+                game.set_moves(self.get_best_path(game))
                 return game
 
             # Mark the current state as visited by adding to closed_set
@@ -152,13 +151,55 @@ class Solver:
             return self.get_steps(tuple_form) + 1
         return 0
 
-    #def get_best_path(self, current_board_str, moves_list):
-    #    if self.parents[current_board_str] is not None:
-    #        moves_list.append(self.parents_move[current_board_str])
-    #        current_board_str = self.parents[current_board_str]
-    #        return self.get_best_path(current_board_str, moves_list)
-    #    moves_list.reverse()
-    #    return moves_list
+    def get_best_path(self, game: Game) -> list[list[Union[int, str]]]:
+        """Construct the best path based on parents, if game is won"""
+
+        # If game is not won, exit
+        if not game.is_won():
+            raise Exception('Game not yet won, unable to get best path!')
+
+        # Define game_tuple as current game state
+        game_tuple = game.tuple_form()
+
+        # Initialise the list of moves
+        moves_list = []
+        while self.parents[game_tuple] != ():
+            # Set changed_places as list of places that were changed with the move
+            changed_places = []
+
+            # Go over the tuples to find differences
+            for i in range(len(game_tuple)):
+                if game_tuple[i] != self.parents[game_tuple][i]:
+                    changed_places.append(i)
+
+                    # Get the car_name
+                    if game_tuple[i] == '_':
+                        car_name = self.parents[game_tuple][i]
+                    else:
+                        car_name = game_tuple[i]
+
+            # Based on changed_places, deduce the move that took place
+            car_length = game.cars[car_name].get_length()
+            if changed_places[1] - changed_places[0] == car_length:
+                # Car direction: right
+                moves_list.append((car_name, 1))
+            elif changed_places[0] - changed_places[1] == car_length:
+                # Car direction: left
+                moves_list.append((car_name, -1))
+            elif changed_places[1] - changed_places[0] == game.dimension * car_length:
+                # Car direction: up
+                moves_list.append((car_name, 1))
+            elif changed_places[0] - changed_places[1] == game.dimension * car_length:
+                # Car direction: down
+                moves_list.append((car_name, -1))
+            else:
+                raise Exception('Unobtainable move, something went wrong!')
+            game_tuple = self.parents[game_tuple]
+
+        # Reverse the list of moves
+        moves_list.reverse()
+
+        return moves_list
 
     def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
