@@ -1,36 +1,35 @@
 from game import Game
-from typing import Optional
 import sys
-from typing import Union
 
-# set recusion depth
+# set recusion limit
 sys.setrecursionlimit(10000)
 
 
 class Stack:
 
-    # Initialise empty stack
     def __init__(self) -> None:
+        """Initialise empty stack"""
         self._data: list[tuple[str, ...]] = []
 
-    # Add element to back of stack
     def push(self, element: tuple[str, ...]) -> None:
+        """Add element to back of stack"""
         self._data.append(element)
 
-    # Remove and return element from front of stack
     def pop(self) -> tuple[str, ...]:
+        """Remove and return element from back of stack"""
         assert self.size() > 0
         return self._data.pop()
 
-    # Find and return size of the stack
     def size(self) -> int:
+        """Find and return size of stack"""
         return len(self._data)
 
 
 class Solver:
 
     def __init__(self) -> None:
-        # dict of states previous to current state (key) and current states
+        """Initialising parent states dict, queue and original board"""
+
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
         self.stack = Stack()
         self.original_board: tuple[str, ...]
@@ -52,9 +51,12 @@ class Solver:
 
     def reverse_direction(self, direction: int) -> int:
         """Defining and returning a reversed direction"""
+
         return -direction
 
     def solve(self, game: Game) -> Game:
+        """Searching for solution of the game"""
+
         self.stack.push(game.tuple_form())
         self.visited = set()
         self.parents = {game.tuple_form(): ()}
@@ -93,8 +95,7 @@ class Solver:
 
         raise Exception('No solution found!\n')
 
-
-    def get_best_path(self, game: Game) -> list[list[Union[int, str]]]:
+    def get_best_path(self, game: Game) -> list[tuple[str, int]]:
         """Construct the best path based on parents, if game is won"""
 
         # If game is not won, exit
@@ -107,7 +108,8 @@ class Solver:
         # Initialise the list of moves
         moves_list = []
         while self.parents[game_tuple] != ():
-            # Set changed_places as list of places that were changed with the move
+            # Set changed_places as list of places that
+            # were changed with the move
             changed_places = []
 
             # Go over the tuples to find differences
@@ -129,10 +131,12 @@ class Solver:
             elif changed_places[0] - changed_places[1] == car_length:
                 # Car direction: left
                 moves_list.append((car_name, -1))
-            elif changed_places[1] - changed_places[0] == game.dimension * car_length:
+            elif changed_places[1] - changed_places[0]\
+                    == game.dimension * car_length:
                 # Car direction: up
                 moves_list.append((car_name, 1))
-            elif changed_places[0] - changed_places[1] == game.dimension * car_length:
+            elif changed_places[0] - changed_places[1]\
+                    == game.dimension * car_length:
                 # Car direction: down
                 moves_list.append((car_name, -1))
             else:
