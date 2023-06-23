@@ -142,6 +142,7 @@ class Solver:
             # If game is won, quit and set best solution steps for game
             if game.is_won():
                 game.set_moves(self.get_best_path(game))
+                print('Storage usage (MB): ', int(os.path.getsize('Solvers/Parents')/1000000))
                 #os.system('rm -r Solvers/Queues')
                 #os.system('mkdir Solvers/Queues')
                 os.system('rm -r Solvers/Parents')
