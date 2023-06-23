@@ -34,7 +34,6 @@ class Solver:
     def __init__(self) -> None:
         """Initialising parent states dict, queue and original board"""
 
-        self.parents: dict[tuple[str, ...], tuple[str, ...]]
         self.queue = Queue()
         self.original_board: tuple[str, ...]
 
@@ -62,7 +61,6 @@ class Solver:
         """Searching for solution of the game"""
 
         self.queue.enqueue(game.tuple_form())
-        self.visited = set()
         self.parents = {game.tuple_form(): ()}
         self.original_board = game.tuple_form()
 
@@ -79,9 +77,6 @@ class Solver:
                 game.set_moves(self.get_best_path(game))
                 return game
 
-            # Mark current state as visited
-            self.visited.add(current_state)
-
             moves_list = self.get_possible_moves(game)
 
             # Move in all directions from current state
@@ -90,9 +85,8 @@ class Solver:
                 game.move(car_name, direction)
 
                 # Add game.tuple_form() to queue
-                if game.tuple_form() not in self.visited:
+                if game.tuple_form() not in self.parents:
                     self.queue.enqueue(game.tuple_form())
-                    self.visited.add(game.tuple_form())
                     self.parents[game.tuple_form()] = current_state
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
