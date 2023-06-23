@@ -1,5 +1,6 @@
 from game import Game
 import sys
+import os
 
 # set recusion limit
 sys.setrecursionlimit(10000)
@@ -9,24 +10,94 @@ class Queue:
 
     def __init__(self) -> None:
         """Initialising the empty queue"""
-
-        self._data: list[tuple[str, ...]] = []
+        self.counter_reader = 0
+        self.writer_counter = 0
 
     def enqueue(self, element: tuple[str, ...]) -> None:
         """Adding element to back of queue"""
-
-        self._data.append(element)
+        self.writer_counter += 1
+        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt', 'w') as f:
+            for e in element:
+                f.write(e + ',')
+            f.write('\n')
 
     def dequeue(self) -> tuple[str, ...]:
         """Remove and return element from front of queue"""
+        self.counter_reader += 1
+        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt', 'r') as f:
+            last_line = f.readline()
 
-        assert self.size() > 0
-        return self._data.pop(0)
+        os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
+        
+        last_line = last_line.split(',')
+        last_line = tuple(last_line[:len(last_line)-1])
+        
+        return last_line
 
-    def size(self) -> int:
+    def is_big_enough(self) -> bool:
         """Find and return size of queue"""
+        return self.writer_counter > self.counter_reader
 
-        return len(self._data)
+
+class Queue1:
+
+    def __init__(self) -> None:
+        """Initialising the empty queue"""
+        self.counter_reader = 0
+        self.writer_counter = 0
+
+    def enqueue(self, element: tuple[str, ...]) -> None:
+        """Adding element to back of queue"""
+        self.writer_counter += 1
+        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt', 'w') as f:
+            for e in element:
+                f.write(e + ',')
+            f.write('\n')
+
+    def dequeue(self) -> tuple[str, ...]:
+        """Remove and return element from front of queue"""
+        self.counter_reader += 1
+        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt', 'r') as f:
+            last_line = f.readline()
+
+        os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
+        
+        last_line = last_line.split(',')
+        last_line = tuple(last_line[:len(last_line)-1])
+        
+        return last_line
+
+    def is_big_enough(self) -> bool:
+        """Find and return size of queue"""
+        return self.writer_counter > self.counter_reader
+
+
+class Parents:
+
+    def add(self, key_tuple, value_tuple):
+        name = ''
+        for k in key_tuple:
+            name += k + ','
+        with open('Solvers/Parents/' + name, 'w') as f:
+            for v in value_tuple:
+                f.write(v + ',')
+            f.write('\n')
+        
+    def get(self, key_tuple):
+        name = ''
+        for k in key_tuple:
+            name += k + ','
+        with open('Solvers/Parents/' + name, 'r') as f:
+            line = f.readline()
+        line = line.split(',')
+        line = tuple(line[:len(line)-1])
+        return line
+    
+    def is_in(self, key_tuple):
+        name = ''
+        for k in key_tuple:
+            name += k + ','
+        return os.path.exists('Solvers/Parents/' + name)
 
 
 class Solver:
@@ -61,10 +132,11 @@ class Solver:
         """Searching for solution of the game"""
 
         self.queue.enqueue(game.tuple_form())
-        self.parents = {game.tuple_form(): ()}
+        self.parents = Parents()
+        self.parents.add(game.tuple_form(), ())
         self.original_board = game.tuple_form()
 
-        while self.queue.size() > 0:
+        while self.queue.is_big_enough() > 0:
             # Remove first item from queue
             current_state = self.queue.dequeue()
 
@@ -75,6 +147,10 @@ class Solver:
             # If game is won, quit and set best solution steps for game
             if game.is_won():
                 game.set_moves(self.get_best_path(game))
+                #os.system('rm -r Solvers/Queues')
+                #os.system('mkdir Solvers/Queues')
+                os.system('rm -r Solvers/Parents')
+                os.system('mkdir Solvers/Parents')
                 return game
 
             moves_list = self.get_possible_moves(game)
@@ -85,11 +161,15 @@ class Solver:
                 game.move(car_name, direction)
 
                 # Add game.tuple_form() to queue
-                if game.tuple_form() not in self.parents:
+                if not self.parents.is_in(game.tuple_form()):
                     self.queue.enqueue(game.tuple_form())
-                    self.parents[game.tuple_form()] = current_state
+                    self.parents.add(game.tuple_form(), current_state)
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
+                
+                # Remove unnecessary moves
+                game.moves.pop()
+                game.moves.pop()
 
         raise Exception('No solution found!\n')
 
@@ -105,19 +185,19 @@ class Solver:
 
         # Initialise the list of moves
         moves_list = []
-        while self.parents[game_tuple] != ():
+        while self.parents.get(game_tuple) != ():
             # Set changed_places as list of places that
             # were changed with the move
             changed_places = []
 
             # Go over the tuples to find differences
             for i in range(len(game_tuple)):
-                if game_tuple[i] != self.parents[game_tuple][i]:
+                if game_tuple[i] != self.parents.get(game_tuple)[i]:
                     changed_places.append(i)
 
                     # Get the car_name
                     if game_tuple[i] == '_':
-                        car_name = self.parents[game_tuple][i]
+                        car_name = self.parents.get(game_tuple)[i]
                     else:
                         car_name = game_tuple[i]
 
@@ -139,7 +219,7 @@ class Solver:
                 moves_list.append((car_name, -1))
             else:
                 raise Exception('Unobtainable move, something went wrong!')
-            game_tuple = self.parents[game_tuple]
+            game_tuple = self.parents.get(game_tuple)
 
         # Reverse the list of moves
         moves_list.reverse()

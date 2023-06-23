@@ -88,6 +88,8 @@ class Solver:
             # If game is won, quit and set best solution steps for game
             if game.is_won():
                 game.set_moves(self.get_best_path(game))
+                os.system('rm -r Solvers/Queues')
+                os.system('mkdir Solvers/Queues')
                 return game
 
             moves_list = self.get_possible_moves(game)
