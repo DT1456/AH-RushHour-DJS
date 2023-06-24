@@ -144,7 +144,7 @@ class Solver:
             return self.get_steps(tuple_form) + 1
         return 0
 
-    def get_best_path(self, game: Game) -> list[list[Union[int, str]]]:
+    def get_best_path(self, game: Game) -> list[tuple[str, int]]:
         """Construct the best path based on parents, if game is won"""
 
         # If game is not won, exit
@@ -157,14 +157,23 @@ class Solver:
         # Initialise the list of moves
         moves_list = []
         while self.parents[game_tuple] != ():
-            # Set changed_places as list of places that were changed with the move
+            # Set changed_places as list of places that
+            # were changed with the move
             changed_places = []
 
             # Go over the tuples to find differences
+            sign = None
             for i in range(len(game_tuple)):
                 if game_tuple[i] != self.parents[game_tuple][i]:
                     changed_places.append(i)
-
+                    
+                    # Set sign of move
+                    if sign is None:
+                        if game_tuple[i] == '_':
+                            sign = 1
+                        else:
+                            sign = -1
+                    
                     # Get the car_name
                     if game_tuple[i] == '_':
                         car_name = self.parents[game_tuple][i]
@@ -173,18 +182,13 @@ class Solver:
 
             # Based on changed_places, deduce the move that took place
             car_length = game.cars[car_name].get_length()
-            if changed_places[1] - changed_places[0] == car_length:
-                # Car direction: right
-                moves_list.append((car_name, 1))
-            elif changed_places[0] - changed_places[1] == car_length:
-                # Car direction: left
-                moves_list.append((car_name, -1))
-            elif changed_places[1] - changed_places[0] == game.dimension * car_length:
-                # Car direction: up
-                moves_list.append((car_name, 1))
-            elif changed_places[0] - changed_places[1] == game.dimension * car_length:
-                # Car direction: down
-                moves_list.append((car_name, -1))
+            if abs(changed_places[1] - changed_places[0]) == car_length:
+                # Car direction: horizontal
+                moves_list.append((car_name, sign))
+            elif abs(changed_places[0] - changed_places[1])\
+                    == game.dimension * car_length:
+                # Car direction: vertical
+                moves_list.append((car_name, sign))
             else:
                 raise Exception('Unobtainable move, something went wrong!')
             game_tuple = self.parents[game_tuple]
