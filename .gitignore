@@ -162,3 +162,5 @@ cython_debug/
 # Output files, game.jpeg
 Scripts/Output/
 Scripts/BoardImages/game.jpeg
+Scripts/Solvers/Parents
+Scripts/Solvers/Queues
