@@ -39,32 +39,6 @@ class Queue:
         return self.writer_counter > self.counter_reader
 
 
-class Queue1:
-
-    def __init__(self) -> None:
-        """Initialising the empty queue"""
-
-        self._data: list[tuple[str, ...]] = []
-
-    def enqueue(self, element: tuple[str, ...]) -> None:
-        """Adding element to back of queue"""
-
-        self._data.append(element)
-
-    def dequeue(self) -> tuple[str, ...]:
-        """Remove and return element from front of queue"""
-
-        assert self.size() > 0
-        return self._data.pop(0)
-
-    def size(self) -> int:
-        """Find and return size of queue"""
-        return len(self._data)
-        
-    def is_big_enough(self) -> bool:
-        return self.size() > 0
-
-
 class VisitedStates:
     def __init__(self):
         self.bucket_count = 10000
