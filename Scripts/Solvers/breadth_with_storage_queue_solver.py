@@ -1,7 +1,8 @@
 from game import Game
-import sys
 import os
-import random
+import sys
+from typing import Optional
+
 # set recusion limit
 sys.setrecursionlimit(10000)
 
@@ -16,7 +17,8 @@ class Queue:
     def enqueue(self, element: tuple[str, ...]) -> None:
         """Adding element to back of queue"""
         self.writer_counter += 1
-        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt', 'w') as f:
+        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt',
+                  'w') as f:
             for e in element:
                 f.write(e + ',')
             f.write('\n')
@@ -24,15 +26,16 @@ class Queue:
     def dequeue(self) -> tuple[str, ...]:
         """Remove and return element from front of queue"""
         self.counter_reader += 1
-        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt', 'r') as f:
-            last_line = f.readline()
+        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt',
+                  'r') as f:
+            line = f.readline()
 
         os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
-        
-        last_line = last_line.split(',')
-        last_line = tuple(last_line[:len(last_line)-1])
-        
-        return last_line
+
+        line_list = line.split(',')
+        line_tuple = tuple(line_list[:len(line_list)-1])
+
+        return line_tuple
 
     def is_big_enough(self) -> bool:
         """Find and return size of queue"""
@@ -73,13 +76,10 @@ class Solver:
         self.queue.enqueue(game.tuple_form())
         self.parents = {game.tuple_form(): ()}
         self.original_board = game.tuple_form()
-        #self.counter = 0
 
         while self.queue.is_big_enough():
             # Remove first item from queue
             current_state = self.queue.dequeue()
-            #self.counter += 1
-            #print(self.counter)
 
             # Move to current state
             game.set_game_via_str(current_state)
@@ -87,7 +87,7 @@ class Solver:
 
             # Print game if print_states is True
             if game.get_print_states():
-            	game.show_board()
+                game.show_board()
 
             # If game is won, quit and set best solution steps for game
             if game.is_won():
@@ -107,16 +107,17 @@ class Solver:
                 if game.tuple_form() not in self.parents:
                     self.queue.enqueue(game.tuple_form())
                     self.parents[game.tuple_form()] = current_state
+
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
-                
+
                 # Remove unnecessary moves
                 game.moves.pop()
                 game.moves.pop()
 
         raise Exception('No solution found!\n')
 
-    def get_best_path(self, game: Game) -> list[tuple[str, int]]:
+    def get_best_path(self, game: Game) -> list[tuple[str, Optional[int]]]:
         """Construct the best path based on parents, if game is won"""
 
         # If game is not won, exit
@@ -134,32 +135,29 @@ class Solver:
             changed_places = []
 
             # Go over the tuples to find differences
+            sign = None
             for i in range(len(game_tuple)):
                 if game_tuple[i] != self.parents[game_tuple][i]:
                     changed_places.append(i)
 
+                    # Set sign of move
+                    if sign is None:
+                        if game_tuple[i] == '_':
+                            sign = 1
+                        else:
+                            sign = -1
+
                     # Get the car_name
+                    car_name = game_tuple[i]
                     if game_tuple[i] == '_':
                         car_name = self.parents[game_tuple][i]
-                    else:
-                        car_name = game_tuple[i]
 
             # Based on changed_places, deduce the move that took place
             car_length = game.cars[car_name].get_length()
-            if changed_places[1] - changed_places[0] == car_length:
-                # Car direction: right
-                moves_list.append((car_name, 1))
-            elif changed_places[0] - changed_places[1] == car_length:
-                # Car direction: left
-                moves_list.append((car_name, -1))
-            elif changed_places[1] - changed_places[0]\
+            if abs(changed_places[1] - changed_places[0]) == car_length or \
+                abs(changed_places[0] - changed_places[1])\
                     == game.dimension * car_length:
-                # Car direction: up
-                moves_list.append((car_name, 1))
-            elif changed_places[0] - changed_places[1]\
-                    == game.dimension * car_length:
-                # Car direction: down
-                moves_list.append((car_name, -1))
+                moves_list.append((car_name, sign))
             else:
                 raise Exception('Unobtainable move, something went wrong!')
             game_tuple = self.parents[game_tuple]

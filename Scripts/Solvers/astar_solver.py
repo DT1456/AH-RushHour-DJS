@@ -1,7 +1,7 @@
 from game import Game
 from queue import PriorityQueue
 import sys
-from typing import Union
+from typing import Optional
 
 
 class Solver:
@@ -13,7 +13,8 @@ class Solver:
         Store parents and moves in dict(s) for getting the correct solution
         Use an open and closed set for marking states as open and closed
         """
-        self.open_set: PriorityQueue[tuple[int, int, tuple[str, ...]]] = PriorityQueue()
+        self.open_set: PriorityQueue[tuple[int, int, tuple[str, ...]]] = \
+            PriorityQueue()
         self.closed_set: set[tuple[str, ...]] = set()
         self.moves_cost: dict[tuple[str, ...], int]
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
@@ -21,9 +22,11 @@ class Solver:
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
-        if self.heuristics_choice not in ['h0', 'h1', 'h2', 'h3', 'h1h2', 'h1h3']:
-            raise Exception('Heuristics choice not possible! You chose: ' + self.heuristics_choice)
-        
+        if self.heuristics_choice not in ['h0', 'h1', 'h2', 'h3', 'h1h2',
+                                          'h1h3']:
+            raise Exception('Heuristics choice not possible! You chose: ' +
+                            self.heuristics_choice)
+
         if self.heuristics_choice == 'h0':
             return self.h0(game)
         elif self.heuristics_choice == 'h1':
@@ -42,13 +45,13 @@ class Solver:
 
     def h1(self, game: Game) -> int:
         """Heuristic 1: returns the distance of red car to exit"""
-        return game.dimension - game.cars['X'].get_col()
+        return game.get_dimension() - game.get_car('X').get_col()
 
     def h2(self, game: Game) -> int:
         """Heuristic 2: returns the number of cars in the way of the red car"""
         cars_in_way = 0
-        for j in range(game.cars['X'].get_col() + 1, game.dimension + 1):
-            cars_in_way += (game.board[(game.cars['X'].get_row(), j)]
+        for j in range(game.get_car('X').get_col() + 1, game.dimension + 1):
+            cars_in_way += (game.board[(game.get_car('X').get_row(), j)]
                             not in ['X', '_'])
         return cars_in_way
 
@@ -58,8 +61,8 @@ class Solver:
         Returns the amount of cars blocking the red car and adds 1 if those
         cars are blocked as well.
         """
-        red_car_row = game.cars['X'].get_row()
-        red_car_col = game.cars['X'].get_col()
+        red_car_row = game.get_car('X').get_row()
+        red_car_col = game.get_car('X').get_col()
 
         cars_in_way = 0
         for col_num in range(red_car_col + 1, game.dimension + 1):
@@ -81,7 +84,7 @@ class Solver:
         """
 
         # Set car
-        car = game.cars[car_name]
+        car = game.get_car(car_name)
 
         # Get car specifics
         car_orientation = car.get_orientation()
@@ -124,7 +127,7 @@ class Solver:
 
             # Print game if print_states is True
             if game.get_print_states():
-            	game.show_board()
+                game.show_board()
 
             # If the game is won, print the length
             if game.is_won():
@@ -154,7 +157,7 @@ class Solver:
                                            game.tuple_form()))
                         self.parents[game.tuple_form()] = current_state
                 game.move(car_name, self.reverse_direction(direction))
-                
+
                 # Remove unnecessary moves
                 game.moves.pop()
                 game.moves.pop()
@@ -167,7 +170,7 @@ class Solver:
             return self.get_steps(tuple_form) + 1
         return 0
 
-    def get_best_path(self, game: Game) -> list[tuple[str, int]]:
+    def get_best_path(self, game: Game) -> list[tuple[str, Optional[int]]]:
         """Construct the best path based on parents, if game is won"""
 
         # If game is not won, exit
@@ -189,14 +192,14 @@ class Solver:
             for i in range(len(game_tuple)):
                 if game_tuple[i] != self.parents[game_tuple][i]:
                     changed_places.append(i)
-                    
+
                     # Set sign of move
                     if sign is None:
                         if game_tuple[i] == '_':
                             sign = 1
                         else:
                             sign = -1
-                    
+
                     # Get the car_name
                     if game_tuple[i] == '_':
                         car_name = self.parents[game_tuple][i]
@@ -204,13 +207,10 @@ class Solver:
                         car_name = game_tuple[i]
 
             # Based on changed_places, deduce the move that took place
-            car_length = game.cars[car_name].get_length()
-            if abs(changed_places[1] - changed_places[0]) == car_length:
-                # Car direction: horizontal
-                moves_list.append((car_name, sign))
-            elif abs(changed_places[0] - changed_places[1])\
+            car_length = game.get_car(car_name).get_length()
+            if abs(changed_places[1] - changed_places[0]) == car_length or \
+                abs(changed_places[0] - changed_places[1])\
                     == game.dimension * car_length:
-                # Car direction: vertical
                 moves_list.append((car_name, sign))
             else:
                 raise Exception('Unobtainable move, something went wrong!')

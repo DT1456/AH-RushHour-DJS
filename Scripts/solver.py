@@ -12,6 +12,7 @@ random.seed(123456789)
 
 tracemalloc.start()
 
+
 def main() -> None:
     """Main program: run your favorite solver_script on any of the games"""
 
@@ -27,18 +28,18 @@ def main() -> None:
 
     # Set solver
     SolverClass = __import__('Solvers.' + solver_name, fromlist=['Solver'])
-    
+
     # Use heuristics choice if given
     if len(argv) == 6:
-    	solver = SolverClass.Solver(argv[5])	
+        solver = SolverClass.Solver(argv[5])
     else:
-    	solver = SolverClass.Solver()
+        solver = SolverClass.Solver()
     solver_name = solver_name + ('' if len(argv) != 6 else argv[5])
 
     # Welcome the user
     text = 'Started solving game ' + str(game_number) + ' for a total of ' + \
-          str(amount_of_times) + ' times using solver: ' + solver_name + \
-          '...\n'
+        str(amount_of_times) + ' times using solver: ' + solver_name + \
+        '...\n'
     print(text)
 
     # Save start_time and initialise states_list to store the amount of steps
@@ -60,7 +61,7 @@ def main() -> None:
 
         # Only store data if game is won. Only print csv if fastest attempt
         if game.is_won():
-            
+
             # State based versions (breadth, depth, astar) versus random
             if game.get_visited_state_count() == 0:
                 # Add states amount
@@ -78,45 +79,48 @@ def main() -> None:
         # Print step completed
         if game.is_won():
             text += f'Completed step {i + 1}, game was ' + \
-                'solved' + \
-                '. MAX MB RAM used: ' + str(int(tracemalloc.get_traced_memory()[1] / 1000000)) + '\n'
+                'solved. MAX MB RAM used: ' + \
+                str(int(tracemalloc.get_traced_memory()[1] / 1000000)) + '\n'
         else:
             text += f'Completed step {i + 1}, game was ' + \
-                ' NOT solved' + \
-                '. MAX MB RAM used: ' + str(int(tracemalloc.get_traced_memory()[1] / 1000000)) + '\n'
+                ' NOT solved. MAX MB RAM used: ' + \
+                str(int(tracemalloc.get_traced_memory()[1] / 1000000)) + '\n'
         print(f'Completed step {i + 1}, game was '
               f'{"" if game.is_won() else "NOT "}solved'
-              f'. MAX MB RAM used: {int(tracemalloc.get_traced_memory()[1] / 1000000)}')
+              f'. MAX MB RAM used: '
+              f'{int(tracemalloc.get_traced_memory()[1] / 1000000)}')
         tracemalloc.stop()
-    
+
     # Write amount of steps to file (for performing statistical analysis)
-    with open('Output/'+ str(game_number) + ',' +
-        str(amount_of_times) + ',' + solver_name +'_best_steps.csv', 'w', encoding='UTF8', newline='') as f:
-        
+    with open('Output/' + str(game_number) + ',' + str(amount_of_times) +
+              ',' + solver_name + '_best_steps.csv', 'w', encoding='UTF8',
+              newline='') as f:
+
         # Set csv writer
         csv_writer = csv.writer(f)
 
         # Write steps
         for steps in best_solution_steps_list:
             csv_writer.writerow([steps])
-            
+
     print(get_statistics_string(states_list, amount_of_times, start_time,
-                                    best_solution_steps_list))
-        
+                                best_solution_steps_list))
+
     # Write to txt file
-    
-    with open('Output/'+ str(game_number) + ',' +
-      str(amount_of_times) + ',' + solver_name +'.txt', 'w', encoding='UTF8', newline='') as f:
+
+    with open('Output/' + str(game_number) + ',' + str(amount_of_times) +
+              ',' + solver_name + '.txt', 'w', encoding='UTF8',
+              newline='') as f:
 
         # Write text
         f.write(text)
-        
+
         # Empty line
         f.write('\n')
 
         # Statistics
         f.write(get_statistics_string(states_list, amount_of_times, start_time,
-                                    best_solution_steps_list))
+                                      best_solution_steps_list))
 
 
 def get_game_csv_string(game_number: int) -> str:
@@ -208,9 +212,10 @@ def get_statistics_string(states_list: list[int], amount_of_times: int,
     statistics_string += 'Amount of repetitions: {0}\n'.format(amount_of_times)
 
     # Add average, max and min of steps in states_list
-    statistics_string += 'Average number of boards visited to solve: {0:0.0f}\n'.format(
-        sum(states_list) / len(states_list))
-    statistics_string += 'Max number of boards visited to solve: {0}\n'.format(
+    statistics_string += 'Average number of boards visited to solve: '
+    statistics_string += '{0:0.0f}'.format(sum(states_list) / len(states_list))
+    statistics_string += '\nMax number of boards visited to solve: '
+    statistics_string += '{0}\n'.format(
         max(states_list))
     statistics_string += 'Min number of boards visited to solve: {0}\n'.format(
         min(states_list))

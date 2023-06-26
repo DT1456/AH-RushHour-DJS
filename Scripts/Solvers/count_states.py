@@ -1,6 +1,6 @@
 from game import Game
-import sys
 import os
+import sys
 
 # set recusion limit
 sys.setrecursionlimit(10000)
@@ -16,7 +16,8 @@ class Queue:
     def enqueue(self, element: tuple[str, ...]) -> None:
         """Adding element to back of queue"""
         self.writer_counter += 1
-        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt', 'w') as f:
+        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt',
+                  'w') as f:
             for e in element:
                 f.write(e + ',')
             f.write('\n')
@@ -24,15 +25,16 @@ class Queue:
     def dequeue(self) -> tuple[str, ...]:
         """Remove and return element from front of queue"""
         self.counter_reader += 1
-        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt', 'r') as f:
-            last_line = f.readline()
+        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt',
+                  'r') as f:
+            line = f.readline()
 
         os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
-        
-        last_line = last_line.split(',')
-        last_line = tuple(last_line[:len(last_line)-1])
-        
-        return last_line
+
+        line_list = line.split(',')
+        line_tuple = tuple(line_list[:len(line_list)-1])
+
+        return line_tuple
 
     def is_big_enough(self) -> bool:
         """Find and return size of queue"""
@@ -40,28 +42,28 @@ class Queue:
 
 
 class VisitedStates:
-    def __init__(self):
+    def __init__(self) -> None:
         self.bucket_count = 10000
         for i in range(self.bucket_count):
-            with open('Solvers/VisitedStates/' + str(i), 'w') as f:
+            with open('Solvers/VisitedStates/' + str(i), 'w'):
                 pass
 
-    def add(self, game_tuple):
+    def add(self, game_tuple: tuple[str, ...]) -> None:
         file_name = hash(game_tuple) % self.bucket_count
         with open('Solvers/VisitedStates/' + str(file_name), 'a') as f:
             for k in game_tuple:
                 f.write(k + ',')
             f.write('\n')
-    
-    def is_in(self, game_tuple):
+
+    def is_in(self, game_tuple: tuple[str, ...]) -> bool:
         file_name = hash(game_tuple) % self.bucket_count
         with open('Solvers/VisitedStates/' + str(file_name), 'r') as f:
             while True:
-                line = f.readline().split(',')
-                line = tuple(line[:len(line)-1])
-                if len(line) == 0:
+                line_list = f.readline().split(',')
+                line_tuple = tuple(line_list[:len(line_list)-1])
+                if len(line_tuple) == 0:
                     return False
-                if line == game_tuple:
+                if line_tuple == game_tuple:
                     return True
 
 
@@ -111,11 +113,11 @@ class Solver:
 
             # Print game if print_states is True
             if game.get_print_states():
-            	game.show_board()
+                game.show_board()
 
             # If game is won, quit and set best solution steps for game
             if self.winning_state == () and game.is_won():
-            	self.winning_state = game.tuple_form()
+                self.winning_state = game.tuple_form()
 
             moves_list = self.get_possible_moves(game)
 

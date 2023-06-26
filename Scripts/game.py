@@ -12,7 +12,8 @@ from typing import Union
 
 class Game:
 
-    def __init__(self, file_name: str, dimension: int, print_states: bool = False) -> None:
+    def __init__(self, file_name: str, dimension: int,
+                 print_states: bool = False) -> None:
         """Initialises game using file_name and dimension"""
 
         # Initialise cars and board as dictionaries, set dimension and moves
@@ -38,8 +39,8 @@ class Game:
         """Loads the board using dimension and the dictionary cars"""
 
         # Fill the empty board
-        for i in range(self.dimension):
-            for j in range(self.dimension):
+        for i in range(self.get_dimension()):
+            for j in range(self.get_dimension()):
                 self.board[(i + 1, j + 1)] = '_'
 
         # Go over cars and fill in values on the board
@@ -80,7 +81,7 @@ class Game:
 
         If car 'X' can be moved off the board, game is won
         """
-        return self.cars['X'].get_col() == self.dimension - 1
+        return self.cars['X'].get_col() == self.get_dimension() - 1
 
     def is_valid_move(self, car_name: str, direction: int) -> bool:
         """Checks and returns whether a certain move is valid"""
@@ -194,8 +195,8 @@ class Game:
 
         # Build the board in a loop by going over its values
         board_string = ''
-        for i in range(self.dimension):
-            for j in range(self.dimension):
+        for i in range(self.get_dimension()):
+            for j in range(self.get_dimension()):
                 board_string += ' ' + self.board[(i + 1, j + 1)] + ' '
             board_string += '\n\n'
         return board_string
@@ -207,12 +208,12 @@ class Game:
         pixel_to_square = 50
 
         # Set empty image
-        game_image = Image.new('RGB', (self.dimension * pixel_to_square,
-                                       self.dimension * pixel_to_square))
+        game_image = Image.new('RGB', (self.get_dimension() * pixel_to_square,
+                                       self.get_dimension() * pixel_to_square))
 
         # Fill image with empty tiles
-        for i in range(self.dimension):
-            for j in range(self.dimension):
+        for i in range(self.get_dimension()):
+            for j in range(self.get_dimension()):
                 game_image.paste(Image.open('BoardImages/empty_tile.jpeg'),
                                  (i * pixel_to_square, j * pixel_to_square))
 
@@ -297,21 +298,29 @@ class Game:
         """Get all cars"""
         return self.cars
 
+    def get_car(self, car_name: str) -> Car:
+        """Get a car"""
+        return self.get_cars[car_name]
+
+    def get_dimension(self) -> int:
+        """Return dimension"""
+        return self.dimension
+
     def get_moves(self) -> list[list[Union[int, str]]]:
         """Get all moves"""
         return self.moves
 
     def set_moves(self, best_moves: list[list[Union[int, str]]]) -> None:
-    	"""Set all moves"""
-    	self.moves = best_moves
+        """Set all moves"""
+        self.moves = best_moves
 
     def tuple_form(self) -> tuple[str, ...]:
         """Return game in tuple form (sparse)"""
 
         # Initialise list and fill
         lst = []
-        for i in range(self.dimension):
-            for j in range(self.dimension):
+        for i in range(self.get_dimension()):
+            for j in range(self.get_dimension()):
                 lst.append(self.board[(i + 1, j + 1)])
 
         # Return list as tuple
@@ -327,8 +336,8 @@ class Game:
             # While car_names not empty: iterate over board
             i: int = 0
             j: int = 0
-            while len(car_names) != 0 and i + j < 2 * self.dimension:
-                car_name = game_tuple[i * self.dimension + j]
+            while len(car_names) != 0 and i + j < 2 * self.get_dimension():
+                car_name = game_tuple[i * self.get_dimension() + j]
 
                 if car_name in car_names:
                     self.cars[car_name].set_row(i + 1)
@@ -336,7 +345,7 @@ class Game:
 
                     car_names.remove(car_name)
 
-                if j == self.dimension - 1:
+                if j == self.get_dimension() - 1:
                     i, j = i + 1, 0
                 else:
                     j += 1

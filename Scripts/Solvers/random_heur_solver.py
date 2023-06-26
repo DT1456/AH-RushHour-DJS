@@ -11,7 +11,7 @@ class Solver:
         self.current_solution_steps = 0
         self.best_solution_steps = sys.maxsize
         self.original_board: tuple[str, ...] = ()
-        self.winning_strategy: tuple[str, ...] ()
+        self.winning_strategy: tuple[str, ...] = ()
         self.visited_states: set[str] = set()
 
     def solve(self, game: Game) -> Game:
@@ -26,7 +26,7 @@ class Solver:
 
             # Solve the game once
             game = self.solve_once(game)
-            
+
         # Make sure the game is in winning state if it exists
         if self.winning_strategy != ():
             game.set_game_via_str(self.winning_strategy)
@@ -45,7 +45,7 @@ class Solver:
 
             # Print game if print_states is True
             if game.get_print_states():
-            	game.show_board()
+                game.show_board()
             steps += 1
 
         if game.is_won():
@@ -68,14 +68,14 @@ class Solver:
         move = random.choice(moves_list)
         car_name, direction = move
         game.move(car_name, direction)
-        
+
         while str(game) in self.visited_states and len(moves_list) > 1:
             moves_list.remove(move)
             game.move(car_name, self.reverse_direction(direction))
             move = random.choice(moves_list)
             car_name, direction = move
             game.move(car_name, direction)
-        
+
         if len(moves_list) == 1:
             move = random.choice(moves_list)
             car_name, direction = move
@@ -84,7 +84,7 @@ class Solver:
 
         return game
 
-    def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
+    def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
 
         # Initialise moves_list as an empty list of possible moves
@@ -98,7 +98,7 @@ class Solver:
 
         # Return the filled list of moves
         return moves_list
-    
+
     def reverse_direction(self, direction: int) -> int:
         """Defining and returning a reversed direction"""
         return -direction

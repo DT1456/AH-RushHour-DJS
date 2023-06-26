@@ -19,7 +19,7 @@ class Solver:
 
             # Print game if print_states is True
             if game.get_print_states():
-            	game.show_board()
+                game.show_board()
             steps += 1
 
         return game
@@ -39,7 +39,7 @@ class Solver:
 
         return game
 
-    def get_possible_moves(self, game: Game) -> list[tuple[str, str]]:
+    def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
 
         # Initialise moves_list as an empty list of possible moves
