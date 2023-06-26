@@ -34,39 +34,6 @@ class Queue:
         return self.size() > 0
 
 
-class Queue1:
-
-    def __init__(self) -> None:
-        """Initialising the empty queue"""
-        self.counter_reader = 0
-        self.writer_counter = 0
-
-    def enqueue(self, element: tuple[str, ...]) -> None:
-        """Adding element to back of queue"""
-        self.writer_counter += 1
-        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt', 'w') as f:
-            for e in element:
-                f.write(e + ',')
-            f.write('\n')
-
-    def dequeue(self) -> tuple[str, ...]:
-        """Remove and return element from front of queue"""
-        self.counter_reader += 1
-        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt', 'r') as f:
-            last_line = f.readline()
-
-        os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
-        
-        last_line = last_line.split(',')
-        last_line = tuple(last_line[:len(last_line)-1])
-        
-        return last_line
-
-    def is_big_enough(self) -> bool:
-        """Find and return size of queue"""
-        return self.writer_counter > self.counter_reader
-
-
 class Parents:
 
     def add(self, key_tuple, value_tuple):
