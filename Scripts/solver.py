@@ -88,6 +88,18 @@ def main() -> None:
               f'{"" if game.is_won() else "NOT "}solved'
               f'. MAX MB RAM used: {int(tracemalloc.get_traced_memory()[1] / 1000000)}')
         tracemalloc.stop()
+    
+    # Write amount of steps to file (for performing statistical analysis)
+    with open('Output/'+ str(game_number) + ',' +
+        str(amount_of_times) + ',' + solver_name +'_best_steps.csv', 'w', encoding='UTF8', newline='') as f:
+        
+        # Set csv writer
+        csv_writer = csv.writer(f)
+
+        # Write steps
+        for steps in best_solution_steps_list:
+            csv_writer.writerow([steps])
+            
     print(get_statistics_string(states_list, amount_of_times, start_time,
                                     best_solution_steps_list))
         
