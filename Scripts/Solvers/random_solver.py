@@ -16,6 +16,10 @@ class Solver:
         # While game not won, keep playing moves and incrementing steps
         while not game.is_won():
             game = self.play_move(game)
+
+            # Print game if print_states is True
+            if game.get_print_states():
+            	game.show_board()
             steps += 1
 
         return game

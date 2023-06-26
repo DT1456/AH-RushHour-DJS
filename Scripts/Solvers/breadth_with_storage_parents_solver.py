@@ -106,6 +106,10 @@ class Solver:
             game.set_game_via_str(current_state)
             game.increase_visited_state_count()
 
+            # Print game if print_states is True
+            if game.get_print_states():
+            	game.show_board()
+
             # If game is won, quit and set best solution steps for game
             if game.is_won():
                 game.set_moves(self.get_best_path(game))
