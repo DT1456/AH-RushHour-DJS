@@ -4,8 +4,12 @@ import solver
 
 
 def main():
-    for game_number in [1, 2, 3]:
+    for game_number in [1]:
         solver_name = 'breadth_with_storage_parents_solver'
+        amount_of_times = 1
+        run(game_number, solver_name, amount_of_times)
+        
+        solver_name = 'breadth_with_storage_queue_solver'
         amount_of_times = 1
         run(game_number, solver_name, amount_of_times)
         
@@ -21,6 +25,10 @@ def main():
             solver_name = 'astar_solver'
             amount_of_times = 1
             run_with_heuristics(game_number, solver_name, amount_of_times, heuristics_choice)
+            
+        solver_name = 'count_states'
+        amount_of_times = 1
+        run(game_number, solver_name, amount_of_times)
 
 
 def run(game_number: int, solver_name: str, amount_of_times: int):

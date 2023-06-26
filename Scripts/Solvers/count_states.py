@@ -95,7 +95,8 @@ class Solver:
 
     def __init__(self) -> None:
         """Initialising parent states dict, queue and original board"""
-        os.system('mkdir Solvers/VisitedStates')
+        if not os.path.exists('Solvers/VisitedStates'):
+            os.system('mkdir Solvers/VisitedStates')
         self.queue = Queue()
         self.original_board: tuple[str, ...]
         self.winning_state: tuple[str, ...] = ()

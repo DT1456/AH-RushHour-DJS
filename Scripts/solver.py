@@ -33,11 +33,12 @@ def main() -> None:
     	solver = SolverClass.Solver(argv[5])	
     else:
     	solver = SolverClass.Solver()
+    solver_name = solver_name + ('' if len(argv) != 6 else argv[5])
 
     # Welcome the user
     text = 'Started solving game ' + str(game_number) + ' for a total of ' + \
           str(amount_of_times) + ' times using solver: ' + solver_name + \
-          '.py...\n'
+          '...\n'
     print(text)
 
     # Save start_time and initialise states_list to store the amount of steps
@@ -91,8 +92,9 @@ def main() -> None:
                                     best_solution_steps_list))
         
     # Write to txt file
+    
     with open('Output/'+ str(game_number) + ',' +
-      str(amount_of_times) + ',' + solver_name + '.txt', 'w', encoding='UTF8', newline='') as f:
+      str(amount_of_times) + ',' + solver_name +'.txt', 'w', encoding='UTF8', newline='') as f:
 
         # Write text
         f.write(text)
