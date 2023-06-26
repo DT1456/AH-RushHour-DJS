@@ -27,7 +27,12 @@ def main() -> None:
 
     # Set solver
     SolverClass = __import__('Solvers.' + solver_name, fromlist=['Solver'])
-    solver = SolverClass.Solver()
+    
+    # Use heuristics choice if given
+    if len(argv) == 6:
+    	solver = SolverClass.Solver(argv[5])	
+    else:
+    	solver = SolverClass.Solver()
 
     # Welcome the user
     text = 'Started solving game ' + str(game_number) + ' for a total of ' + \
@@ -149,16 +154,18 @@ def validate_input(argv: list[str]) -> None:
     """Validate the CLI input"""
 
     # Return without warning if correct amount of arguments
-    if len(argv) in [4, 5]:
+    if len(argv) in [5, 6]:
         return
     show_usage_and_exit()
 
 
 def show_usage_and_exit() -> None:
     print('Usage: python3 solver.py game_number solver_name amount_of_times '
-          '[verbose]\nIf verbose (default = 0) is 0, do not print the board.'
-          ' If verbose is 1, print board in ASCII. If verbose is 2, print '
-          'board as picture using Terminology.')
+          'verbose [heuristics_choice]\nIf verbose is 0, do not'
+          ' print the board. If verbose is 1, print board in ASCII. If verbose'
+          ' is 2, print board as picture using Terminology.\nWhen using astar'
+          ' you can specify heuristics as h0, h1, h2, h3, h1h2, h1h3 (default'
+          ' h0).')
     exit(1)
 
 
@@ -166,11 +173,9 @@ def set_verbose_option(argv: list[str]) -> int:
     """Set the verbose option: determines whether to print game during solve"""
 
     # Check print option and notify if incorrect
-    if len(argv) > 4 and int(argv[4]) not in [0, 1, 2]:
+    if int(argv[4]) not in [0, 1, 2]:
         show_usage_and_exit()
-    elif len(argv) > 4:
-        return int(argv[4])
-    return 0
+    return int(argv[4])
 
 
 def get_statistics_string(states_list: list[int], amount_of_times: int,

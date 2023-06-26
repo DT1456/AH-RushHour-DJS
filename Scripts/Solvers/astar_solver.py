@@ -6,7 +6,7 @@ from typing import Union
 
 class Solver:
 
-    def __init__(self) -> None:
+    def __init__(self, heuristics_choice: str = 'h0') -> None:
         """Initialises Astar solver
 
         Use a PriorityQueue for prioritising the next state
@@ -17,14 +17,23 @@ class Solver:
         self.closed_set: set[tuple[str, ...]] = set()
         self.moves_cost: dict[tuple[str, ...], int]
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
+        self.heuristics_choice = heuristics_choice
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
-        # return self.h0(game)
-        # return self.h1(game)
-        # return self.h2(game)
-        # return self.h3(game)
-        # return self.h1(game) + self.h2(game)
+        if self.heuristics_choice not in ['h0', 'h1', 'h2', 'h3', 'h1h2', 'h1h3']:
+            raise Exception('Heuristics choice not possible! You chose: ' + self.heuristics_choice)
+        
+        if self.heuristics_choice == 'h0':
+            return self.h0(game)
+        elif self.heuristics_choice == 'h1':
+            return self.h1(game)
+        elif self.heuristics_choice == 'h2':
+            return self.h2(game)
+        elif self.heuristics_choice == 'h3':
+            return self.h3(game)
+        elif self.heuristics_choice == 'h1h2':
+            return self.h1(game) + self.h2(game)
         return self.h1(game) + self.h3(game)
 
     def h0(self, game: Game) -> int:
