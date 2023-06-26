@@ -13,18 +13,18 @@ def main():
         amount_of_times = 1
         run(game_number, solver_name, amount_of_times)
         
-        solver_name = 'breadth_solver'
-        amount_of_times = 1
-        run(game_number, solver_name, amount_of_times)
+        #solver_name = 'breadth_solver'
+        #amount_of_times = 1
+        #run(game_number, solver_name, amount_of_times)
         
-        solver_name = 'depth_solver'
-        amount_of_times = 1
-        run(game_number, solver_name, amount_of_times)
+        #solver_name = 'depth_solver'
+        #amount_of_times = 1
+        #run(game_number, solver_name, amount_of_times)
         
-        for heuristics_choice in ['h0', 'h1', 'h2', 'h3', 'h1h2', 'h1h3']:
-            solver_name = 'astar_solver'
-            amount_of_times = 1
-            run_with_heuristics(game_number, solver_name, amount_of_times, heuristics_choice)
+        #for heuristics_choice in ['h0', 'h1', 'h2', 'h3', 'h1h2', 'h1h3']:
+        #    solver_name = 'astar_solver'
+        #    amount_of_times = 1
+        #    run_with_heuristics(game_number, solver_name, amount_of_times, heuristics_choice)
             
         solver_name = 'count_states'
         amount_of_times = 1

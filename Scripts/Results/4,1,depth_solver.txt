@@ -1,0 +1,11 @@
+Started solving game 4 for a total of 1 times using solver: depth_solver...
+Completed step 1, game was solved. MAX MB RAM used: 111
+
+Finished in 14.0 seconds
+Amount of moves best solution: 7606
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 7752
+Max number of boards visited to solve: 7752
+Min number of boards visited to solve: 7752

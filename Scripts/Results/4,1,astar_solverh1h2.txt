@@ -1,0 +1,11 @@
+Started solving game 4 for a total of 1 times using solver: astar_solverh1h2.py...
+Completed step 1, game was solved. MAX MB RAM used: 454
+
+Finished in 150.3 seconds
+Amount of moves best solution: 51
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 109927
+Max number of boards visited to solve: 109927
+Min number of boards visited to solve: 109927
