@@ -12,7 +12,7 @@ from typing import Union
 
 class Game:
 
-    def __init__(self, file_name: str, dimension: int) -> None:
+    def __init__(self, file_name: str, dimension: int, print_states: bool = False) -> None:
         """Initialises game using file_name and dimension"""
 
         # Initialise cars and board as dictionaries, set dimension and moves
@@ -32,6 +32,7 @@ class Game:
         # Initialise the best solution steps at maxsize
         self.best_solution_steps = maxsize
         self.visited_state_count = 0
+        self.print_states = print_states
 
     def load_board(self) -> None:
         """Loads the board using dimension and the dictionary cars"""
@@ -263,6 +264,10 @@ class Game:
     def get_imgcat_print(self) -> bool:
         """Return imgcat print option"""
         return self.imgcat_print
+
+    def get_print_states(self) -> bool:
+        """Get print_states, indicating whether game should be printed"""
+        return self.print_states
 
     def output_to_csv(self) -> None:
         """Store moves as output.csv"""

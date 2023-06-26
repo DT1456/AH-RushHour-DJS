@@ -51,7 +51,7 @@ def main() -> None:
         tracemalloc.start()
         # Initialise game
         game = Game(get_game_csv_string(game_number),
-                    get_game_dimension(game_number))
+                    get_game_dimension(game_number), verbose in [1, 2])
         print_game(game, verbose)
 
         # Solve the game, storing the number of steps it took
