@@ -93,6 +93,10 @@ class Solver:
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
 
+                # Remove unnecessary moves
+                game.moves.pop()
+                game.moves.pop()
+
         raise Exception('No solution found!\n')
 
     def get_best_path(self, game: Game) -> list[tuple[str, int]]:

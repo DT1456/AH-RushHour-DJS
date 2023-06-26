@@ -154,6 +154,10 @@ class Solver:
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
 
+                # Remove unnecessary moves
+                game.moves.pop()
+                game.moves.pop()
+
         # Cleanup
         os.system('rm -r Solvers/VisitedStates')
         os.system('mkdir Solvers/VisitedStates')

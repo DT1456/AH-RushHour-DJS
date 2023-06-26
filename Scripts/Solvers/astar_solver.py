@@ -150,6 +150,11 @@ class Solver:
                                            game.tuple_form()))
                         self.parents[game.tuple_form()] = current_state
                 game.move(car_name, self.reverse_direction(direction))
+                
+                # Remove unnecessary moves
+                game.moves.pop()
+                game.moves.pop()
+
         raise Exception('The game can not be solved via astar + heuristics!')
 
     def get_steps(self, tuple_form: tuple[str, ...]) -> int:

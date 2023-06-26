@@ -105,6 +105,10 @@ class Solver:
                     self.parents[game.tuple_form()] = current_state
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
+                
+                # Remove unnecessary moves
+                game.moves.pop()
+                game.moves.pop()
 
         raise Exception('No solution found!\n')
 
