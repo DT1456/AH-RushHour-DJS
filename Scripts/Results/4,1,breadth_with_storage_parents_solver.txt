@@ -1,0 +1,11 @@
+Started solving game 4 for a total of 1 times using solver: breadth_with_storage_parents_solver...
+Completed step 1, game was solved. MAX MB RAM used: 48
+
+Finished in 615.3 seconds
+Amount of moves best solution: 51
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 330486
+Max number of boards visited to solve: 330486
+Min number of boards visited to solve: 330486
