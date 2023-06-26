@@ -1,0 +1,11 @@
+Started solving game 2 for a total of 1 times using solver: astar_solverh3...
+Completed step 1, game was solved. MAX MB RAM used: 4
+
+Finished in 2.2 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3457
+Max number of boards visited to solve: 3457
+Min number of boards visited to solve: 3457

@@ -1,0 +1,398 @@
+Started solving game 1 for a total of 1 times using solver: breadth_with_storage_parents_solver...
+
+Storage usage (MB):  0
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.5 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 589
+Max number of boards visited to solve: 589
+Min number of boards visited to solve: 589
+
+Started solving game 1 for a total of 1 times using solver: breadth_with_storage_queue_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.4 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 589
+Max number of boards visited to solve: 589
+Min number of boards visited to solve: 589
+
+Started solving game 1 for a total of 1 times using solver: breadth_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.2 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 589
+Max number of boards visited to solve: 589
+Min number of boards visited to solve: 589
+
+Started solving game 1 for a total of 1 times using solver: depth_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.1 seconds
+Amount of moves best solution: 115
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 137
+Max number of boards visited to solve: 137
+Min number of boards visited to solve: 137
+
+Started solving game 1 for a total of 1 times using solver: astar_solverh0...
+
+Completed step 1, game was solved. MAX MB RAM used: 1
+Finished in 0.3 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 530
+Max number of boards visited to solve: 530
+Min number of boards visited to solve: 530
+
+Started solving game 1 for a total of 1 times using solver: astar_solverh1...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.2 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 399
+Max number of boards visited to solve: 399
+Min number of boards visited to solve: 399
+
+Started solving game 1 for a total of 1 times using solver: astar_solverh2...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.3 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 499
+Max number of boards visited to solve: 499
+Min number of boards visited to solve: 499
+
+Started solving game 1 for a total of 1 times using solver: astar_solverh3...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.2 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 391
+Max number of boards visited to solve: 391
+Min number of boards visited to solve: 391
+
+Started solving game 1 for a total of 1 times using solver: astar_solverh1h2...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.2 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 319
+Max number of boards visited to solve: 319
+Min number of boards visited to solve: 319
+
+Started solving game 1 for a total of 1 times using solver: astar_solverh1h3...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 0.2 seconds
+Amount of moves best solution: 35
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 300
+Max number of boards visited to solve: 300
+Min number of boards visited to solve: 300
+
+Started solving game 1 for a total of 1 times using solver: count_states...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 1.4 seconds
+Amount of moves best solution: 0
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 819
+Max number of boards visited to solve: 819
+Min number of boards visited to solve: 819
+
+Started solving game 2 for a total of 1 times using solver: breadth_with_storage_parents_solver...
+
+Storage usage (MB):  0
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 3.1 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3830
+Max number of boards visited to solve: 3830
+Min number of boards visited to solve: 3830
+
+Started solving game 2 for a total of 1 times using solver: breadth_with_storage_queue_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 2
+Finished in 2.5 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3830
+Max number of boards visited to solve: 3830
+Min number of boards visited to solve: 3830
+
+Started solving game 2 for a total of 1 times using solver: breadth_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 2
+Finished in 1.7 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3830
+Max number of boards visited to solve: 3830
+Min number of boards visited to solve: 3830
+
+Started solving game 2 for a total of 1 times using solver: depth_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 2
+Finished in 0.3 seconds
+Amount of moves best solution: 477
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 594
+Max number of boards visited to solve: 594
+Min number of boards visited to solve: 594
+
+Started solving game 2 for a total of 1 times using solver: astar_solverh0...
+
+Completed step 1, game was solved. MAX MB RAM used: 4
+Finished in 2.3 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3821
+Max number of boards visited to solve: 3821
+Min number of boards visited to solve: 3821
+
+Started solving game 2 for a total of 1 times using solver: astar_solverh1...
+
+Completed step 1, game was solved. MAX MB RAM used: 4
+Finished in 2.0 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3229
+Max number of boards visited to solve: 3229
+Min number of boards visited to solve: 3229
+
+Started solving game 2 for a total of 1 times using solver: astar_solverh2...
+
+Completed step 1, game was solved. MAX MB RAM used: 4
+Finished in 2.3 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3730
+Max number of boards visited to solve: 3730
+Min number of boards visited to solve: 3730
+
+Started solving game 2 for a total of 1 times using solver: astar_solverh3...
+
+Completed step 1, game was solved. MAX MB RAM used: 4
+Finished in 2.2 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 3457
+Max number of boards visited to solve: 3457
+Min number of boards visited to solve: 3457
+
+Started solving game 2 for a total of 1 times using solver: astar_solverh1h2...
+
+Completed step 1, game was solved. MAX MB RAM used: 3
+Finished in 1.7 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 2759
+Max number of boards visited to solve: 2759
+Min number of boards visited to solve: 2759
+
+Started solving game 2 for a total of 1 times using solver: astar_solverh1h3...
+
+Completed step 1, game was solved. MAX MB RAM used: 3
+Finished in 1.5 seconds
+Amount of moves best solution: 29
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 2418
+Max number of boards visited to solve: 2418
+Min number of boards visited to solve: 2418
+
+Started solving game 2 for a total of 1 times using solver: count_states...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 18.2 seconds
+Amount of moves best solution: 0
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 13842
+Max number of boards visited to solve: 13842
+Min number of boards visited to solve: 13842
+
+Started solving game 3 for a total of 1 times using solver: breadth_with_storage_parents_solver...
+
+Storage usage (MB):  1
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 6.6 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8678
+Max number of boards visited to solve: 8678
+Min number of boards visited to solve: 8678
+
+Started solving game 3 for a total of 1 times using solver: breadth_with_storage_queue_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 5
+Finished in 5.1 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8678
+Max number of boards visited to solve: 8678
+Min number of boards visited to solve: 8678
+
+Started solving game 3 for a total of 1 times using solver: breadth_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 5
+Finished in 3.4 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8678
+Max number of boards visited to solve: 8678
+Min number of boards visited to solve: 8678
+
+Started solving game 3 for a total of 1 times using solver: depth_solver...
+
+Completed step 1, game was solved. MAX MB RAM used: 6
+Finished in 1.0 seconds
+Amount of moves best solution: 1382
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 1961
+Max number of boards visited to solve: 1961
+Min number of boards visited to solve: 1961
+
+Started solving game 3 for a total of 1 times using solver: astar_solverh0...
+
+Completed step 1, game was solved. MAX MB RAM used: 10
+Finished in 4.8 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8703
+Max number of boards visited to solve: 8703
+Min number of boards visited to solve: 8703
+
+Started solving game 3 for a total of 1 times using solver: astar_solverh1...
+
+Completed step 1, game was solved. MAX MB RAM used: 9
+Finished in 4.8 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8598
+Max number of boards visited to solve: 8598
+Min number of boards visited to solve: 8598
+
+Started solving game 3 for a total of 1 times using solver: astar_solverh2...
+
+Completed step 1, game was solved. MAX MB RAM used: 10
+Finished in 4.8 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8667
+Max number of boards visited to solve: 8667
+Min number of boards visited to solve: 8667
+
+Started solving game 3 for a total of 1 times using solver: astar_solverh3...
+
+Completed step 1, game was solved. MAX MB RAM used: 10
+Finished in 4.8 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8653
+Max number of boards visited to solve: 8653
+Min number of boards visited to solve: 8653
+
+Started solving game 3 for a total of 1 times using solver: astar_solverh1h2...
+
+Completed step 1, game was solved. MAX MB RAM used: 9
+Finished in 4.7 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8393
+Max number of boards visited to solve: 8393
+Min number of boards visited to solve: 8393
+
+Started solving game 3 for a total of 1 times using solver: astar_solverh1h3...
+
+Completed step 1, game was solved. MAX MB RAM used: 9
+Finished in 4.7 seconds
+Amount of moves best solution: 83
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 8307
+Max number of boards visited to solve: 8307
+Min number of boards visited to solve: 8307
+
+Started solving game 3 for a total of 1 times using solver: count_states...
+
+Completed step 1, game was solved. MAX MB RAM used: 0
+Finished in 12.3 seconds
+Amount of moves best solution: 0
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 11253
+Max number of boards visited to solve: 11253
+Min number of boards visited to solve: 11253
