@@ -156,6 +156,7 @@ class Solver:
 
         # Cleanup
         os.system('rm -r Solvers/VisitedStates')
+        os.system('mkdir Solvers/VisitedStates')
         if self.winning_state == ():
             raise Exception('Something went wrong, game not solvable!\n')
         else:
