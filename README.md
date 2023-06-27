@@ -7,6 +7,9 @@ Our project consist of an implementation of the Rush hour game for the course *A
 
 ## Table of contents
 
+[The size of our problem](#what-is-the-size-of-our-problem)
+- [Statespace](#statespace)
+
 [Directories and files](#directories-and-files)
 - [Scripts](#scripts)
 - [Solvers](#solvers)
@@ -21,6 +24,23 @@ Our project consist of an implementation of the Rush hour game for the course *A
 - [iTerm2: imgcat (MacOS)](#imgcat)
 
 <br>
+
+## What is the size of our problem?
+
+### **Statespace:**
+
+| Board number | Statespace |
+|    :---      |    :---:   |
+| Board 1 6x6  | 2025000    |
+| Board 2 6x6  | 13500000   |
+| Board 3 6x6  | 1000000    |
+| Board 4 9x9  | 6.78E+12   |
+| Board 5 9x9  | 1.87E+17   |
+| Board 6 9x9  | 1.36E+18   |
+| Board 7 12x12| 1.20E+30   |
+
+> See ... for further explanation on how we calculated the statespaces. HIER NOG INFO TYPEN!
+
 
 ## Directories and files
 
@@ -37,13 +57,10 @@ This directory contains all the solvers that the player can choose from to solve
 - [Random_heur_solver.py:](/Scripts/Solvers/random_heur_solver.py) this solver checks if the solution is worse then the solution before, if yes it stops and starts again until it finds a better solution, it also checks if a state has been visited yet.
 - [Breadth_solver.py:](Scripts/Solvers/breadth_solver.py) this is the breadth solver, this solver iterates over all the possible options via breadth first search and in the end it chooses the best one (the one with the least steps).
 - [Depth_solver.py:](Scripts/Solvers/depth_solver.py) after the breadth solver we created the depth solver. This solver iterates over all the possible options via depth first search, when it has found a solution it stops.
-- [Astar_solver.py:](Scripts/Solvers/astar_solver.py) this solver... HIER NOG INFO TYPEN!
+- [Astar_solver.py:](Scripts/Solvers/astar_solver.py) this A* solver is a best-first search which uses heuristics to search the most promising paths first. We used four different heuristics and combinations of those. All heuristics are admissable: hence guaranteeing the shortest path.
 
 #### **Input**: 
 This directory contains all the different Rush Hour games that the player can choose from.
-
-#### **Legacy**:
-In this directory there are some files that we don't use anymore, but they can show some of the process we made. 
 
 <br>
 
