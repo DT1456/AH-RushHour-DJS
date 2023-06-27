@@ -294,6 +294,10 @@ class Game:
         """Return visited_state_count"""
         return self.visited_state_count
 
+    def set_visited_state_count(self, visited_state_count: int) -> int:
+        """Return visited_state_count"""
+        self.visited_state_count = visited_state_count
+
     def get_cars(self) -> dict[str, Car]:
         """Get all cars"""
         return self.cars

@@ -63,7 +63,11 @@ def main() -> None:
         if game.is_won():
 
             # State based versions (breadth, depth, astar) versus random
-            if game.get_visited_state_count() == 0:
+            if solver_name == 'random_heur_solver':
+                # Random solver treated differently: no output saved
+                states_list.append(game.get_visited_state_count())
+                best_solution_steps_list.append(game.get_visited_state_count())
+            elif game.get_visited_state_count() == 0:
                 # Add states amount
                 states_list.append(game.get_step_count())
                 best_solution_steps_list.append(game.get_step_count())

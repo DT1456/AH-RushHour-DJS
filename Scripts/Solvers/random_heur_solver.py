@@ -49,13 +49,15 @@ class Solver:
             if game.get_print_states():
                 game.show_board()
             steps += 1
-
-        if game.is_won():
-            self.winning_strategy = game.tuple_form()
+            
+            # Remove unnecessary move for less storage
+            game.moves.pop()
 
         # Set best solution and return game
-        if steps <= self.best_solution_steps:
+        if steps <= self.best_solution_steps and game.is_won():
+            game.set_visited_state_count(steps)
             self.best_solution_steps = steps
+            self.winning_strategy = game.tuple_form()
 
         return game
 
