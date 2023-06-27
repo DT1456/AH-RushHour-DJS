@@ -30,14 +30,14 @@ Our project consist of an implementation of the Rush hour game for the course *A
 ### **Statespace:**
 
 | Board number | Statespace |
-|    :---:     |    :---:   |
+|    :---      |    :---:   |
 | Board 1 6x6  | 2025000    |
 | Board 2 6x6  | 13500000   |
 | Board 3 6x6  | 1000000    |
-| Board 4 9x9  | 6.77658E+12|
-| Board 5 9x9  | 1.8669E+17 |
-| Board 6 9x9  | 1.35557E+18|
-| Board 7 12x12| 1.19735E+30|
+| Board 4 9x9  | 6.78E+12   |
+| Board 5 9x9  | 1.87E+17   |
+| Board 6 9x9  | 1.36E+18   |
+| Board 7 12x12| 1.20E+30   |
 
 ## Directories and files
 
