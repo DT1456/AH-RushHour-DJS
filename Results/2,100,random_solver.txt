@@ -1,0 +1,110 @@
+Started solving game 2 for a total of 100 times using solver: random_solver...
+Completed step 1, game was solved. MAX MB RAM used: 0
+Completed step 2, game was solved. MAX MB RAM used: 0
+Completed step 3, game was solved. MAX MB RAM used: 0
+Completed step 4, game was solved. MAX MB RAM used: 0
+Completed step 5, game was solved. MAX MB RAM used: 0
+Completed step 6, game was solved. MAX MB RAM used: 0
+Completed step 7, game was solved. MAX MB RAM used: 0
+Completed step 8, game was solved. MAX MB RAM used: 0
+Completed step 9, game was solved. MAX MB RAM used: 0
+Completed step 10, game was solved. MAX MB RAM used: 0
+Completed step 11, game was solved. MAX MB RAM used: 0
+Completed step 12, game was solved. MAX MB RAM used: 0
+Completed step 13, game was solved. MAX MB RAM used: 0
+Completed step 14, game was solved. MAX MB RAM used: 0
+Completed step 15, game was solved. MAX MB RAM used: 0
+Completed step 16, game was solved. MAX MB RAM used: 0
+Completed step 17, game was solved. MAX MB RAM used: 0
+Completed step 18, game was solved. MAX MB RAM used: 0
+Completed step 19, game was solved. MAX MB RAM used: 0
+Completed step 20, game was solved. MAX MB RAM used: 0
+Completed step 21, game was solved. MAX MB RAM used: 0
+Completed step 22, game was solved. MAX MB RAM used: 0
+Completed step 23, game was solved. MAX MB RAM used: 0
+Completed step 24, game was solved. MAX MB RAM used: 0
+Completed step 25, game was solved. MAX MB RAM used: 0
+Completed step 26, game was solved. MAX MB RAM used: 0
+Completed step 27, game was solved. MAX MB RAM used: 0
+Completed step 28, game was solved. MAX MB RAM used: 0
+Completed step 29, game was solved. MAX MB RAM used: 0
+Completed step 30, game was solved. MAX MB RAM used: 0
+Completed step 31, game was solved. MAX MB RAM used: 0
+Completed step 32, game was solved. MAX MB RAM used: 0
+Completed step 33, game was solved. MAX MB RAM used: 0
+Completed step 34, game was solved. MAX MB RAM used: 0
+Completed step 35, game was solved. MAX MB RAM used: 0
+Completed step 36, game was solved. MAX MB RAM used: 0
+Completed step 37, game was solved. MAX MB RAM used: 0
+Completed step 38, game was solved. MAX MB RAM used: 0
+Completed step 39, game was solved. MAX MB RAM used: 0
+Completed step 40, game was solved. MAX MB RAM used: 0
+Completed step 41, game was solved. MAX MB RAM used: 0
+Completed step 42, game was solved. MAX MB RAM used: 0
+Completed step 43, game was solved. MAX MB RAM used: 0
+Completed step 44, game was solved. MAX MB RAM used: 0
+Completed step 45, game was solved. MAX MB RAM used: 0
+Completed step 46, game was solved. MAX MB RAM used: 0
+Completed step 47, game was solved. MAX MB RAM used: 0
+Completed step 48, game was solved. MAX MB RAM used: 0
+Completed step 49, game was solved. MAX MB RAM used: 0
+Completed step 50, game was solved. MAX MB RAM used: 0
+Completed step 51, game was solved. MAX MB RAM used: 0
+Completed step 52, game was solved. MAX MB RAM used: 0
+Completed step 53, game was solved. MAX MB RAM used: 0
+Completed step 54, game was solved. MAX MB RAM used: 0
+Completed step 55, game was solved. MAX MB RAM used: 0
+Completed step 56, game was solved. MAX MB RAM used: 0
+Completed step 57, game was solved. MAX MB RAM used: 0
+Completed step 58, game was solved. MAX MB RAM used: 0
+Completed step 59, game was solved. MAX MB RAM used: 0
+Completed step 60, game was solved. MAX MB RAM used: 0
+Completed step 61, game was solved. MAX MB RAM used: 0
+Completed step 62, game was solved. MAX MB RAM used: 0
+Completed step 63, game was solved. MAX MB RAM used: 0
+Completed step 64, game was solved. MAX MB RAM used: 0
+Completed step 65, game was solved. MAX MB RAM used: 0
+Completed step 66, game was solved. MAX MB RAM used: 0
+Completed step 67, game was solved. MAX MB RAM used: 0
+Completed step 68, game was solved. MAX MB RAM used: 0
+Completed step 69, game was solved. MAX MB RAM used: 0
+Completed step 70, game was solved. MAX MB RAM used: 0
+Completed step 71, game was solved. MAX MB RAM used: 0
+Completed step 72, game was solved. MAX MB RAM used: 0
+Completed step 73, game was solved. MAX MB RAM used: 0
+Completed step 74, game was solved. MAX MB RAM used: 0
+Completed step 75, game was solved. MAX MB RAM used: 0
+Completed step 76, game was solved. MAX MB RAM used: 0
+Completed step 77, game was solved. MAX MB RAM used: 0
+Completed step 78, game was solved. MAX MB RAM used: 0
+Completed step 79, game was solved. MAX MB RAM used: 0
+Completed step 80, game was solved. MAX MB RAM used: 0
+Completed step 81, game was solved. MAX MB RAM used: 0
+Completed step 82, game was solved. MAX MB RAM used: 0
+Completed step 83, game was solved. MAX MB RAM used: 0
+Completed step 84, game was solved. MAX MB RAM used: 0
+Completed step 85, game was solved. MAX MB RAM used: 0
+Completed step 86, game was solved. MAX MB RAM used: 0
+Completed step 87, game was solved. MAX MB RAM used: 0
+Completed step 88, game was solved. MAX MB RAM used: 0
+Completed step 89, game was solved. MAX MB RAM used: 0
+Completed step 90, game was solved. MAX MB RAM used: 0
+Completed step 91, game was solved. MAX MB RAM used: 0
+Completed step 92, game was solved. MAX MB RAM used: 0
+Completed step 93, game was solved. MAX MB RAM used: 0
+Completed step 94, game was solved. MAX MB RAM used: 0
+Completed step 95, game was solved. MAX MB RAM used: 0
+Completed step 96, game was solved. MAX MB RAM used: 0
+Completed step 97, game was solved. MAX MB RAM used: 0
+Completed step 98, game was solved. MAX MB RAM used: 0
+Completed step 99, game was solved. MAX MB RAM used: 0
+Completed step 100, game was solved. MAX MB RAM used: 0
+
+Finished in 19.1 seconds
+Amount of moves best solution: 375
+----------------------
+Visited statistics:
+Amount of repetitions: 100
+Average number of boards visited to solve: 3008
+Max number of boards visited to solve: 10951
+Min number of boards visited to solve: 375
