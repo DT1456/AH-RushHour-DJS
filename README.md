@@ -39,6 +39,9 @@ Our project consist of an implementation of the Rush hour game for the course *A
 | Board 6 9x9  | 1.36E+18   |
 | Board 7 12x12| 1.20E+30   |
 
+> See ... for further explanation on how we calculated the statespaces.
+
+
 ## Directories and files
 
 #### **Scripts:** 
