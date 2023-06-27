@@ -1,0 +1,40 @@
+Started solving game 1 for a total of 30 times using solver: random_heur_solver...
+Completed step 1, game was solved. MAX MB RAM used: 7
+Completed step 2, game was solved. MAX MB RAM used: 2
+Completed step 3, game was solved. MAX MB RAM used: 4
+Completed step 4, game was solved. MAX MB RAM used: 5
+Completed step 5, game was solved. MAX MB RAM used: 4
+Completed step 6, game was solved. MAX MB RAM used: 4
+Completed step 7, game was solved. MAX MB RAM used: 6
+Completed step 8, game was solved. MAX MB RAM used: 5
+Completed step 9, game was solved. MAX MB RAM used: 3
+Completed step 10, game was solved. MAX MB RAM used: 4
+Completed step 11, game was solved. MAX MB RAM used: 3
+Completed step 12, game was solved. MAX MB RAM used: 3
+Completed step 13, game was solved. MAX MB RAM used: 3
+Completed step 14, game was solved. MAX MB RAM used: 3
+Completed step 15, game was solved. MAX MB RAM used: 2
+Completed step 16, game was solved. MAX MB RAM used: 3
+Completed step 17, game was solved. MAX MB RAM used: 6
+Completed step 18, game was solved. MAX MB RAM used: 5
+Completed step 19, game was solved. MAX MB RAM used: 2
+Completed step 20, game was solved. MAX MB RAM used: 5
+Completed step 21, game was solved. MAX MB RAM used: 3
+Completed step 22, game was solved. MAX MB RAM used: 4
+Completed step 23, game was solved. MAX MB RAM used: 3
+Completed step 24, game was solved. MAX MB RAM used: 5
+Completed step 25, game was solved. MAX MB RAM used: 3
+Completed step 26, game was solved. MAX MB RAM used: 4
+Completed step 27, game was solved. MAX MB RAM used: 2
+Completed step 28, game was solved. MAX MB RAM used: 4
+Completed step 29, game was solved. MAX MB RAM used: 2
+Completed step 30, game was solved. MAX MB RAM used: 3
+
+Finished in 257.2 seconds
+Amount of moves best solution: 24146
+----------------------
+Visited statistics:
+Amount of repetitions: 30
+Average number of boards visited to solve: 51182
+Max number of boards visited to solve: 95396
+Min number of boards visited to solve: 24146
