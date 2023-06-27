@@ -16,6 +16,8 @@ class Solver:
 
     def solve(self, game: Game) -> Game:
         """Solve the game by repeating solve_once"""
+        # Make sure the game is in original state
+        self.__init__()
 
         # Set the original board
         self.original_board = game.tuple_form()
