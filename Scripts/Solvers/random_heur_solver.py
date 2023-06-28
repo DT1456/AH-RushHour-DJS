@@ -49,7 +49,7 @@ class Solver:
             if game.get_print_states():
                 game.show_board()
             steps += 1
-            
+
             # Remove unnecessary move for less storage
             game.moves.pop()
 

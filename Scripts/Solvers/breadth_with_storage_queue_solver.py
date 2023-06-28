@@ -95,8 +95,10 @@ class Solver:
             # If game is won, quit and set best solution steps for game
             if game.is_won():
                 game.set_moves(self.get_best_path(game))
-                os.system('rm -r Solvers/Queues')
-                os.system('mkdir Solvers/Queues')
+                for parent_file in os.scandir('Solvers/Queues'):
+                    file_name = parent_file.name
+                    if file_name != '.gitkeep':
+                        os.remove(file_name)
                 return game
 
             moves_list = self.get_possible_moves(game)

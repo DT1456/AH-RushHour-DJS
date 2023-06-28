@@ -71,8 +71,6 @@ class Solver:
 
     def __init__(self) -> None:
         """Initialising parent states dict, queue and original board"""
-        if not os.path.exists('Solvers/VisitedStates'):
-            os.system('mkdir Solvers/VisitedStates')
         self.queue = Queue()
         self.original_board: tuple[str, ...]
         self.winning_state: tuple[str, ...] = ()
@@ -141,9 +139,6 @@ class Solver:
                 game.moves.pop()
                 game.moves.pop()
 
-        # Cleanup
-        os.system('rm -r Solvers/VisitedStates')
-        os.system('mkdir Solvers/VisitedStates')
         if self.winning_state == ():
             raise Exception('Something went wrong, game not solvable!\n')
         else:
