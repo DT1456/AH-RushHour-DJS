@@ -100,6 +100,9 @@ class Solver:
     def solve(self, game: Game) -> Game:
         """Counting states"""
 
+        # Reinitialise for reruns
+        self.__init__()
+
         self.queue.enqueue(game.tuple_form())
         self.visited_states = VisitedStates()
 

@@ -5,7 +5,11 @@ class Car:
 
     def __init__(self, car_name: str, orientation: str, col: int, row: int,
                  length: int):
-        """Initializes Car using column, row and length"""
+        """Car is a class to reproduce the behaviour of cars in Rush Hour Game
+
+        Initializes Car using column, row and length
+        Visualises using a set (random) image
+        """
         self.car_name = car_name.upper()
         self.orientation = orientation
         self.col = col
@@ -60,7 +64,8 @@ class Car:
     def set_image_string(self) -> None:
         """Stores image name as string for loading car visualisation"""
 
-        # Either the red car, or a horizontal/vertical car with length 2/3
+        # Based on orientation, length and name:
+        # Pick a random choice of predetermined possible car images
         if self.car_name == 'X':
             self.image_string = 'BoardImages/RED.jpeg'
         elif self.get_orientation() == 'H' and self.get_length() == 2:

@@ -160,7 +160,7 @@ cython_debug/
 #.idea/
 
 # Output files, game.jpeg
-Scripts/Output/
+Scripts/Output/*
 Scripts/BoardImages/game.jpeg
-Scripts/Solvers/Parents
-Scripts/Solvers/Queues
+Scripts/Solvers/Parents/*
+Scripts/Solvers/Queues/*

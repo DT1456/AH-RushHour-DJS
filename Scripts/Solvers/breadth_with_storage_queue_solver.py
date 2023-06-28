@@ -73,6 +73,9 @@ class Solver:
     def solve(self, game: Game) -> Game:
         """Searching for solution of the game"""
 
+        # Reinitialise for reruns
+        self.__init__()
+
         self.queue.enqueue(game.tuple_form())
         self.parents = {game.tuple_form(): ()}
         self.original_board = game.tuple_form()

@@ -108,6 +108,10 @@ class Solver:
     def solve(self, game: Game) -> Game:
         """Solve the game"""
 
+        # Reinitialise for reruns
+        self.__init__()
+
+        # Get solution and return
         game = self.get_solution(game)
         return game
 

@@ -58,6 +58,9 @@ class Solver:
     def solve(self, game: Game) -> Game:
         """Searching for solution of the game"""
 
+        # Reinitialise for reruns
+        self.__init__()
+
         self.stack.push(game.tuple_form())
         self.visited = set()
         self.parents = {game.tuple_form(): ()}
