@@ -20,7 +20,7 @@ Our project consists of an implementation of the Rush hour game for the course *
 [Instructions](#instructions)
 - [Using the solver](#using-the-solver)
 
-[(Possible) installations](#possible-installations)
+[Optional installations](#optional-installations)
 - [Terminology (Linux)](#terminology)
 - [iTerm2: imgcat (MacOS)](#imgcat)
 
@@ -30,21 +30,19 @@ Our project consists of an implementation of the Rush hour game for the course *
 
 #### **The case:**
 
-Our case is about the game Rush Hour. The goal of this game is to release the red car from the board to make this possible you have to move the cars that are in the way:
+Our case is about the game Rush Hour. The goal is to release the red car from the board, to make this possible the cars that are in the way need to be moved Cars can only move horizontically or vertically depending on their orientation. Furthermore, the cars cannot pass over eachother.
 
 ![rushhour](/Images/rushhour-board.png)
 
+>Visual representation of the board
+
 #### **How to play the game?**
 
-If you want to play the game make sure that you run the file **game.py** from the directory that game.py is in. It is also important that every python file is in the same directory. When you want to start the game you have multiple options:
+To play the game run **game.py**. before starting the game you have multiple options:
 
-1. **Command line arguments:** if you want to start the game immediately you can choose a game you want from the Input directory and then use the game name in the command line arguments, after python3 game.py you need to type "-f", this means you choose a file for the game:
-
-```python3
-    python3 game.py -f Rushhour6x6_1.csv
-```
-
-2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension, which game you want to play, if you want to use terminology yes or no and if you want to use imgcat yes or no (see [(possible) installations](#possible-installations) for the explanation of terminology and imgcat) after this the game will start.
+1. **Board dimension:** You choose the board dimension of your game.
+2. **Which game?** You can choose a game number.
+3. **Visualisation:** You can choose if you want a visualisation of the board (see [optional installations](#optional-installations) for the explanation of terminology and imgcat) after this the game will start.
 
 When the game is ready to be played you can move a car in two ways:
 
@@ -93,7 +91,7 @@ This is a directory that contains the python files that together create the game
 - [Solvers](Scripts/Solvers) this is the directory with all the different solvers (more information below).
 
 #### **Results:**
-This directory contains all the results that we have runned. Each game has it's own folder and there is a folder that contains the best solution of each game except for game 6 and 7 (the solution with the least amount of steps). In each folder there are results of the game with different algorithms. An example:
+This directory contains all the results that we have runned. Each game has it's own folder and there is a folder that contains the best solution of each game (the solution with the least amount of steps). This does not contain game 6 and 7, because the best result could not be found (these games exceeded the maximum memory of our computers). In each folder there are results of the game with different algorithms. An example:
 
     3,1,breadth_solver.txt
 
@@ -101,11 +99,15 @@ The '3' stands for the game, the '1' for the number of times we runned the algor
 
 #### **Solvers**:
 This directory contains all the solvers that the player can choose from to solve the Rush Hour game:
-- [Random_solver.py:](Scripts/Solvers/random_solver.py) this file can solve the Rush Hour game by randomly selecting a car an making random moves with that car.
-- [Random_heur_solver.py:](/Scripts/Solvers/random_heur_solver.py) this solver checks if the solution is worse then the solution before, if yes it stops and starts again until it finds a better solution, it also checks if a state has been visited yet.
-- [Breadth_solver.py:](Scripts/Solvers/breadth_solver.py) this is the breadth solver, this solver iterates over all the possible options via breadth first search and in the end it chooses the best one (the one with the least steps).
-- [Depth_solver.py:](Scripts/Solvers/depth_solver.py) after the breadth solver we created the depth solver. This solver iterates over all the possible options via depth first search, when it has found a solution it stops.
+- [Random_solver.py:](Scripts/Solvers/random_solver.py) this file can solve the Rush Hour game by randomly selecting a car and making random moves with that car.
+- [Random_heur_solver.py:](/Scripts/Solvers/random_heur_solver.py) this solver checks if the solution is worse than the solution before, if yes it stops and starts again until it finds a better solution, it also checks if a state has been visited yet, so it won't visit that state again (except no other state is possible).
+- [Breadth_solver.py:](Scripts/Solvers/breadth_solver.py) this is the breadth first search solver, this solver iterates over all the possible options via breadth first search and, in the end, it chooses the best solution (the one with the least steps).
+- [Depth_solver.py:](Scripts/Solvers/depth_solver.py) This is the depth first search solver, it iterates over all the possible options via depth first search, when it has found a solution it stops.
 - [Astar_solver.py:](Scripts/Solvers/astar_solver.py) this A* solver is a best-first search which uses heuristics to search the most promising paths first. We used four different heuristics and combinations of those. All heuristics are admissable: hence guaranteeing the shortest path.
+    - H0: Dijkstra algorithm.
+    - H1: takes into account the distance from the red car to the exit.
+    - H2: takes into account the number of cars between the red car and the exit.
+    - H3: takes into account the number of cars between the red car and the exit, but also takes into account if those cars are blocked or not.
 
 #### **Input**: 
 This directory contains all the different Rush Hour games that the player can choose from.
@@ -113,36 +115,6 @@ This directory contains all the different Rush Hour games that the player can ch
 <br>
 
 ## Instructions
-
-#### **Playing the game**:
-
-If you want to play the game make sure that you run the file **game.py** from the directory that game.py is in. It is also important that every python file is in the same directory. When you want to start the game you have multiple options:
-
-1. **Command line arguments:** if you want to start the game immediately you can choose a game you want from the Input directory and then use the game name in the command line arguments, after python3 game.py you need to type "-f", this means you choose a file for the game:
-
-```python3
-    python3 game.py -f Rushhour6x6_1.csv
-```
-
-2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension, which game you want to play, if you want to use terminology yes or no and if you want to use imgcat yes or no (see [(possible) installations](#possible-installations) for the explanation of terminology and imgcat) after this the game will start.
-
-When the game is ready to be played you can move a car in two ways:
-
-- *1 or -1:* when you type '-1' the car wil move left or upwards, when you type '1' the car will move right or downwards.
-- *U, D, L, R:* 'U' stands for 'up', 'D' stands for 'down', 'L' stands for left and 'R' stands for 'right'.
-
-The line in the command line interface will look as follows (in this example car A moves to the left):
-
-    A -1
-
-Or:
-
-    A L
-
-It does not matter if you type in upper or lowercase, the game accepts both.
-You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
-
-<br>
 
 #### **Using the solvers**:
 
@@ -164,11 +136,11 @@ There is an option to ask for help before you run the game, this is a short summ
 
 You get the following output:
 
-![help](/Images/help-function.jpeg)
+![help](/Images/help-function2.jpeg)
 
 <br>
 
-## (Possible) installations
+## Optional installations
 
 There is the option to make the game visual and see the board with all the cars. Then installing a terminal that can display pictures is needed. For Linux there is Terminology and for MacOS there is iTerm2 with imgcat. Below there are explanations on how to install these terminals.
 
