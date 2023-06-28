@@ -294,7 +294,7 @@ class Game:
         """Return visited_state_count"""
         return self.visited_state_count
 
-    def set_visited_state_count(self, visited_state_count: int) -> int:
+    def set_visited_state_count(self, visited_state_count: int) -> None:
         """Return visited_state_count"""
         self.visited_state_count = visited_state_count
 
@@ -304,7 +304,7 @@ class Game:
 
     def get_car(self, car_name: str) -> Car:
         """Get a car"""
-        return self.get_cars[car_name]
+        return self.get_cars()[car_name]
 
     def get_dimension(self) -> int:
         """Return dimension"""

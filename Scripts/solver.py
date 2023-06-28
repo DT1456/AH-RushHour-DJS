@@ -7,14 +7,16 @@ import time
 import tracemalloc
 
 
-# Set random seed
+# Set random seed for reproducing results
 random.seed(123456789)
-
-tracemalloc.start()
 
 
 def main() -> None:
-    """Main program: run your favorite solver_script on any of the games"""
+    """Main program: run your favorite solver_script on any of the games
+
+    This script is intended to be run via the CLI
+    A help function is available by adding command line argument [-h]
+    """
 
     # Check command line arguments
     validate_input(argv)
@@ -29,7 +31,7 @@ def main() -> None:
     # Set solver
     SolverClass = __import__('Solvers.' + solver_name, fromlist=['Solver'])
 
-    # Use heuristics choice if given
+    # Use heuristics choice if given, set solver
     if len(argv) == 6:
         solver = SolverClass.Solver(argv[5])
     else:
@@ -49,7 +51,9 @@ def main() -> None:
 
     # Solve the game amount_of_times times
     for i in range(amount_of_times):
+        # Start memory tracking
         tracemalloc.start()
+
         # Initialise game
         game = Game(get_game_csv_string(game_number),
                     get_game_dimension(game_number), verbose in [1, 2])
@@ -80,7 +84,7 @@ def main() -> None:
                 if game.get_visited_state_count() == min(states_list):
                     game.output_to_csv()
 
-        # Print step completed
+        # Print step completed and memory information
         if game.is_won():
             text += f'Completed step {i + 1}, game was ' + \
                 'solved. MAX MB RAM used: ' + \
@@ -93,9 +97,28 @@ def main() -> None:
               f'{"" if game.is_won() else "NOT "}solved'
               f'. MAX MB RAM used: '
               f'{int(tracemalloc.get_traced_memory()[1] / 1000000)}')
+
+        # Stop memory tracking
         tracemalloc.stop()
 
     # Write amount of steps to file (for performing statistical analysis)
+    best_steps_to_csv(game_number, amount_of_times, solver_name,
+                      best_solution_steps_list)
+
+    # Notify the user in the terminal
+    print(get_statistics_string(states_list, amount_of_times, start_time,
+                                best_solution_steps_list))
+
+    # Write to txt file
+    statistics_to_csv(game_number, amount_of_times, text, states_list,
+                      start_time, solver_name,
+                      best_solution_steps_list)
+
+
+def best_steps_to_csv(game_number: int, amount_of_times: int,
+                      solver_name: str,
+                      best_solution_steps_list: list[int]) -> None:
+    """Write best steps list to file in path Output"""
     with open('Output/' + str(game_number) + ',' + str(amount_of_times) +
               ',' + solver_name + '_best_steps.csv', 'w', encoding='UTF8',
               newline='') as f:
@@ -107,11 +130,12 @@ def main() -> None:
         for steps in best_solution_steps_list:
             csv_writer.writerow([steps])
 
-    print(get_statistics_string(states_list, amount_of_times, start_time,
-                                best_solution_steps_list))
 
-    # Write to txt file
-
+def statistics_to_csv(game_number: int, amount_of_times: int, text: str,
+                      states_list: list[int], start_time: float,
+                      solver_name: str,
+                      best_solution_steps_list: list[int]) -> None:
+    """Write best steps list to file in path Output"""
     with open('Output/' + str(game_number) + ',' + str(amount_of_times) +
               ',' + solver_name + '.txt', 'w', encoding='UTF8',
               newline='') as f:
@@ -182,8 +206,10 @@ def validate_input(argv: list[str]) -> None:
 
 
 def show_usage_and_exit() -> None:
+    """Show usage of solver.py. Exits the program to be rerun"""
     print('Usage: python3 solver.py game_number solver_name amount_of_times '
-          'verbose [heuristics_choice]\nIf verbose is 0, do not'
+          'verbose [heuristics_choice]\nExample usage: "python3 solver.py 1 '
+          'random_solver 1 0"\n\nIf verbose is 0, do not'
           ' print the board. If verbose is 1, print board in ASCII. If verbose'
           ' is 2, print board as picture using Terminology.\nWhen using astar'
           ' you can specify heuristics as h0, h1, h2, h3, h1h2, h1h3 (default'
