@@ -161,6 +161,12 @@ cython_debug/
 
 # Output files, game.jpeg
 Scripts/Output/*
+!Scripts/Output/.gitkeep
 Scripts/BoardImages/game.jpeg
 Scripts/Solvers/Parents/*
+!Scripts/Solvers/Parents/.gitkeep
+Scripts/Solvers/Queues/*
+!Scripts/Solvers/Queues/.gitkeep
+Scripts/Solvers/VisitedStates/*
+!Scripts/Solvers/VisitedStates/.gitkeep
 Scripts/Solvers/Queues/*
