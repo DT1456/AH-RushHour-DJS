@@ -1,0 +1,11 @@
+Started solving game 5 for a total of 1 times using solver: depth_solver...
+Completed step 1, game was solved. MAX MB RAM used: 65081
+
+Finished in 43361.4 seconds
+Amount of moves best solution: 2874151
+----------------------
+Visited statistics:
+Amount of repetitions: 1
+Average number of boards visited to solve: 2874269
+Max number of boards visited to solve: 2874269
+Min number of boards visited to solve: 2874269
