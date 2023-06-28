@@ -120,8 +120,12 @@ class Solver:
                 game.set_moves(self.get_best_path(game))
                 print('Storage usage (MB): ',
                       int(os.path.getsize('Solvers/Parents')/1000000))
-                os.system('rm -r Solvers/Parents')
-                os.system('mkdir Solvers/Parents')
+
+                # Empty Solvers/Parents
+                for parent_file in os.scandir('Solvers/Parents'):
+                    file_name = parent_file.name
+                    if file_name != '.gitkeep':
+                        os.unlink(parent_file.path)
                 return game
 
             moves_list = self.get_possible_moves(game)
