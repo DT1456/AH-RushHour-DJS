@@ -18,11 +18,11 @@ Our project consists of an implementation of the Rush hour game for the course *
 - [Input](#input)
 
 [Instructions](#instructions)
-- [Using the solver](#using-the-solver)
+- [Using the solver](#using-the-solvers)
 
 [Optional installations](#optional-installations)
 - [Terminology (Linux)](#terminology)
-- [iTerm2: imgcat (MacOS)](#imgcat)
+- [iTerm2: imgcat (MacOS)](#iterm2---imgcat)
 
 <br>
 
