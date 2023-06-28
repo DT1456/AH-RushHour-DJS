@@ -9,6 +9,7 @@ Our project consists of an implementation of the Rush hour game for the course *
 
 [What is our problem?](#what-is-our-problem)
 - [The case](#the-case)
+- [How to play the game?]
 - [Statespace](#statespace)
 
 [Directories and files](#directories-and-files)
@@ -28,13 +29,34 @@ Our project consists of an implementation of the Rush hour game for the course *
 
 ## What is our problem?
 
-### **The case:**
+#### **The case:**
 
-Our case is about the game Rush Hour, in this game it is the goal to release the red car from the board and before you can do that you have to move the cars that are in the way:
+Our case is about the game Rush Hour. The goal of this game is to release the red car from the board to make this possible you have to move the cars that are in the way:
 
-![rushhour](/Images/Rushhour6x6_1-README.jpeg)
+![rushhour](/Images/rushhour-board.png)
 
-### **Statespace:**
+#### **How to play the game?**
+
+When you want to move a car you first type in the letter of the car, then you have two options on how to move the car:
+- *1 or -1:* when you type '-1' the car wil move left or upwards, when you type '1' the car will move right or downwards.
+- *U, D, L, R:* 'U' stands for 'up', 'D' stands for 'down', 'L' stands for left and 'R' stands for 'right'.
+
+The line in the command line interface will look as follows (in this example car A moves to the left):
+
+    A -1
+
+Or:
+
+    A L
+
+It does not matter if you type upper or lowercase, the game accepts both.
+
+<br>
+
+#### **Statespace:**
+
+
+Statespace reflects the size of our problem, this table below consists of the maximum number of board states our play boards can reach. This is calculated by taking the product of all the possible board states for every row and column per board.
 
 | Board number | Statespace |
 |    :---      |    :---:   |
@@ -46,8 +68,9 @@ Our case is about the game Rush Hour, in this game it is the goal to release the
 | Board 6 9x9  | 1.36E+18   |
 | Board 7 12x12| 1.20E+30   |
 
-> See ... for further explanation on how we calculated the statespaces. HIER NOG INFO TYPEN!
+> Calculations can be made available upon request.
 
+<br>
 
 ## Directories and files
 
