@@ -21,7 +21,7 @@ Our project consists of an implementation of the Rush hour game for the course *
 - [Playing the game](#playing-the-game)
 - [Using the solver](#using-the-solver)
 
-[(Possible) installations](#installations)
+[(Possible) installations](#possible-installations)
 - [Terminology (Linux)](#terminology)
 - [iTerm2: imgcat (MacOS)](#imgcat)
 
