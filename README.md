@@ -138,7 +138,7 @@ You get the following output:
 
 ## (Possible) installations
 
-There is the option to make the game visual and see the board with all the cars, installing a terminal that can display pictures is needed. For Linux there is Terminology and for MacOS there is iTerm2 with imgcat. Below there are explanations on how to install these terminals.
+There is the option to make the game visual and see the board with all the cars. Then installing a terminal that can display pictures is needed. For Linux there is Terminology and for MacOS there is iTerm2 with imgcat. Below there are explanations on how to install these terminals.
 
 <br>
 
