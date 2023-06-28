@@ -169,4 +169,3 @@ Scripts/Solvers/Queues/*
 !Scripts/Solvers/Queues/.gitkeep
 Scripts/Solvers/VisitedStates/*
 !Scripts/Solvers/VisitedStates/.gitkeep
-Scripts/Solvers/Queues/*
