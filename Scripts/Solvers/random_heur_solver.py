@@ -6,16 +6,29 @@ import sys
 class Solver:
 
     def __init__(self) -> None:
-        """Initialise parameters for solver"""
+        """Implements Random Heuristics Solver
+
+        Play moves until the game is won, remember visited states
+        Rerun a specific amount of times (repetition_count), only when
+        improving
+        """
+
+        # Set repetition_count for reiterating the game
         self.repetition_count = 100
+
+        # Store steps taken in this solution
         self.current_solution_steps = 0
+
+        # Best solution step count
         self.best_solution_steps = sys.maxsize
-        self.original_board: tuple[str, ...] = ()
+
+        # Initialises original board, winning strategy and visited states
+        self.original_board: tuple[str, ...]
         self.winning_strategy: tuple[str, ...] = ()
         self.visited_states: set[str] = set()
 
     def re_init(self) -> None:
-        """Reinitialises for rerun"""
+        """Reinitialises for rerun. Is a sparse form of __init__"""
         self.repetition_count = 100
         self.current_solution_steps = 0
         self.best_solution_steps = sys.maxsize
@@ -24,6 +37,7 @@ class Solver:
 
     def solve(self, game: Game) -> Game:
         """Solve the game by repeating solve_once"""
+
         # Make sure the game is in original state
         self.re_init()
 
@@ -71,9 +85,12 @@ class Solver:
 
     def play_move(self, game: Game) -> Game:
         """Play one move in order to solve the game"""
+
+        # If no games visited yet, we are at the original board: add game
         if len(self.visited_states) == 0:
             self.visited_states = set(str(game))
 
+        # Get possible moves
         moves_list = self.get_possible_moves(game)
 
         # Pick a random car and a random direction
@@ -81,19 +98,30 @@ class Solver:
         car_name, direction = move
         game.move(car_name, direction)
 
+        # If game is already visited and other moves possible: repick a move
         while str(game) in self.visited_states and len(moves_list) > 1:
+            # Remove the move
             moves_list.remove(move)
+
+            # Undo the move
             game.move(car_name, self.reverse_direction(direction))
+
+            # Pick a new move and play it
             move = random.choice(moves_list)
             car_name, direction = move
             game.move(car_name, direction)
 
+        # If length of moves_list is 1, simply play that move:
+        #     All adjacent states have already been visited
         if len(moves_list) == 1:
             move = random.choice(moves_list)
             car_name, direction = move
             game.move(car_name, direction)
+
+        # Add new state to visited_states
         self.visited_states.add(str(game))
 
+        # Return game
         return game
 
     def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
@@ -112,5 +140,5 @@ class Solver:
         return moves_list
 
     def reverse_direction(self, direction: int) -> int:
-        """Defining and returning a reversed direction"""
+        """Return reversed direction"""
         return -direction

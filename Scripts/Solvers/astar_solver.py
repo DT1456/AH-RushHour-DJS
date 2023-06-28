@@ -7,32 +7,40 @@ from typing import Optional
 class Solver:
 
     def __init__(self, heuristics_choice: str = 'h0') -> None:
-        """Initialises Astar solver
+        """Initialises A* solver
 
         Use a PriorityQueue for prioritising the next state
         Store parents and moves in dict(s) for getting the correct solution
         Use an open and closed set for marking states as open and closed
         """
+
+        # Add open set as the queue for visited states
         self.open_set: PriorityQueue[tuple[int, int, tuple[str, ...]]] = \
             PriorityQueue()
+
+        # Add closed set (marking visited states)
         self.closed_set: set[tuple[str, ...]] = set()
+
+        # Store moves cost in a dictionary based on state
         self.moves_cost: dict[tuple[str, ...], int]
-        self.parents: dict[tuple[str, ...], tuple[str, ...]]
+
+        # Check and set heuristics choice for calculating heuristic
+        if heuristics_choice not in ['h0', 'h1', 'h2', 'h3', 'h1h2',
+                                     'h1h3']:
+            raise Exception('Heuristics choice not possible! You chose: ' +
+                            heuristics_choice)
         self.heuristics_choice = heuristics_choice
 
     def re_init(self, heuristics_choice: str = 'h0') -> None:
-        """Reinitialises Astar solver for repeated use"""
+        """Reinitialises A* solver for repeated use"""
         self.open_set = PriorityQueue()
         self.closed_set = set()
         self.heuristics_choice = heuristics_choice
 
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
-        if self.heuristics_choice not in ['h0', 'h1', 'h2', 'h3', 'h1h2',
-                                          'h1h3']:
-            raise Exception('Heuristics choice not possible! You chose: ' +
-                            self.heuristics_choice)
 
+        # Return correct heuristic based on self.heuristics_choice
         if self.heuristics_choice == 'h0':
             return self.h0(game)
         elif self.heuristics_choice == 'h1':
@@ -64,12 +72,15 @@ class Solver:
     def h3(self, game: Game) -> int:
         """Heuristic 3
 
-        Returns the amount of cars blocking the red car and adds 1 if those
-        cars are blocked as well.
+        Returns the amount of cars blocking the red car and adds 1 per car
+        if those cars are blocked as well.
         """
+
+        # Set red car row and col
         red_car_row = game.get_car('X').get_row()
         red_car_col = game.get_car('X').get_col()
 
+        # Get cars in the way
         cars_in_way = 0
         for col_num in range(red_car_col + 1, game.dimension + 1):
             car_name = game.board[(red_car_row, col_num)]
@@ -97,7 +108,7 @@ class Solver:
         car_row = car.get_row()
         car_length = car.get_length()
 
-        # Increment cars_in_way
+        # Return blocking cars via cars_in_way
         if car_orientation == 'H':
             return sys.maxsize
         elif car_row > 1 and car_row + car_length < game.dimension:
@@ -123,10 +134,13 @@ class Solver:
 
     def get_solution(self, game: Game) -> Game:
         """Get the full (best) solution via heuristic search"""
+
+        # Add original board to open_set, moves_cost and parents
         self.open_set.put((0, 0, game.tuple_form()))
         self.moves_cost = {game.tuple_form(): 0}
-        self.parents = {game.tuple_form(): ()}
+        self.parents = Parents(game.tuple_form())
 
+        # While games in queue, do an astar search
         while not self.open_set.empty():
             # Gets (using PriorityQueue) the node with lowest fscore
             _, cost, current_state = self.open_set.get()
@@ -153,6 +167,7 @@ class Solver:
 
             # Move in all directions from current state
             for move in moves_list:
+                # Move car
                 car_name, direction = move
                 game.move(car_name, direction)
 
@@ -165,20 +180,17 @@ class Solver:
                         priority = move_cost + self.heuristic(game)
                         self.open_set.put((priority, move_cost,
                                            game.tuple_form()))
-                        self.parents[game.tuple_form()] = current_state
+                        self.parents.add(game.tuple_form(), current_state)
+
+                # Undo move to return to state
                 game.move(car_name, self.reverse_direction(direction))
 
                 # Remove unnecessary moves
                 game.moves.pop()
                 game.moves.pop()
 
+        # If game not returned yet, game unsolvable
         raise Exception('The game can not be solved via astar + heuristics!')
-
-    def get_steps(self, tuple_form: tuple[str, ...]) -> int:
-        while self.parents[tuple_form] != ():
-            tuple_form = self.parents[tuple_form]
-            return self.get_steps(tuple_form) + 1
-        return 0
 
     def get_best_path(self, game: Game) -> list[tuple[str, Optional[int]]]:
         """Construct the best path based on parents, if game is won"""
@@ -192,7 +204,7 @@ class Solver:
 
         # Initialise the list of moves
         moves_list = []
-        while self.parents[game_tuple] != ():
+        while self.parents.get(game_tuple) != ():
             # Set changed_places as list of places that
             # were changed with the move
             changed_places = []
@@ -200,7 +212,7 @@ class Solver:
             # Go over the tuples to find differences
             sign = None
             for i in range(len(game_tuple)):
-                if game_tuple[i] != self.parents[game_tuple][i]:
+                if game_tuple[i] != self.parents.get(game_tuple)[i]:
                     changed_places.append(i)
 
                     # Set sign of move
@@ -212,7 +224,7 @@ class Solver:
 
                     # Get the car_name
                     if game_tuple[i] == '_':
-                        car_name = self.parents[game_tuple][i]
+                        car_name = self.parents.get(game_tuple)[i]
                     else:
                         car_name = game_tuple[i]
 
@@ -224,7 +236,7 @@ class Solver:
                 moves_list.append((car_name, sign))
             else:
                 raise Exception('Unobtainable move, something went wrong!')
-            game_tuple = self.parents[game_tuple]
+            game_tuple = self.parents.get(game_tuple)
 
         # Reverse the list of moves
         moves_list.reverse()
@@ -249,3 +261,23 @@ class Solver:
     def reverse_direction(self, direction: int) -> int:
         """Defining and returning a reversed direction"""
         return -direction
+
+
+class Parents:
+
+    def __init__(self, root: tuple[str, ...]) -> None:
+        """Initialise Parents, a read and write implemenation of nodes"""
+        self.parents: dict[tuple[str, ...], tuple[str, ...]] = {root: ()}
+
+    def add(self, child: tuple[str, ...],
+            parent: tuple[str, ...]) -> None:
+        """Add child and parent to Parents"""
+        self.parents[child] = parent
+
+    def get(self, child: tuple[str, ...]) -> tuple[str, ...]:
+        """Get parent based on child"""
+        return self.parents[child]
+
+    def is_in(self, child: tuple[str, ...]) -> bool:
+        """Check if child is in Parents"""
+        return child in self.parents
