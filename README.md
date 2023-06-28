@@ -140,7 +140,7 @@ There is an option to ask for help before you run the game, this is a short summ
 
 You get the following output:
 
-![help](/Images/help-function2.jpeg)
+![help](/Images/help-function.jpeg)
 
 <br>
 
