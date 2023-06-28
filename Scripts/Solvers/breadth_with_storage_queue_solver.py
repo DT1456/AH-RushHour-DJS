@@ -7,45 +7,10 @@ from typing import Optional
 sys.setrecursionlimit(10000)
 
 
-class Queue:
-
-    def __init__(self) -> None:
-        """Initialising the empty queue"""
-        self.counter_reader = 0
-        self.writer_counter = 0
-
-    def enqueue(self, element: tuple[str, ...]) -> None:
-        """Adding element to back of queue"""
-        self.writer_counter += 1
-        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt',
-                  'w') as f:
-            for e in element:
-                f.write(e + ',')
-            f.write('\n')
-
-    def dequeue(self) -> tuple[str, ...]:
-        """Remove and return element from front of queue"""
-        self.counter_reader += 1
-        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt',
-                  'r') as f:
-            line = f.readline()
-
-        os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
-
-        line_list = line.split(',')
-        line_tuple = tuple(line_list[:len(line_list)-1])
-
-        return line_tuple
-
-    def is_big_enough(self) -> bool:
-        """Find and return size of queue"""
-        return self.writer_counter > self.counter_reader
-
-
 class Solver:
 
     def __init__(self) -> None:
-        """Initialising parent states dict, queue and original board"""
+        """Initialise Breadth-first search by setting an empty queue"""
 
         self.queue = Queue()
         self.original_board: tuple[str, ...]
@@ -70,8 +35,7 @@ class Solver:
         return moves_list
 
     def reverse_direction(self, direction: int) -> int:
-        """Defining and returning a reversed direction"""
-
+        """Return reversed direction"""
         return -direction
 
     def solve(self, game: Game) -> Game:
@@ -142,8 +106,7 @@ class Solver:
         # Initialise the list of moves
         moves_list = []
         while self.parents[game_tuple] != ():
-            # Set changed_places as list of places that
-            # were changed with the move
+            # Set changed_places as list of places that were changed with move
             changed_places = []
 
             # Go over the tuples to find differences
@@ -174,7 +137,43 @@ class Solver:
                 raise Exception('Unobtainable move, something went wrong!')
             game_tuple = self.parents[game_tuple]
 
-        # Reverse the list of moves
+        # Reverse the list of moves and return
         moves_list.reverse()
-
         return moves_list
+
+
+class Queue:
+
+    def __init__(self) -> None:
+        """Implementation of Queue: a read/write approach less RAM usage"""
+        self.counter_reader = 0
+        self.writer_counter = 0
+
+    def enqueue(self, element: tuple[str, ...]) -> None:
+        """Adding element to back of queue"""
+        self.writer_counter += 1
+        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt',
+                  'w') as f:
+            for e in element:
+                f.write(e + ',')
+            f.write('\n')
+
+    def dequeue(self) -> tuple[str, ...]:
+        """Remove and return element from front of queue"""
+        self.counter_reader += 1
+        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt',
+                  'r') as f:
+            line = f.readline()
+
+        os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
+
+        line_list = line.split(',')
+        line_tuple = tuple(line_list[:len(line_list)-1])
+
+        return line_tuple
+
+    def is_big_enough(self) -> bool:
+        """Find and return size of queue"""
+        return self.writer_counter > self.counter_reader
+
+

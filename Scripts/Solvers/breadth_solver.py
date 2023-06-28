@@ -6,30 +6,10 @@ from typing import Optional
 sys.setrecursionlimit(10000)
 
 
-class Queue:
-
-    def __init__(self) -> None:
-        """Initialising the empty queue"""
-        self._data: list[tuple[str, ...]] = []
-
-    def enqueue(self, element: tuple[str, ...]) -> None:
-        """Adding element to back of queue"""
-        self._data.append(element)
-
-    def dequeue(self) -> tuple[str, ...]:
-        """Remove and return element from front of queue"""
-        assert self.size() > 0
-        return self._data.pop(0)
-
-    def size(self) -> int:
-        """Find and return size of queue"""
-        return len(self._data)
-
-
 class Solver:
 
     def __init__(self) -> None:
-        """Initialising parent states dict, queue and original board"""
+        """Initialise Breadth-first search by setting an empty queue"""
 
         self.queue = Queue()
         self.original_board: tuple[str, ...]
@@ -54,8 +34,7 @@ class Solver:
         return moves_list
 
     def reverse_direction(self, direction: int) -> int:
-        """Defining and returning a reversed direction"""
-
+        """Return reversed direction"""
         return -direction
 
     def solve(self, game: Game) -> Game:
@@ -97,6 +76,7 @@ class Solver:
                 if game.tuple_form() not in self.parents:
                     self.queue.enqueue(game.tuple_form())
                     self.parents[game.tuple_form()] = current_state
+
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
 
@@ -104,6 +84,7 @@ class Solver:
                 game.moves.pop()
                 game.moves.pop()
 
+        # If no game returned, no solution is found
         raise Exception('No solution found!\n')
 
     def get_best_path(self, game: Game) -> list[tuple[str, Optional[int]]]:
@@ -119,8 +100,7 @@ class Solver:
         # Initialise the list of moves
         moves_list = []
         while self.parents[game_tuple] != ():
-            # Set changed_places as list of places that
-            # were changed with the move
+            # Set changed_places as list of places that were changed with move
             changed_places = []
 
             # Go over the tuples to find differences
@@ -151,7 +131,26 @@ class Solver:
                 raise Exception('Unobtainable move, something went wrong!')
             game_tuple = self.parents[game_tuple]
 
-        # Reverse the list of moves
+        # Reverse the list of moves and return it
         moves_list.reverse()
-
         return moves_list
+
+
+class Queue:
+
+    def __init__(self) -> None:
+        """Initialising the empty queue"""
+        self._data: list[tuple[str, ...]] = []
+
+    def enqueue(self, element: tuple[str, ...]) -> None:
+        """Adding element to back of queue"""
+        self._data.append(element)
+
+    def dequeue(self) -> tuple[str, ...]:
+        """Remove and return element from front of queue"""
+        assert self.size() > 0
+        return self._data.pop(0)
+
+    def size(self) -> int:
+        """Find and return size of queue"""
+        return len(self._data)

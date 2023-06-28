@@ -6,30 +6,10 @@ from typing import Optional
 sys.setrecursionlimit(10000)
 
 
-class Stack:
-
-    def __init__(self) -> None:
-        """Initialise empty stack"""
-        self._data: list[tuple[str, ...]] = []
-
-    def push(self, element: tuple[str, ...]) -> None:
-        """Add element to back of stack"""
-        self._data.append(element)
-
-    def pop(self) -> tuple[str, ...]:
-        """Remove and return element from back of stack"""
-        assert self.size() > 0
-        return self._data.pop()
-
-    def size(self) -> int:
-        """Find and return size of stack"""
-        return len(self._data)
-
-
 class Solver:
 
     def __init__(self) -> None:
-        """Initialising parent states dict, stack and original board"""
+        """Implementation of Depth-first search by using Stack"""
 
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
         self.stack = Stack()
@@ -55,8 +35,7 @@ class Solver:
         return moves_list
 
     def reverse_direction(self, direction: int) -> int:
-        """Defining and returning a reversed direction"""
-
+        """Return reversed direction"""
         return -direction
 
     def solve(self, game: Game) -> Game:
@@ -65,6 +44,7 @@ class Solver:
         # Reinitialise for reruns
         self.re_init()
 
+        # Set stack, visited, parents by adding original (current) board
         self.stack.push(game.tuple_form())
         self.visited = set()
         self.parents = {game.tuple_form(): ()}
@@ -102,6 +82,7 @@ class Solver:
                     self.stack.push(game.tuple_form())
                     self.visited.add(game.tuple_form())
                     self.parents[game.tuple_form()] = current_state
+
                 # Go back to current state
                 game.move(car_name, self.reverse_direction(direction))
 
@@ -109,6 +90,7 @@ class Solver:
                 game.moves.pop()
                 game.moves.pop()
 
+        # If game not returned yet, no solution found: raise Exception
         raise Exception('No solution found!\n')
 
     def get_best_path(self, game: Game) -> list[tuple[str, Optional[int]]]:
@@ -157,7 +139,26 @@ class Solver:
                 raise Exception('Unobtainable move, something went wrong!')
             game_tuple = self.parents[game_tuple]
 
-        # Reverse the list of moves
+        # Reverse the list of moves and return
         moves_list.reverse()
-
         return moves_list
+
+
+class Stack:
+
+    def __init__(self) -> None:
+        """Initialise empty stack"""
+        self._data: list[tuple[str, ...]] = []
+
+    def push(self, element: tuple[str, ...]) -> None:
+        """Add element to back of stack"""
+        self._data.append(element)
+
+    def pop(self) -> tuple[str, ...]:
+        """Remove and return element from back of stack"""
+        assert self.size() > 0
+        return self._data.pop()
+
+    def size(self) -> int:
+        """Find and return size of stack"""
+        return len(self._data)
