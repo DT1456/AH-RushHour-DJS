@@ -20,6 +20,12 @@ class Solver:
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
         self.heuristics_choice = heuristics_choice
 
+    def re_init(self, heuristics_choice: str = 'h0') -> None:
+        """Reinitialises Astar solver for repeated use"""
+        self.open_set = PriorityQueue()
+        self.closed_set = set()
+        self.heuristics_choice = heuristics_choice
+
     def heuristic(self, game: Game) -> int:
         """Runs the actual heuristic(s)"""
         if self.heuristics_choice not in ['h0', 'h1', 'h2', 'h3', 'h1h2',
@@ -109,7 +115,7 @@ class Solver:
         """Solve the game"""
 
         # Reinitialise for reruns
-        self.__init__()
+        self.re_init()
 
         # Get solution and return
         game = self.get_solution(game)

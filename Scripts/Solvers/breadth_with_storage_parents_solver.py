@@ -11,23 +11,19 @@ class Queue:
 
     def __init__(self) -> None:
         """Initialising the empty queue"""
-
         self._data: list[tuple[str, ...]] = []
 
     def enqueue(self, element: tuple[str, ...]) -> None:
         """Adding element to back of queue"""
-
         self._data.append(element)
 
     def dequeue(self) -> tuple[str, ...]:
         """Remove and return element from front of queue"""
-
         assert self.size() > 0
         return self._data.pop(0)
 
     def size(self) -> int:
         """Find and return size of queue"""
-
         return len(self._data)
 
     def is_big_enough(self) -> bool:
@@ -37,40 +33,63 @@ class Queue:
 
 class Parents:
 
-    def add(self, key_tuple: tuple[str, ...],
-            value_tuple: tuple[str, ...]) -> None:
+    def __init__(self) -> None:
+        """Initialise Parents, a read and write implemenation of nodes"""
+        pass
+
+    def add(self, child: tuple[str, ...],
+            parent: tuple[str, ...]) -> None:
+        """Add child and parent to Parents"""
+
+        # Set name
         name = ''
-        for k in key_tuple:
+        for k in child:
             name += k + ','
+
+        # Using name, find parents
         with open('Solvers/Parents/' + name, 'w') as f:
-            for v in value_tuple:
+            for v in parent:
                 f.write(v + ',')
             f.write('\n')
 
-    def get(self, key_tuple) -> tuple[str, ...]:
+    def get(self, child: tuple[str, ...]) -> tuple[str, ...]:
+        """Get parent based on child"""
+
+        # Set name
         name = ''
-        for k in key_tuple:
+        for k in child:
             name += k + ','
+
+        # Find parent using name
         with open('Solvers/Parents/' + name, 'r') as f:
             line = f.readline()
         line_list = line.split(',')
-        line_tuple = tuple(line_list[:len(line_list)-1])
-        return line_tuple
+        parent = tuple(line_list[:len(line_list)-1])
+        return parent
 
-    def is_in(self, key_tuple: tuple[str, ...]) -> bool:
+    def is_in(self, child: tuple[str, ...]) -> bool:
+        """Check if child is in Parents"""
+
+        # Set name
         name = ''
-        for k in key_tuple:
+        for k in child:
             name += k + ','
+
+        # Return if name in Parents (folder)
         return os.path.exists('Solvers/Parents/' + name)
 
 
 class Solver:
 
     def __init__(self) -> None:
-        """Initialising parent states dict, queue and original board"""
+        """Initialising queue and original board"""
 
         self.queue = Queue()
         self.original_board: tuple[str, ...]
+
+    def re_init(self) -> None:
+        """Reinitialise queue"""
+        self.queue = Queue()
 
     def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
@@ -88,15 +107,14 @@ class Solver:
         return moves_list
 
     def reverse_direction(self, direction: int) -> int:
-        """Defining and returning a reversed direction"""
-
+        """Return reversed direction"""
         return -direction
 
     def solve(self, game: Game) -> Game:
         """Searching for solution of the game"""
 
         # Reinitialise for reruns
-        self.__init__()
+        self.re_init()
 
         self.queue.enqueue(game.tuple_form())
         self.parents = Parents()

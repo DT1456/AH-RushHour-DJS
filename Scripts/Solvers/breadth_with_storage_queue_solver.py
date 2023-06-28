@@ -50,6 +50,10 @@ class Solver:
         self.queue = Queue()
         self.original_board: tuple[str, ...]
 
+    def re_init(self) -> None:
+        """Reinitialise queue"""
+        self.queue = Queue()
+
     def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
 
@@ -74,10 +78,11 @@ class Solver:
         """Searching for solution of the game"""
 
         # Reinitialise for reruns
-        self.__init__()
+        self.re_init()
 
         self.queue.enqueue(game.tuple_form())
-        self.parents = {game.tuple_form(): ()}
+        self.parents: dict[tuple[str, ...], tuple[str, ...]] = \
+            {game.tuple_form(): ()}
         self.original_board = game.tuple_form()
 
         while self.queue.is_big_enough():

@@ -7,6 +7,7 @@ from PIL import ImageDraw
 from PIL import ImageFont
 from sys import argv
 from sys import maxsize
+from typing import Optional
 from typing import Union
 
 
@@ -20,7 +21,7 @@ class Game:
         self.cars: dict[str, Car] = {}
         self.board: dict[tuple[int, int], str] = {}
         self.dimension: int = dimension
-        self.moves: list[list[Union[int, str]]] = []
+        self.moves: list[tuple[str, Optional[int]]] = []
 
         # Load cars and board
         self.load_cars(file_name)
@@ -182,7 +183,7 @@ class Game:
                 car.add_to_row(direction_int)
 
             # Store move and direction
-            self.moves.append([car_name, direction_int])
+            self.moves.append((car_name, direction_int))
 
             # Return True to indicate move succeeded
             return True
@@ -310,11 +311,11 @@ class Game:
         """Return dimension"""
         return self.dimension
 
-    def get_moves(self) -> list[list[Union[int, str]]]:
+    def get_moves(self) -> list[tuple[str, Optional[int]]]:
         """Get all moves"""
         return self.moves
 
-    def set_moves(self, best_moves: list[list[Union[int, str]]]) -> None:
+    def set_moves(self, best_moves: list[tuple[str, Optional[int]]]) -> None:
         """Set all moves"""
         self.moves = best_moves
 
@@ -415,9 +416,9 @@ def get_help() -> str:
     help_str += '[-h]                            : shows this help menu\n'
     help_str += '[-f RushhourDIMxDIM_GAMENUM.csv]: loads any'\
         ' game (in map Input) via its name\n'
-    help_str += 'Adding [-t] at the end            : uses terminology for'\
+    help_str += 'Adding [-t] at the end          : uses terminology for'\
         ' the board (better visual)\n'
-    help_str += 'Adding [-i] at the end            : uses terminology for'\
+    help_str += 'Adding [-i] at the end          : uses imgcat for'\
         ' the board (better visual)\n'
     help_str += 'Else                            : choice menu for the'\
         ' original games\n\n'

@@ -6,7 +6,7 @@ import sys
 class Solver:
 
     def __init__(self) -> None:
-        """Initialise hil climber by setting repetition count"""
+        """Initialise parameters for solver"""
         self.repetition_count = 100
         self.current_solution_steps = 0
         self.best_solution_steps = sys.maxsize
@@ -14,10 +14,18 @@ class Solver:
         self.winning_strategy: tuple[str, ...] = ()
         self.visited_states: set[str] = set()
 
+    def re_init(self) -> None:
+        """Reinitialises for rerun"""
+        self.repetition_count = 100
+        self.current_solution_steps = 0
+        self.best_solution_steps = sys.maxsize
+        self.original_board = ()
+        self.winning_strategy = ()
+
     def solve(self, game: Game) -> Game:
         """Solve the game by repeating solve_once"""
         # Make sure the game is in original state
-        self.__init__()
+        self.re_init()
 
         # Set the original board
         self.original_board = game.tuple_form()
