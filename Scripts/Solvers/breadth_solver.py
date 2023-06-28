@@ -10,23 +10,19 @@ class Queue:
 
     def __init__(self) -> None:
         """Initialising the empty queue"""
-
         self._data: list[tuple[str, ...]] = []
 
     def enqueue(self, element: tuple[str, ...]) -> None:
         """Adding element to back of queue"""
-
         self._data.append(element)
 
     def dequeue(self) -> tuple[str, ...]:
         """Remove and return element from front of queue"""
-
         assert self.size() > 0
         return self._data.pop(0)
 
     def size(self) -> int:
         """Find and return size of queue"""
-
         return len(self._data)
 
 
@@ -37,6 +33,10 @@ class Solver:
 
         self.queue = Queue()
         self.original_board: tuple[str, ...]
+
+    def re_init(self) -> None:
+        """Reinitialise queue"""
+        self.queue = Queue()
 
     def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
@@ -62,10 +62,11 @@ class Solver:
         """Searching for solution of the game"""
 
         # Reinitialise for reruns
-        self.__init__()
+        self.re_init()
 
         self.queue.enqueue(game.tuple_form())
-        self.parents = {game.tuple_form(): ()}
+        self.parents: dict[tuple[str, ...], tuple[str, ...]] = \
+            {game.tuple_form(): ()}
         self.original_board = game.tuple_form()
 
         while self.queue.size() > 0:

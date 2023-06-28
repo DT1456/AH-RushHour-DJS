@@ -29,11 +29,15 @@ class Stack:
 class Solver:
 
     def __init__(self) -> None:
-        """Initialising parent states dict, queue and original board"""
+        """Initialising parent states dict, stack and original board"""
 
         self.parents: dict[tuple[str, ...], tuple[str, ...]]
         self.stack = Stack()
         self.original_board: tuple[str, ...]
+
+    def re_init(self) -> None:
+        """Reinitialises stack"""
+        self.stack = Stack()
 
     def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
@@ -59,7 +63,7 @@ class Solver:
         """Searching for solution of the game"""
 
         # Reinitialise for reruns
-        self.__init__()
+        self.re_init()
 
         self.stack.push(game.tuple_form())
         self.visited = set()

@@ -75,6 +75,11 @@ class Solver:
         self.original_board: tuple[str, ...]
         self.winning_state: tuple[str, ...] = ()
 
+    def re_init(self) -> None:
+        """Initialising parent states dict, queue and original board"""
+        self.queue = Queue()
+        self.winning_state = ()
+
     def get_possible_moves(self, game: Game) -> list[tuple[str, int]]:
         """Get list of possible moves in this state"""
 
@@ -99,7 +104,7 @@ class Solver:
         """Counting states"""
 
         # Reinitialise for reruns
-        self.__init__()
+        self.re_init()
 
         self.queue.enqueue(game.tuple_form())
         self.visited_states = VisitedStates()
