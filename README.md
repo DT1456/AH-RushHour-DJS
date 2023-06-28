@@ -3,11 +3,12 @@
 
 <br>
 
-Our project consist of an implementation of the Rush hour game for the course *Algoritmen en Heuristieken*.
+Our project consists of an implementation of the Rush hour game for the course *Algoritmen en Heuristieken*.
 
 ## Table of contents
 
-[The size of our problem](#what-is-the-size-of-our-problem)
+[What is our problem?](#what-is-our-problem)
+- [The case](#the-case)
 - [Statespace](#statespace)
 
 [Directories and files](#directories-and-files)
@@ -25,7 +26,13 @@ Our project consist of an implementation of the Rush hour game for the course *A
 
 <br>
 
-## What is the size of our problem?
+## What is our problem?
+
+### **The case:**
+
+Our case is about the game Rush Hour, in this game it is the goal to release the red car from the board and before you can do that you have to move the cars that are in the way:
+
+![rush hour](/Images/Rushhour6x6_1-README.jpeg)
 
 ### **Statespace:**
 
