@@ -9,7 +9,7 @@ Our project consists of an implementation of the Rush hour game for the course *
 
 [What is our problem?](#what-is-our-problem)
 - [The case](#the-case)
-- [How to play the game?]
+- [How to play the game?](#how-to-play-the-game)
 - [Statespace](#statespace)
 
 [Directories and files](#directories-and-files)
@@ -21,7 +21,7 @@ Our project consists of an implementation of the Rush hour game for the course *
 - [Playing the game](#playing-the-game)
 - [Using the solver](#using-the-solver)
 
-[Installations](#installations)
+[(Possible) installations](#installations)
 - [Terminology (Linux)](#terminology)
 - [iTerm2: imgcat (MacOS)](#imgcat)
 
@@ -136,9 +136,9 @@ You get the following output:
 
 <br>
 
-## Installations
+## (Possible) installations
 
-To make the game visual and see the board with all the cars, installing a terminal that can display pictures is needed. For Linux there is Terminology and for MacOS there is iTerm2 with imgcat. Below there are explanations on how to install these terminals.
+There is the option to make the game visual and see the board with all the cars, installing a terminal that can display pictures is needed. For Linux there is Terminology and for MacOS there is iTerm2 with imgcat. Below there are explanations on how to install these terminals.
 
 <br>
 
