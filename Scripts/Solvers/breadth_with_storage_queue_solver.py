@@ -175,5 +175,3 @@ class Queue:
     def is_big_enough(self) -> bool:
         """Find and return size of queue"""
         return self.writer_counter > self.counter_reader
-
-
