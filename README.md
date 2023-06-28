@@ -32,7 +32,7 @@ Our project consists of an implementation of the Rush hour game for the course *
 
 Our case is about the game Rush Hour, in this game it is the goal to release the red car from the board and before you can do that you have to move the cars that are in the way:
 
-![rush hour](/Images/Rushhour6x6_1-README.jpeg)
+![rushhour](/Images/Rushhour6x6_1-README.jpeg)
 
 ### **Statespace:**
 
