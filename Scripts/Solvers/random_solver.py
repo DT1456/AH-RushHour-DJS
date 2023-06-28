@@ -5,13 +5,11 @@ import random as random
 class Solver:
 
     def __init__(self) -> None:
+        """Implements Random Solver: playing random moves until game won"""
         pass
 
     def solve(self, game: Game) -> Game:
         """Solve the game iteratively by playing random moves"""
-
-        # For step count, initialise steps at 0
-        steps = 0
 
         # While game not won, keep playing moves and incrementing steps
         while not game.is_won():
@@ -20,7 +18,6 @@ class Solver:
             # Print game if print_states is True
             if game.get_print_states():
                 game.show_board()
-            steps += 1
 
         return game
 

@@ -6,71 +6,14 @@ import sys
 sys.setrecursionlimit(10000)
 
 
-class Queue:
-
-    def __init__(self) -> None:
-        """Initialising the empty queue"""
-        self.counter_reader = 0
-        self.writer_counter = 0
-
-    def enqueue(self, element: tuple[str, ...]) -> None:
-        """Adding element to back of queue"""
-        self.writer_counter += 1
-        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt',
-                  'w') as f:
-            for e in element:
-                f.write(e + ',')
-            f.write('\n')
-
-    def dequeue(self) -> tuple[str, ...]:
-        """Remove and return element from front of queue"""
-        self.counter_reader += 1
-        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt',
-                  'r') as f:
-            line = f.readline()
-
-        os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
-
-        line_list = line.split(',')
-        line_tuple = tuple(line_list[:len(line_list)-1])
-
-        return line_tuple
-
-    def is_big_enough(self) -> bool:
-        """Find and return size of queue"""
-        return self.writer_counter > self.counter_reader
-
-
-class VisitedStates:
-    def __init__(self) -> None:
-        self.bucket_count = 10000
-        for i in range(self.bucket_count):
-            with open('Solvers/VisitedStates/' + str(i), 'w'):
-                pass
-
-    def add(self, game_tuple: tuple[str, ...]) -> None:
-        file_name = hash(game_tuple) % self.bucket_count
-        with open('Solvers/VisitedStates/' + str(file_name), 'a') as f:
-            for k in game_tuple:
-                f.write(k + ',')
-            f.write('\n')
-
-    def is_in(self, game_tuple: tuple[str, ...]) -> bool:
-        file_name = hash(game_tuple) % self.bucket_count
-        with open('Solvers/VisitedStates/' + str(file_name), 'r') as f:
-            while True:
-                line_list = f.readline().split(',')
-                line_tuple = tuple(line_list[:len(line_list)-1])
-                if len(line_tuple) == 0:
-                    return False
-                if line_tuple == game_tuple:
-                    return True
-
-
 class Solver:
 
     def __init__(self) -> None:
-        """Initialising parent states dict, queue and original board"""
+        """Initialising Count States Solver
+
+        Simply do a breadth-first search without stopping if game won
+        Continue until queue is empty, then all states are visited
+        """
         self.queue = Queue()
         self.original_board: tuple[str, ...]
         self.winning_state: tuple[str, ...] = ()
@@ -96,8 +39,7 @@ class Solver:
         return moves_list
 
     def reverse_direction(self, direction: int) -> int:
-        """Defining and returning a reversed direction"""
-
+        """Return reversed direction"""
         return -direction
 
     def solve(self, game: Game) -> Game:
@@ -106,6 +48,7 @@ class Solver:
         # Reinitialise for reruns
         self.re_init()
 
+        # Add starting state to queue, initialise visited_states
         self.queue.enqueue(game.tuple_form())
         self.visited_states = VisitedStates()
 
@@ -144,7 +87,97 @@ class Solver:
                 game.moves.pop()
                 game.moves.pop()
 
+        # Return game or raise Exception if no winning state found
         if self.winning_state == ():
             raise Exception('Something went wrong, game not solvable!\n')
         else:
             return game
+
+
+class Queue:
+
+    def __init__(self) -> None:
+        """Initialising the queue: a read/write implementation"""
+        self.counter_reader = 0
+        self.writer_counter = 0
+
+    def enqueue(self, element: tuple[str, ...]) -> None:
+        """Adding element to back of queue"""
+
+        # Increment counter
+        self.writer_counter += 1
+
+        # Add a new element to Queue by writing new file
+        with open('Solvers/Queues/queue' + str(self.writer_counter) + '.txt',
+                  'w') as f:
+            for e in element:
+                f.write(e + ',')
+            f.write('\n')
+
+    def dequeue(self) -> tuple[str, ...]:
+        """Remove and return element from front of queue"""
+
+        # Increment counter reader
+        self.counter_reader += 1
+
+        # Read correct file
+        with open('Solvers/Queues/queue' + str(self.counter_reader) + '.txt',
+                  'r') as f:
+            line = f.readline()
+
+        # Remove file (popping the queue)
+        os.remove('Solvers/Queues/queue' + str(self.counter_reader) + '.txt')
+
+        # Return tuple
+        line_list = line.split(',')
+        line_tuple = tuple(line_list[:len(line_list)-1])
+        return line_tuple
+
+    def is_big_enough(self) -> bool:
+        """Find and return whether of queue is not zero"""
+        return self.writer_counter > self.counter_reader
+
+
+class VisitedStates:
+
+    def __init__(self) -> None:
+        """Initialise VisitedStates: a read/write implementation
+
+        It is a replacement of visited_states as set() for memory saving
+        """
+
+        # Set amount of buckets
+        self.bucket_count = 10000
+
+        # Write empty buckets (as files)
+        for i in range(self.bucket_count):
+            with open('Solvers/VisitedStates/' + str(i), 'w'):
+                pass
+
+    def add(self, game_tuple: tuple[str, ...]) -> None:
+        """Add a state to VisitedStates"""
+
+        # Get file_name based on hash of game_tuple
+        file_name = hash(game_tuple) % self.bucket_count
+
+        # Add game_tuple to correct file
+        with open('Solvers/VisitedStates/' + str(file_name), 'a') as f:
+            for k in game_tuple:
+                f.write(k + ',')
+            f.write('\n')
+
+    def is_in(self, game_tuple: tuple[str, ...]) -> bool:
+        """Return whether a certain game_tuple is in VisitedStates"""
+
+        # Get file_name based on hash of game_tuple
+        file_name = hash(game_tuple) % self.bucket_count
+
+        # Go over a bucket, check if game_tuple is in the file
+        with open('Solvers/VisitedStates/' + str(file_name), 'r') as f:
+            while True:
+                line_list = f.readline().split(',')
+                line_tuple = tuple(line_list[:len(line_list)-1])
+                if len(line_tuple) == 0:
+                    return False
+                if line_tuple == game_tuple:
+                    return True
