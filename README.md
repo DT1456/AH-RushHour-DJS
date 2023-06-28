@@ -49,7 +49,7 @@ Or:
 
     A L
 
-It does not matter if you type upper or lowercase, the game accepts both.
+It does not matter if you type in upper or lowercase, the game accepts both.
 
 <br>
 
@@ -80,6 +80,13 @@ This is a directory that contains the python files that together create the game
 - [Car.py:](Scripts/car.py) in this file the code for the implementation of the cars in the game is written.
 - [Solver.py:](Scripts/solver.py) this file contains the implementation of the code where you can choose what solver you want to apply to the game and how many times you want to solve it.
 - [Solvers](Scripts/Solvers) this is the directory with all the different solvers (more information below).
+
+#### **Results:**
+This directory contains all the results that we have runned. Each game has it's own folder and there is a folder that contains the best solution of each game except for game 6 and 7 (the solution with the least amount of steps). In each folder there are results of the game with different algorithms. An example:
+
+    3,1,breadth_solver.txt
+
+The '3' stands for the game, the '1' for the number of times we runned the algorithm and 'breadth_solver' stands for the name of the algorithm.
 
 #### **Solvers**:
 This directory contains all the solvers that the player can choose from to solve the Rush Hour game:
