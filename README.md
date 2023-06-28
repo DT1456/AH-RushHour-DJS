@@ -118,7 +118,7 @@ This directory contains all the different Rush Hour games that the player can ch
 
 #### **Using the solvers**:
 
-If you want to use the solver, you first need to type "python3 solver.py" in the same line after that you type the number of the game you want to solve (1, 2, 3, 4, 5, 6 or 7), then you type the name of the kind of solver that you want to use, after that you type the amount of times you want to solve the game and then at last there is the option to print the boardstring or the visual board while solving the game, if you want to print the boardstring you type "1" at the end of the line, if you don't you type "0" instead, when you want to see the visual board you type "2". This would result in something like this:
+If you want to use the solver, you first need to type "python3 solver.py", next you type the number of the game you want to solve (1, 2, 3, 4, 5, 6 or 7), then you type the name of the kind of solver that you want to use, after that you type the amount of times you want to solve the game and at last there is the option to print the boardstring or the visual board while solving the game. If you want to print the boardstring you type "1" at the end of the line, if you don't you type "0" instead and when you want to see the visual board you type "2". This would result in something like this:
 
 *When you **don't** want to print:*
 
@@ -127,6 +127,10 @@ If you want to use the solver, you first need to type "python3 solver.py" in the
 *When you **do** want to print (boardstring):*
 
     python3 solver.py game_number solver_name amount_of_times 1
+
+*When you **do** want to print (visual board):*
+
+    python3 solver.py game_number solver_name amount_of_times 2
 
 #### **Help**:
 
@@ -167,7 +171,7 @@ python3 game.py -t
 
 #### **iTerm2 -> imgcat:**
 
-To install iTerm2 on your Mac you can go to the website "https://iterm2.com" and dowload the terminal from there. Then you can open the terminal as an app on your laptop. When you open the app the left corner in the taskbar says "iTerm2", click on that. A menu pops up and then you need to click "Install Shell Integration". After installing this imgcat will be installed automatically. Imgcat does not work immediatly, you need to close down the iTerm2 terminal and open it up again, then it will work.
+To install iTerm2 on your Mac you can go to the website "https://iterm2.com" and dowload the terminal from there. Then you can open the terminal as an app on your laptop. When you open the app the left corner in the taskbar says "iTerm2", click on this. A menu pops up and then you need to click "Install Shell Integration". After installing this imgcat will be installed automatically. Imgcat does not work immediatly, you need to close down the iTerm2 terminal and open it up again, then it will work.
 
 To use this terminal as a command line argument when starting the game you need to add "-i" to your command:
 
