@@ -18,7 +18,6 @@ Our project consists of an implementation of the Rush hour game for the course *
 - [Input](#input)
 
 [Instructions](#instructions)
-- [Playing the game](#playing-the-game)
 - [Using the solver](#using-the-solver)
 
 [(Possible) installations](#possible-installations)
@@ -37,7 +36,18 @@ Our case is about the game Rush Hour. The goal of this game is to release the re
 
 #### **How to play the game?**
 
-When you want to move a car you first type in the letter of the car, then you have two options on how to move the car:
+If you want to play the game make sure that you run the file **game.py** from the directory that game.py is in. It is also important that every python file is in the same directory. When you want to start the game you have multiple options:
+
+1. **Command line arguments:** if you want to start the game immediately you can choose a game you want from the Input directory and then use the game name in the command line arguments, after python3 game.py you need to type "-f", this means you choose a file for the game:
+
+```python3
+    python3 game.py -f Rushhour6x6_1.csv
+```
+
+2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension, which game you want to play, if you want to use terminology yes or no and if you want to use imgcat yes or no (see [(possible) installations](#possible-installations) for the explanation of terminology and imgcat) after this the game will start.
+
+When the game is ready to be played you can move a car in two ways:
+
 - *1 or -1:* when you type '-1' the car wil move left or upwards, when you type '1' the car will move right or downwards.
 - *U, D, L, R:* 'U' stands for 'up', 'D' stands for 'down', 'L' stands for left and 'R' stands for 'right'.
 
@@ -50,6 +60,7 @@ Or:
     A L
 
 It does not matter if you type in upper or lowercase, the game accepts both.
+You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
 
 <br>
 
@@ -115,21 +126,35 @@ If you want to play the game make sure that you run the file **game.py** from th
 
 2. **Command line interface:** you can also choose your game through the command line interface. Then you just need to type "python3 game.py". Then you will be asked which board dimension, which game you want to play, if you want to use terminology yes or no and if you want to use imgcat yes or no (see [(possible) installations](#possible-installations) for the explanation of terminology and imgcat) after this the game will start.
 
-When the game is ready to be played you can move a car by selecting the letter of the car, typing a space and then the direction (L: left, R: right, U: up or D: down). You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
+When the game is ready to be played you can move a car in two ways:
+
+- *1 or -1:* when you type '-1' the car wil move left or upwards, when you type '1' the car will move right or downwards.
+- *U, D, L, R:* 'U' stands for 'up', 'D' stands for 'down', 'L' stands for left and 'R' stands for 'right'.
+
+The line in the command line interface will look as follows (in this example car A moves to the left):
+
+    A -1
+
+Or:
+
+    A L
+
+It does not matter if you type in upper or lowercase, the game accepts both.
+You proceed like this until you manage to get the red car all the way to the right side of the board. If you succeed you win the game!
 
 <br>
 
 #### **Using the solvers**:
 
-If you want to use the solver, you first need to type "python3 solver.py" in the same line after that you type the number of the game you want to solve (1, 2, 3, 4, 5, 6 or 7), then you type the name of the kind of solver that you want to use, after that you type the amount of times you want to solve the game and then at last there is the option to print the board while solving the game, if you want to print the board you type "True" at the end of the line,if you don't you type nothing there. This would result in something like this:
+If you want to use the solver, you first need to type "python3 solver.py" in the same line after that you type the number of the game you want to solve (1, 2, 3, 4, 5, 6 or 7), then you type the name of the kind of solver that you want to use, after that you type the amount of times you want to solve the game and then at last there is the option to print the boardstring or the visual board while solving the game, if you want to print the boardstring you type "1" at the end of the line, if you don't you type "0" instead, when you want to see the visual board you type "2". This would result in something like this:
 
 *When you **don't** want to print:*
 
-    python3 solver.py game_number solver_name amount_of_times
+    python3 solver.py game_number solver_name amount_of_times 0
 
-*When you **do** want to print:*
+*When you **do** want to print (boardstring):*
 
-    python3 solver.py game_number solver_name amount_of_times True
+    python3 solver.py game_number solver_name amount_of_times 1
 
 #### **Help**:
 
